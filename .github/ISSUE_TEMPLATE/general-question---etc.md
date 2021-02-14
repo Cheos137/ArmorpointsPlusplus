@@ -2,7 +2,7 @@
 name: General question / etc
 about: Anything not fitting the other templates goes here
 title: ''
-labels: ''
+labels: 'type: general'
 assignees: ''
 
 ---
