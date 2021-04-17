@@ -1,0 +1,29 @@
+
+modLoader="javafml"
+loaderVersion="[36,)"
+license="All rights reserved"
+
+[[mods]]
+modId="armorpointspp"
+version="${file.jarVersion}"
+displayName="ArmorPoints++"
+credits="Cheos"
+authors="Cheos"
+description='''
+Umm... please check out the curseforge page :)
+https://www.curseforge.com/minecraft/mc-mods/armorpoints
+'''
+
+[[dependencies.examplemod]]
+    modId="forge"
+    mandatory=true
+    versionRange="[36,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.examplemod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5,1.17)"
+    ordering="NONE"
+    side="BOTH"
