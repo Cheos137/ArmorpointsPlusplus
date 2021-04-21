@@ -37,24 +37,24 @@ public class ApppConfig {
 	}
 	
 	private static void define() {
-		boolConfigs.put("debug"            , new BoolValue("debug"                                  , false   , "Available: true, false [default: %s]"));
-		boolConfigs.put("enableArmorBar"   , new BoolValue("Enable custom armor bar"                , true    , "Available: true, false [default: %s]"));
-		boolConfigs.put("enableHealthBar"  , new BoolValue("Enable custom health bar"               , true    , "Available: true, false [default: %s]"));
-		boolConfigs.put("showArmorValue"   , new BoolValue("Show armor value next to bar"           , true    , "Available: true, false [default: %s]"));
-		boolConfigs.put("showHealthValue"  , new BoolValue("Show health value next to bar"          , true    , "Available: true, false [default: %s]"));
-		boolConfigs.put("showArmorWhenZero", new BoolValue("Show armor bar when armor is zero"      , false   , "Available: true, false [default: %s]"));
-		boolConfigs.put("showResistance"   , new BoolValue("Show resistance as border around armor" , true    , "Available: true, false [default: %s]"));
-		boolConfigs.put("showAbsorption"   , new BoolValue("Show absorption as border around health", true    , "Available: true, false [default: %s]"));
-		hexConfigs .put("resistanceFull"   , new HexValue( "Color when resistance > 5"              , 0x4c0000, "Available: 0x000000 - 0xffffff [default: %s]"));
-		hexConfigs .put("armor0"           , new HexValue( "Color when armor = 0"                   , 0x3d3d3d, "Available: 0x000000 - 0xffffff [default: %s]"));
-		hexConfigs .put("armorLT25"        , new HexValue( "Color when armor < 25"                  , 0x44ff11, "Available: 0x000000 - 0xffffff [default: %s]"));
-		hexConfigs .put("armorEQ25"        , new HexValue( "Color when armor = 25"                  , 0xff8811, "Available: 0x000000 - 0xffffff [default: %s]"));
-		hexConfigs .put("armorGT25"        , new HexValue( "Color when armor > 25"                  , 0xff3311, "Available: 0x000000 - 0xffffff [default: %s]"));
-		hexConfigs .put("heartPoison"      , new HexValue( "Color when poisoned"                    , 0x947818, "Available: 0x000000 - 0xffffff [default: %s]"));
-		hexConfigs .put("heartWither"      , new HexValue( "Color when withered"                    , 0x2b2b2b, "Available: 0x000000 - 0xffffff [default: %s]"));
-		hexConfigs .put("heart"            , new HexValue( "Color normal status"                    , 0xff1313, "Available: 0x000000 - 0xffffff [default: %s]"));
-		hexConfigs .put("absorption"       , new HexValue( "Color separator"                        , 0xffc300, "Available: 0x000000 - 0xffffff [default: %s]"));
-		hexConfigs .put("separator"        , new HexValue( "Color absorption"                       , 0x3d3d3d, "Available: 0x000000 - 0xffffff [default: %s]"));
+		boolConfigs.put("debug"            , new BoolValue("debug"            , false   , " You don't want this on. Believe me"     , " Available: true, false [default: %s]"));
+		boolConfigs.put("enableArmorBar"   , new BoolValue("enableArmorBar"   , true    , " Enable custom armor bar"                , " Available: true, false [default: %s]"));
+		boolConfigs.put("enableHealthBar"  , new BoolValue("enableHealthBar"  , true    , " Enable custom health bar"               , " Available: true, false [default: %s]"));
+		boolConfigs.put("showArmorValue"   , new BoolValue("showArmorValue"   , true    , " Show armor value next to bar"           , " Available: true, false [default: %s]"));
+		boolConfigs.put("showHealthValue"  , new BoolValue("showHealthValue"  , true    , " Show health value next to bar"          , " Available: true, false [default: %s]"));
+		boolConfigs.put("showArmorWhenZero", new BoolValue("showArmorWhenZero", false   , " Show armor bar when armor is zero"      , " Available: true, false [default: %s]"));
+		boolConfigs.put("showResistance"   , new BoolValue("showResistance"   , true    , " Show resistance as border around armor" , " Available: true, false [default: %s]"));
+		boolConfigs.put("showAbsorption"   , new BoolValue("showAbsorption"   , true    , " Show absorption as border around health", " Available: true, false [default: %s]"));
+		hexConfigs .put("resistanceFull"   , new HexValue( "resistanceFull"   , 0x4c0000, " Color when resistance > 5"              , " Available: 0x000000 - 0xffffff [default: %s]"));
+		hexConfigs .put("armor0"           , new HexValue( "armor0"           , 0x3d3d3d, " Color when armor = 0"                   , " Available: 0x000000 - 0xffffff [default: %s]"));
+		hexConfigs .put("armorLT25"        , new HexValue( "armorLT25"        , 0x44ff11, " Color when armor < 25"                  , " Available: 0x000000 - 0xffffff [default: %s]"));
+		hexConfigs .put("armorEQ25"        , new HexValue( "armorEQ25"        , 0xff8811, " Color when armor = 25"                  , " Available: 0x000000 - 0xffffff [default: %s]"));
+		hexConfigs .put("armorGT25"        , new HexValue( "armorGT25"        , 0xff3311, " Color when armor > 25"                  , " Available: 0x000000 - 0xffffff [default: %s]"));
+		hexConfigs .put("heartPoison"      , new HexValue( "heartPoison"      , 0x947818, " Color when poisoned"                    , " Available: 0x000000 - 0xffffff [default: %s]"));
+		hexConfigs .put("heartWither"      , new HexValue( "heartWither"      , 0x2b2b2b, " Color when withered"                    , " Available: 0x000000 - 0xffffff [default: %s]"));
+		hexConfigs .put("heart"            , new HexValue( "heart"            , 0xff1313, " Color normal status"                    , " Available: 0x000000 - 0xffffff [default: %s]"));
+		hexConfigs .put("absorption"       , new HexValue( "absorption"       , 0xffc300, " Color of absorption"                    , " Available: 0x000000 - 0xffffff [default: %s]"));
+		hexConfigs .put("separator"        , new HexValue( "separator"        , 0x3d3d3d, " Color of separator"                     , " Available: 0x000000 - 0xffffff [default: %s]"));
 	}
 	
 	public static class ConfigBuilder {

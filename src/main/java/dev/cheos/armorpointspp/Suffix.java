@@ -52,7 +52,7 @@ public enum Suffix {
 		ENG;
 		
 		public static Type fromName(String name) {
-			return valueOf(name) == null ? SI : valueOf(name);
+			return valueOf(name.toUpperCase()) == null ? SI : valueOf(name.toUpperCase());
 		}
 	}
 }
