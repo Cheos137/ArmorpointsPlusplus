@@ -50,7 +50,7 @@ Create an issue using the `Feature request` template [here][github].
 
 Any questions? You can reach me in the comment section on [CurseForge][curseforge] or [GitHub][github] by using the `General question / etc` template.
 
-Discord? Not right now, but I will set one up, if there is demand.
+Discord? Not right now, but I will set one up if there is demand.
 
 
 <hr>
