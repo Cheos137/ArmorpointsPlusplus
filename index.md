@@ -9,6 +9,8 @@ No compatibility whatsoever, a couple of bugs which I only noticed by making v2 
 But now... v2 is in beta. That means I have re-implemented all the features from v1.<br>
 There are also some more, cool features to come. :)
 
+The curseforge update will update with the release of `release candidate` versions.
+
 ## What has changed?
 
 Well... it doesn't seem like much from the outside...<br>
