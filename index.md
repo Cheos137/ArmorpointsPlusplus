@@ -24,7 +24,7 @@ while `SCI`'s functionality has been altered to always show the armor value in s
 `showAbsorption` is an entirely new config option which allows you to turn off absorption borders individually from health stacking.<br>
 There is one thing to note: `showAbsorption` will only work if health stacking is enabled - it will NOT work with the vanilla health bar.
 
-This update **WILL BREAK** your config files!
+<span style="color:orange;">This update **WILL BREAK** your config files!</span>
 
 What you probably won't see is that on the inside basically everything has changed.<br>
 It's a much more clean approach than in v1 (as i said, v1 was pretty awful).
