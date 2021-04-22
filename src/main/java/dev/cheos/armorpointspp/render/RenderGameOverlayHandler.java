@@ -11,7 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 @SuppressWarnings("deprecation")
 public class RenderGameOverlayHandler {
-	private static boolean debug = false; // TODO
+	private static boolean debug = false;
 	private final HUDRenderer hudRenderer;
 	private int lastArmorHeight = -1, lastHealthHeight = -1;
 	
@@ -19,7 +19,7 @@ public class RenderGameOverlayHandler {
 		this.hudRenderer = new HUDRenderer(minecraft);
 	}
 	
-	@SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = false)
+	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void renderGameOverlayPre(RenderGameOverlayEvent.Pre event) {
 		switch (event.getType()) {
 			case ARMOR:
@@ -39,9 +39,6 @@ public class RenderGameOverlayHandler {
 				
 				if (conf("enableHealthBar")) {
 					hudRenderer.renderHealth(event.getMatrixStack(), baseX(event), lastHealthHeight);
-					
-					if (conf("showAbsorption")) // absorb borders only work on stacked hearts
-						hudRenderer.renderAbsorption(event.getMatrixStack(), baseX(event), lastHealthHeight);
 					           // no event cancel for compat with other mods that use RenderGameOverlayEvent.Post
 					disable(); // prevent minecraft from rendering vanilla health bar
 				}
@@ -57,8 +54,6 @@ public class RenderGameOverlayHandler {
 			case ARMOR:
 				if (conf("enableArmorBar"))
 					enable();
-				if (conf("showResistance"))
-					hudRenderer.renderResistance(event.getMatrixStack(), baseX(event), lastArmorHeight);
 				return;
 			
 			case HEALTH:
@@ -67,9 +62,26 @@ public class RenderGameOverlayHandler {
 					ForgeIngameGui.left_height = forgeLeftHeight(event, lastHealthHeight) + 10;
 				}
 				return;
+			default:
+				return;
+		}
+	}
+	
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public void renderGameOverlayLast(RenderGameOverlayEvent.Post event) { // top overlays will get rendered LAST to maximize compatibility
+		switch (event.getType()) {
+			case ARMOR:
+				if (conf("showResistance"))
+					hudRenderer.renderResistance(event.getMatrixStack(), baseX(event), lastArmorHeight);
+				return;
+			
+			case HEALTH:
+				if (conf("enableHealthBar") && conf("showAbsorption")) // absorb borders only work on stacked hearts
+					hudRenderer.renderAbsorption(event.getMatrixStack(), baseX(event), lastHealthHeight);
+				return;
 			
 			case TEXT:
-				if (conf("debug") || debug) // TODO
+				if (conf("debug") || debug)
 					hudRenderer.debugText(event.getMatrixStack(), baseX(event), lastArmorHeight);
 				if (conf("showArmorValue"))
 					hudRenderer.renderArmorText(event.getMatrixStack(), baseX(event), lastArmorHeight);

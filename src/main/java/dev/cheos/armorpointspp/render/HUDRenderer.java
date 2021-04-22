@@ -60,7 +60,6 @@ public class HUDRenderer {
 	
 	public void renderHealth(MatrixStack mStack, int x, int y) {
 		PlayerEntity player = this.minecraft.player;
-		float maxHealth = MathHelper.ceil(player.getMaxHealth());
 		int health      = MathHelper.ceil(player.getHealth());
 		int heartStack  = Math.min((health - 1) / 20, 10);
 		
@@ -68,7 +67,7 @@ public class HUDRenderer {
 		
 		boolean highlight = this.healthBlinkTime > this.lastGuiTicks && (this.healthBlinkTime - this.lastGuiTicks) / 3L % 2L == 1L;
 		int regen = this.minecraft.player.hasEffect(Effects.REGENERATION)
-				? this.lastGuiTicks % 25 // in vanilla: % (maxHealth + 5)
+				? this.lastGuiTicks % 25 // in vanilla: % (maxHealth + 5), here: more than 20 + 5 does not make sense
 				: -1;
 		int margin = 36;
 		
