@@ -44,6 +44,8 @@ public class ApppConfig {
 		boolConfigs.put("showHealthValue"  , new BoolValue("showHealthValue"  , true    , " Show health value next to bar"          , " Available: true, false [default: %s]"));
 		boolConfigs.put("showArmorWhenZero", new BoolValue("showArmorWhenZero", false   , " Show armor bar when armor is zero"      , " Available: true, false [default: %s]"));
 		boolConfigs.put("showResistance"   , new BoolValue("showResistance"   , true    , " Show resistance as border around armor" , " Available: true, false [default: %s]"));
+		boolConfigs.put("showToughness"    , new BoolValue("showToughness"    , true    , " Show toughness as overlay over armor"   , " Available: true, false [default: %s]"));
+		boolConfigs.put("showProtection"   , new BoolValue("showProtection"   , true    , " Show protection as overlay over armor"  , " Available: true, false [default: %s]"));
 		boolConfigs.put("showAbsorption"   , new BoolValue("showAbsorption"   , true    , " Show absorption as border around health", " Available: true, false [default: %s]"));
 		hexConfigs .put("resistanceFull"   , new HexValue( "resistanceFull"   , 0x4c0000, " Color when resistance > 5"              , " Available: 0x000000 - 0xffffff [default: %s]"));
 		hexConfigs .put("armor0"           , new HexValue( "armor0"           , 0x3d3d3d, " Color when armor = 0"                   , " Available: 0x000000 - 0xffffff [default: %s]"));

@@ -73,6 +73,10 @@ public class RenderGameOverlayHandler {
 			case ARMOR:
 				if (conf("showResistance"))
 					hudRenderer.renderResistance(event.getMatrixStack(), baseX(event), lastArmorHeight);
+				if (conf("showProtection"))
+					hudRenderer.renderProtectionOverlay(event.getMatrixStack(), baseX(event), lastArmorHeight);
+				if (conf("showToughness"))
+					hudRenderer.renderArmorToughness(event.getMatrixStack(), baseX(event), lastArmorHeight);
 				return;
 			
 			case HEALTH:

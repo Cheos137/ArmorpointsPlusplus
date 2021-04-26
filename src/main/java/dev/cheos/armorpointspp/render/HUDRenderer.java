@@ -10,7 +10,12 @@ import dev.cheos.armorpointspp.Suffix;
 import dev.cheos.armorpointspp.config.ApppConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
@@ -31,21 +36,22 @@ public class HUDRenderer {
 	}
 	
 	public void renderArmor(MatrixStack mStack, int x, int y) {
-		int armor = Math.min(this.minecraft.player.getArmorValue(), 240);
+		int armor = Math.min(armor(this.minecraft.player), 240);
 		if (armor <= 0 && !ApppConfig.getBool("showArmorWhenZero")) return;
 		
 		bind(APPP_ICONS);
 		for (int i = 0; i < 10; i++)
 			blit(mStack, x + 8 * i, y,
 					18 * (armor / 20)
-					+ armor % 20 - 2 * i == 1
-					? 36 : armor % 20 - 2 * i >= 2
-					? 45 : 27, 0, 9, 9);
+					+ ((armor % 20) - 2 * i == 1
+					? 36 : (armor % 20) - 2 * i >= 2
+					? 45 : 27), 0, 9, 9);
+		
 		bind(VANILLA_ICONS);
 	}
 	
 	public void renderResistance(MatrixStack mStack, int x, int y) {
-		int armor = this.minecraft.player.getArmorValue();
+		int armor = armor(this.minecraft.player);
 		int resistance = -1;
 		
 		if (this.minecraft.player.hasEffect(Effects.DAMAGE_RESISTANCE)) resistance = this.minecraft.player.getEffect(Effects.DAMAGE_RESISTANCE).getAmplifier() + 1;
@@ -56,6 +62,38 @@ public class HUDRenderer {
 			else if (armor % 20 == 1) blit(mStack, x + 8 * i, y,  9, 0, 9, 9);
 			else                      blit(mStack, x + 8 * i, y, 18, 0, 9, 9);
 		bind(VANILLA_ICONS);
+	}
+	
+	public void renderArmorToughness(MatrixStack mStack, int x, int y) {
+		if (armor(this.minecraft.player) <= 0 && !ApppConfig.getBool("showArmorWhenZero")) return;
+		
+//		System.out.println(this.minecraft.player.getAttributes().save());
+		
+	}
+	
+	public void renderProtectionOverlay(MatrixStack mStack, int x, int y) {
+		if (armor(this.minecraft.player) <= 0 && !ApppConfig.getBool("showArmorWhenZero")) return;
+
+		int protection = 0;
+
+		// should this be separated for each prot types? -- maxes out with godarmor
+		for (ItemStack stack : this.minecraft.player.getArmorSlots()) { // adds 0 for empty stacks
+			protection += EnchantmentHelper.getItemEnchantmentLevel(Enchantments.ALL_DAMAGE_PROTECTION, stack);
+			protection += EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLAST_PROTECTION     , stack);
+			protection += EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FIRE_PROTECTION      , stack);
+			protection += EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PROJECTILE_PROTECTION, stack);
+		}
+
+		protection = MathHelper.ceil(protection / 2F);
+		protection = MathHelper.clamp(protection, 0, 10);
+		if (protection <= 0) return;
+		
+		RenderSystem.enableBlend();
+		bind(APPP_ICONS);
+		for (int i = 0; i < 10 && i < protection; i++)
+			blit(mStack, x + 8 * i, y, 9, 9, 9, 9);
+		bind(VANILLA_ICONS);
+		RenderSystem.disableBlend();
 	}
 	
 	public void renderHealth(MatrixStack mStack, int x, int y) {
@@ -147,7 +185,7 @@ public class HUDRenderer {
 	}
 	
 	public void renderArmorText(MatrixStack mStack, int x, int y) {
-		double armor = this.minecraft.player.getArmorValue();
+		double armor = armor(this.minecraft.player);
 		
 		if (armor <= 0 && !ApppConfig.getBool("showArmorWhenZero")) return;
 		
@@ -247,6 +285,10 @@ public class HUDRenderer {
 		for (Object obj : objs)
 			s += String.valueOf(obj);
 		return this.minecraft.font.width(s);
+	}
+	
+	private int armor(LivingEntity le) {
+		return le.getArmorValue() + (int) le.getAttributeValue(Attributes.ARMOR);
 	}
 	
 	private void resetColor() {
