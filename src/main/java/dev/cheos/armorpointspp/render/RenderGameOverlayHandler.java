@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.cheos.armorpointspp.config.ApppConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,9 +15,16 @@ public class RenderGameOverlayHandler {
 	private static boolean debug = false;
 	private final HUDRenderer hudRenderer;
 	private int lastArmorHeight = -1, lastHealthHeight = -1;
+	private boolean renderArmor = false, renderHealth = false;
 	
 	public RenderGameOverlayHandler(Minecraft minecraft) {
 		this.hudRenderer = new HUDRenderer(minecraft);
+	}
+	
+	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
+	public void renderGameOverlayFirst(RenderGameOverlayEvent.Pre event) {
+		if (event.getType() == ElementType.ALL)
+			renderArmor = renderHealth = false; // this will happen ALWAYS, FIRST (before anything else can possibly happen)
 	}
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
@@ -24,6 +32,7 @@ public class RenderGameOverlayHandler {
 		switch (event.getType()) {
 			case ARMOR:
 				this.lastArmorHeight = baseY(event);
+				this.renderArmor = true;
 				
 				if (conf("debug") || debug)
 					hudRenderer.debugTexture(event.getMatrixStack());
@@ -36,6 +45,7 @@ public class RenderGameOverlayHandler {
 			
 			case HEALTH:
 				this.lastHealthHeight = baseY(event);
+				this.renderHealth = true;
 				
 				if (conf("enableHealthBar")) {
 					hudRenderer.renderHealth(event.getMatrixStack(), baseX(event), lastHealthHeight);
@@ -87,9 +97,9 @@ public class RenderGameOverlayHandler {
 			case TEXT:
 				if (conf("debug") || debug)
 					hudRenderer.debugText(event.getMatrixStack(), baseX(event), lastArmorHeight);
-				if (conf("showArmorValue"))
+				if (conf("showArmorValue") && renderArmor)   // armor render event was not cancelled
 					hudRenderer.renderArmorText(event.getMatrixStack(), baseX(event), lastArmorHeight);
-				if (conf("showHealthValue"))
+				if (conf("showHealthValue") && renderHealth) // health render event was not cancelled
 					hudRenderer.renderHealthText(event.getMatrixStack(), baseX(event), lastHealthHeight);
 				return;
 			default:

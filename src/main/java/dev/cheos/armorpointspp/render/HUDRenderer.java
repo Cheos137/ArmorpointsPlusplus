@@ -46,7 +46,6 @@ public class HUDRenderer {
 					+ ((armor % 20) - 2 * i == 1
 					? 36 : (armor % 20) - 2 * i >= 2
 					? 45 : 27), 0, 9, 9);
-		
 		bind(VANILLA_ICONS);
 	}
 	
@@ -66,9 +65,18 @@ public class HUDRenderer {
 	
 	public void renderArmorToughness(MatrixStack mStack, int x, int y) {
 		if (armor(this.minecraft.player) <= 0 && !ApppConfig.getBool("showArmorWhenZero")) return;
+		int toughness = MathHelper.ceil(toughness(this.minecraft.player) / 2F);
+		if (toughness <= 0) return;
 		
-//		System.out.println(this.minecraft.player.getAttributes().save());
+		mStack.pushPose();
+		mStack.scale(0.5F, 0.5F, 1);
 		
+		bind(APPP_ICONS);
+		for (int i = 0; i < 10 && i < toughness; i++)
+			blit(mStack, 2 * (x + 8 * i) + 9, 2 * y + 8, 27, 9, 9, 9);
+		bind(VANILLA_ICONS);
+		
+		mStack.popPose();
 	}
 	
 	public void renderProtectionOverlay(MatrixStack mStack, int x, int y) {
@@ -76,7 +84,7 @@ public class HUDRenderer {
 
 		int protection = 0;
 
-		// should this be separated for each prot types? -- maxes out with godarmor
+		// should this be separated for each protection type? -- maxes out with godarmor
 		for (ItemStack stack : this.minecraft.player.getArmorSlots()) { // adds 0 for empty stacks
 			protection += EnchantmentHelper.getItemEnchantmentLevel(Enchantments.ALL_DAMAGE_PROTECTION, stack);
 			protection += EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLAST_PROTECTION     , stack);
@@ -248,13 +256,13 @@ public class HUDRenderer {
 	}
 	
 	public void debugTexture(MatrixStack mStack) {
-		bind(APPP_ICONS);
 		mStack.pushPose();
 		mStack.scale(0.8F, 0.8F, 1);
 		mStack.translate(1.25D, 6.25D, 0);
+		bind(APPP_ICONS);
 		blit(mStack, 5, 25, 0, 0, 256, 128);
-		mStack.popPose();
 		bind(VANILLA_ICONS);
+		mStack.popPose();
 	}
 	
 	public void debugText(MatrixStack mStack, int x, int y) {
@@ -288,7 +296,11 @@ public class HUDRenderer {
 	}
 	
 	private int armor(LivingEntity le) {
-		return le.getArmorValue() + (int) le.getAttributeValue(Attributes.ARMOR);
+		return le.getArmorValue();
+	}
+	
+	private int toughness(LivingEntity le) {
+		return (int) le.getAttributeValue(Attributes.ARMOR_TOUGHNESS);
 	}
 	
 	private void resetColor() {
