@@ -37,7 +37,7 @@ public class HUDRenderer {
 	
 	public void renderArmor(MatrixStack mStack, int x, int y) {
 		int armor = Math.min(armor(this.minecraft.player), 240);
-		if (armor <= 0 && !ApppConfig.getBool("showArmorWhenZero")) return;
+		if (armor <= 0 && !confB("showArmorWhenZero")) return;
 		
 		bind(APPP_ICONS);
 		for (int i = 0; i < 10; i++)
@@ -53,10 +53,11 @@ public class HUDRenderer {
 		int armor = armor(this.minecraft.player);
 		int resistance = -1;
 		
-		if (this.minecraft.player.hasEffect(Effects.DAMAGE_RESISTANCE)) resistance = this.minecraft.player.getEffect(Effects.DAMAGE_RESISTANCE).getAmplifier() + 1;
-		if (resistance <= 0 || (armor <= 0 && !ApppConfig.getBool("showArmorWhenZero"))) return;
+		if (this.minecraft.player.hasEffect(Effects.DAMAGE_RESISTANCE))
+			resistance = 1 + this.minecraft.player.getEffect(Effects.DAMAGE_RESISTANCE).getAmplifier();
+		if (resistance <= 0 || (armor <= 0 && !confB("showArmorWhenZero"))) return;
 		bind(APPP_ICONS);
-		for (int i = 0; i < 10 && i < 2 * resistance; i++, armor -= 2)
+		for (int i = 0; i < 10 && i < resistance * confF("resistance"); i++, armor -= 2)
 			if      (armor      <= 0) blit(mStack, x + 8 * i, y,  0, 0, 9, 9);
 			else if (armor % 20 == 1) blit(mStack, x + 8 * i, y,  9, 0, 9, 9);
 			else                      blit(mStack, x + 8 * i, y, 18, 0, 9, 9);
@@ -64,8 +65,8 @@ public class HUDRenderer {
 	}
 	
 	public void renderArmorToughness(MatrixStack mStack, int x, int y) {
-		if (armor(this.minecraft.player) <= 0 && !ApppConfig.getBool("showArmorWhenZero")) return;
-		int toughness = MathHelper.ceil(toughness(this.minecraft.player) / 2F);
+		if (armor(this.minecraft.player) <= 0 && !confB("showArmorWhenZero")) return;
+		int toughness = MathHelper.ceil(toughness(this.minecraft.player) * confF("toughness"));
 		if (toughness <= 0) return;
 		
 		mStack.pushPose();
@@ -80,7 +81,7 @@ public class HUDRenderer {
 	}
 	
 	public void renderProtectionOverlay(MatrixStack mStack, int x, int y) {
-		if (armor(this.minecraft.player) <= 0 && !ApppConfig.getBool("showArmorWhenZero")) return;
+		if (armor(this.minecraft.player) <= 0 && !confB("showArmorWhenZero")) return;
 
 		int protection = 0;
 
@@ -92,7 +93,7 @@ public class HUDRenderer {
 			protection += EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PROJECTILE_PROTECTION, stack);
 		}
 
-		protection = MathHelper.ceil(protection / 2F);
+		protection = MathHelper.ceil(protection * confF("protection"));
 		protection = MathHelper.clamp(protection, 0, 10);
 		if (protection <= 0) return;
 		
@@ -168,10 +169,11 @@ public class HUDRenderer {
 	public void renderAbsorption(MatrixStack mStack, int x, int y) {
 		PlayerEntity player = this.minecraft.player;
 		int absorb = MathHelper.ceil(player.getAbsorptionAmount());
-		int fullBorders = absorb / 80;
+		int fullBorders = MathHelper.floor(0.05F * absorb * confF("absorption"));
 		
-		if (absorb <= 0) return;
+		if (absorb <= 0 || confF("absorption") <= 0) return;
 		
+		int inv = MathHelper.floor(20F / confF("absorption"));
 		boolean highlight = this.healthBlinkTime > this.lastGuiTicks && (this.healthBlinkTime - this.lastGuiTicks) / 3L % 2L == 1L;
 		
 		bind(APPP_ICONS);
@@ -183,10 +185,10 @@ public class HUDRenderer {
 			int heartY = lastHeartY[i]; // borders should of course line up with hearts :)
 			
 			if (i < fullBorders) blit(mStack, heartX, heartY, highlight ? 18 : 0, 99, 9, 9);
-			else if (i == fullBorders && absorb % 80 != 0)
+			else if (i == fullBorders && absorb % inv != 0)
 				blit(mStack, heartX, heartY,
-						(highlight ? 18 : 0) + 9 * (MathHelper.ceil(absorb / 4F) % 2),
-						9 + 9 * MathHelper.ceil((absorb % 80) / 8F), 9, 9);
+						(highlight ? 18 : 0) + 9 * (MathHelper.ceil(absorb * confF("absorption")) % 2),
+						9 + 9 * MathHelper.ceil((absorb % inv) / 8F), 9, 9);
 		}
 
 		bind(VANILLA_ICONS);
@@ -195,7 +197,7 @@ public class HUDRenderer {
 	public void renderArmorText(MatrixStack mStack, int x, int y) {
 		double armor = armor(this.minecraft.player);
 		
-		if (armor <= 0 && !ApppConfig.getBool("showArmorWhenZero")) return;
+		if (armor <= 0 && !confB("showArmorWhenZero")) return;
 		
 		Suffix.Type type = ApppConfig.getSuffix();
 		int resistance = this.minecraft.player.hasEffect(Effects.DAMAGE_RESISTANCE)
@@ -211,11 +213,11 @@ public class HUDRenderer {
 		significand += (type == Suffix.Type.SCI ? "E" + power : Suffix.byPow(power).getPrefix());        // add suffix
 		
 		int color;
-		if (resistance >= 4) color = ApppConfig.getHex("resistanceFull");
-		else if (armor == 0) color = ApppConfig.getHex("armor0");
-		else if (armor < 25) color = ApppConfig.getHex("armorLT25");
-		else if (armor > 25) color = ApppConfig.getHex("armorGT25");
-		else color = ApppConfig.getHex("armorEQ25");
+		if (resistance >= 4) color = confH("resistanceFull");
+		else if (armor == 0) color = confH("armor0");
+		else if (armor < 25) color = confH("armorLT25");
+		else if (armor > 25) color = confH("armorGT25");
+		else color = confH("armorEQ25");
 		
 		text(mStack, significand, x - width(significand) - 1, y + 1, color);
 	}
@@ -233,16 +235,16 @@ public class HUDRenderer {
 		int lenfull   = width(     hp    ) + (absorb == 0 ? 1 : lenplus);
 		
 		int hpcol = this.minecraft.player.hasEffect(Effects.POISON)
-				? ApppConfig.getHex("heartPoison")
+				? confH("heartPoison")
 				: this.minecraft.player.hasEffect(Effects.WITHER)
-						? ApppConfig.getHex("heartWither")
-						: ApppConfig.getHex("heart");
+						? confH("heartWither")
+						: confH("heart");
 		
 		if(hp < maxHp) {
 			int lenmaxhp = width(maxHp) + (absorb == 0 ? 1 : lenplus);
 			int lenslash = width("/")   + lenmaxhp;
 			
-			text(mStack, "/"       , x - lenslash, y, ApppConfig.getHex("separator"));
+			text(mStack, "/"       , x - lenslash, y, confH("separator"));
 			text(mStack, "" + maxHp, x - lenmaxhp, y, hpcol);
 			
 			lenfull += width("/", maxHp);
@@ -250,8 +252,8 @@ public class HUDRenderer {
 		
 		text(mStack, "" + hp, x - lenfull, y, hpcol);
 		if(absorb > 0) {
-			text(mStack, "+"        , x - lenplus  , y, ApppConfig.getHex("separator"));
-			text(mStack, "" + absorb, x - lenabsorb, y, ApppConfig.getHex("absorption"));
+			text(mStack, "+"        , x - lenplus  , y, confH("separator"));
+			text(mStack, "" + absorb, x - lenabsorb, y, confH("absorption"));
 		}
 	}
 	
@@ -274,10 +276,10 @@ public class HUDRenderer {
 		text(mStack, "hp: "   + maxHp , 5,  5, 0xffffff);
 		text(mStack, "rows: " + hpRows, 5, 15, 0xffffff);
 
-		text(mStack, "armor = 0" , x, y - 40, ApppConfig.getHex("armor0"));
-		text(mStack, "armor < 25", x, y - 30, ApppConfig.getHex("armorLT25"));
-		text(mStack, "armor = 25", x, y - 20, ApppConfig.getHex("armorEQ25"));
-		text(mStack, "armor > 25", x, y - 10, ApppConfig.getHex("armorGT25"));
+		text(mStack, "armor = 0" , x, y - 40, confH("armor0"));
+		text(mStack, "armor < 25", x, y - 30, confH("armorLT25"));
+		text(mStack, "armor = 25", x, y - 20, confH("armorEQ25"));
+		text(mStack, "armor > 25", x, y - 10, confH("armorGT25"));
 	}
 	
 	
@@ -314,5 +316,17 @@ public class HUDRenderer {
 	
 	private void blit(MatrixStack mStack, int x, int y, float u, float v, int width, int height) {
 		AbstractGui.blit(mStack, x, y, u, v, width, height, 256, 128);
+	}
+	
+	private boolean confB(String name) {
+		return ApppConfig.getBool(name);
+	}
+	
+	private int confH(String name) {
+		return ApppConfig.getHex(name);
+	}
+	
+	private float confF(String name) {
+		return ApppConfig.getFloat(name);
 	}
 }

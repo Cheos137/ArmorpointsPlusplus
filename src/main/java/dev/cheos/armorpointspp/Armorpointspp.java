@@ -30,7 +30,6 @@ public class Armorpointspp {
 	}
 	
 	private void client(FMLClientSetupEvent event) {
-//		MinecraftForge.EVENT_BUS.register(new RenderEventListenerLegacy());
 		MinecraftForge.EVENT_BUS.register(new RenderGameOverlayHandler(event.getMinecraftSupplier().get()));
 		LOGGER.info("oh hi there... :)");
 		LOGGER.info("I heared you wanted some fancy health/armor bars?");
