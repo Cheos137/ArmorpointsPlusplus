@@ -17,6 +17,7 @@ import net.minecraftforge.fml.network.FMLNetworkConstants;
 
 @Mod(Armorpointspp.MODID)
 public class Armorpointspp {
+	private static boolean attributefix;
 	public static final String MODID = "armorpointspp";
 	private static final Logger LOGGER = LogManager.getLogger("Armorpoints++");
 	
@@ -26,14 +27,20 @@ public class Armorpointspp {
 				() -> Pair.of(
 						() -> FMLNetworkConstants.IGNORESERVERONLY,
 						(a, b) -> true));
+		attributefix = ModList.get().isLoaded("attributefix");
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::client);
 		ApppConfig.init();
+		checkCompat();
 	}
 	
 	private void client(FMLClientSetupEvent event) {
 		MinecraftForge.EVENT_BUS.register(new RenderGameOverlayHandler(event.getMinecraftSupplier().get()));
 		LOGGER.info("oh hi there... :)");
 		LOGGER.info("I heared you wanted some fancy health/armor bars?");
+	}
+	
+	public static boolean isAttributeFixLoaded() {
+		return attributefix;
 	}
 	
 	private void checkCompat() {
