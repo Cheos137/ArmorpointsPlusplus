@@ -40,7 +40,7 @@ public class HUDRenderer {
 		int armor = Math.min(armor(this.minecraft.player), 240);
 		if (armor <= 0 && !confB("showArmorWhenZero")) return;
 		
-		if (armor == 137 || (Armorpointspp.isAttributeFixLoaded() && armor == 30)) {
+		if (armor == 137 || (!Armorpointspp.isAttributeFixLoaded() && armor == 30)) {
 			renderRainbowArmor(mStack, x, y);
 			return;
 		}
@@ -237,7 +237,7 @@ public class HUDRenderer {
 		significand += (type == Suffix.Type.SCI ? "E" + power : Suffix.byPow(power).getPrefix());        // add suffix
 		
 		int color;
-		if (armor == 137 || (Armorpointspp.isAttributeFixLoaded() && armor == 30))
+		if (armor == 137 || (!Armorpointspp.isAttributeFixLoaded() && armor == 30))
 			color = Color.HSBtoRGB((((Util.getMillis() + 80) / 40) % 360) / 360F, 1, 1);
 		else if (resistance >= 4) color = confH("resistanceFull");
 		else if (armor == 0) color = confH("armor0");
