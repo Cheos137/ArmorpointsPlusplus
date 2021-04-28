@@ -51,9 +51,7 @@ public abstract class ApppConfigValue<T, U> {
 	
 	
 	public static class FloatValue extends ApppConfigValue<Double, Float> {
-//		private static final DecimalFormat dFormat = new DecimalFormat("0.####");
 		private final float min, max;
-		private float last;
 
 		public FloatValue(String name, float def, String... comments) { this(name, def, Float.MAX_VALUE, comments); }
 		public FloatValue(String name, float def, float max, String... comments) { this(name, def, 0, max, comments); }

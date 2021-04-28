@@ -1,5 +1,6 @@
 package dev.cheos.armorpointspp.render;
 
+import java.awt.Color;
 import java.util.Random;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -39,6 +40,11 @@ public class HUDRenderer {
 		int armor = Math.min(armor(this.minecraft.player), 240);
 		if (armor <= 0 && !confB("showArmorWhenZero")) return;
 		
+		if (armor == 137) {
+			renderRainbowArmor(mStack, x, y);
+			return;
+		}
+		
 		bind(APPP_ICONS);
 		for (int i = 0; i < 10; i++)
 			blit(mStack, x + 8 * i, y,
@@ -47,6 +53,24 @@ public class HUDRenderer {
 					? 36 : (armor % 20) - 2 * i >= 2
 					? 45 : 27), 0, 9, 9);
 		bind(VANILLA_ICONS);
+	}
+	
+	// fun rainbow armor bar only visible on 137 armor -- why? because 137 is my favourite number ^^
+	private void renderRainbowArmor(MatrixStack mStack, int x, int y) {
+		mStack.pushPose();
+		
+		long millis = Util.getMillis() / 40;
+		int color = 0;
+		
+		bind(APPP_ICONS);
+		for (int i = 0; i < 10; i++) {
+			millis += 5;
+			color = Color.HSBtoRGB((millis % 360) / 360F, 1, 1);
+			RenderSystem.color4f(((color >> 16) & 0xFF) / 255F, ((color >> 8) & 0xFF) / 255F, (color & 0xFF) / 255F, 1);
+			blit(mStack, x + 8 * i, y, 45, 0, 9, 9);
+		}
+		bind(VANILLA_ICONS);
+		mStack.popPose();
 	}
 	
 	public void renderResistance(MatrixStack mStack, int x, int y) {
@@ -195,7 +219,7 @@ public class HUDRenderer {
 	}
 	
 	public void renderArmorText(MatrixStack mStack, int x, int y) {
-		double armor = armor(this.minecraft.player);
+		int armor = armor(this.minecraft.player);
 		
 		if (armor <= 0 && !confB("showArmorWhenZero")) return;
 		
@@ -213,7 +237,8 @@ public class HUDRenderer {
 		significand += (type == Suffix.Type.SCI ? "E" + power : Suffix.byPow(power).getPrefix());        // add suffix
 		
 		int color;
-		if (resistance >= 4) color = confH("resistanceFull");
+		if (armor == 137) color = Color.HSBtoRGB((((Util.getMillis() + 80) / 40) % 360) / 360F, 1, 1);
+		else if (resistance >= 4) color = confH("resistanceFull");
 		else if (armor == 0) color = confH("armor0");
 		else if (armor < 25) color = confH("armorLT25");
 		else if (armor > 25) color = confH("armorGT25");
