@@ -15,7 +15,7 @@ As you might have known, 1.17 will add frost hearts; of course I will add suppor
 
 The CurseForge description will update with the release of `release candidate` versions.
 
-## What has changes? (BETA 3)
+## What has changed? (BETA 3)
 
 Add config options for changing how many icons should be used to show a value of 1 for absorption, armor toughness and resistance.
 Config additions:
