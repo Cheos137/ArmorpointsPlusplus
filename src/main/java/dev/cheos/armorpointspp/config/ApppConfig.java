@@ -18,7 +18,7 @@ public class ApppConfig {
 	private static final Map<String, BoolValue>  boolConfigs  = new HashMap<>();
 	private static final Map<String, HexValue>   hexConfigs   = new HashMap<>();
 	private static final Map<String, FloatValue> floatConfigs = new HashMap<>();
-	private static final SuffixTypeValue suffixConfig = new SuffixTypeValue("suffix", Suffix.Type.SI, "Available: SI, SCI, GER, ENG [default: %s]");
+	private static final SuffixTypeValue suffixConfig = new SuffixTypeValue("suffix", Suffix.Type.SI, " Suffix type used for displaying armor values", " Available: SI, SCI, GER, ENG [default: %s]");
 	
 	public static void init() {
 		if (boolConfigs.isEmpty()) define();
@@ -46,8 +46,8 @@ public class ApppConfig {
 		boolConfigs  .put("debug"            , new BoolValue ("debug"            , false   ,      " You don't want this to be on. Believe me"      , " Available: true, false [default: %s]"));
 		boolConfigs  .put("enableArmorBar"   , new BoolValue ("enableArmorBar"   , true    ,      " Enable custom armor bar"                       , " Available: true, false [default: %s]"));
 		boolConfigs  .put("enableHealthBar"  , new BoolValue ("enableHealthBar"  , true    ,      " Enable custom health bar"                      , " Available: true, false [default: %s]"));
-		boolConfigs  .put("showArmorValue"   , new BoolValue ("showArmorValue"   , true    ,      " Show armor value next to bar"                  , " Available: true, false [default: %s]"));
-		boolConfigs  .put("showHealthValue"  , new BoolValue ("showHealthValue"  , true    ,      " Show health value next to bar"                 , " Available: true, false [default: %s]"));
+		boolConfigs  .put("showArmorValue"   , new BoolValue ("showArmorValue"   , true    ,      " Show armor value text next to bar"             , " Available: true, false [default: %s]"));
+		boolConfigs  .put("showHealthValue"  , new BoolValue ("showHealthValue"  , true    ,      " Show health value text next to bar"            , " Available: true, false [default: %s]"));
 		boolConfigs  .put("showArmorWhenZero", new BoolValue ("showArmorWhenZero", false   ,      " Show armor bar when armor is zero"             , " Available: true, false [default: %s]"));
 		boolConfigs  .put("showResistance"   , new BoolValue ("showResistance"   , true    ,      " Show resistance as border around armor"        , " Available: true, false [default: %s]"));
 		boolConfigs  .put("showToughness"    , new BoolValue ("showToughness"    , true    ,      " Show toughness as overlay over armor"          , " Available: true, false [default: %s]"));
