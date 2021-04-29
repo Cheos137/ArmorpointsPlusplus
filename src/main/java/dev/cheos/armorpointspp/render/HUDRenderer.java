@@ -234,7 +234,7 @@ public class HUDRenderer {
 		
 		String significand = String.valueOf(MathHelper.floor(armor / Math.pow(10, power) * 10F) / 10F);  // one decimal precision
 		if(significand.endsWith(".0")) significand = significand.substring(0, significand.length() - 2); // strip .0
-		significand += (type == Suffix.Type.SCI ? "E" + power : Suffix.byPow(power).getPrefix());        // add suffix
+		significand += (type == Suffix.Type.SCI ? "E" + power : Suffix.byPow(power).getSuffix());        // add suffix
 		
 		int color;
 		if (armor == 137 || (!Armorpointspp.isAttributeFixLoaded() && armor == 30))
