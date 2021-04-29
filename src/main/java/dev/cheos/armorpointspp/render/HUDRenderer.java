@@ -328,7 +328,7 @@ public class HUDRenderer {
 	}
 	
 	private int toughness(LivingEntity le) {
-		return (int) le.getAttributeValue(Attributes.ARMOR_TOUGHNESS);
+		return MathHelper.floor(le.getAttributeValue(Attributes.ARMOR_TOUGHNESS));
 	}
 	
 	private void resetColor() {
