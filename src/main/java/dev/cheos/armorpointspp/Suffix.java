@@ -25,7 +25,7 @@ public enum Suffix {
 		this.eng = eng;
 	}
 	
-	public String getPrefix() {
+	public String getSuffix() {
 		switch(ApppConfig.getSuffix()) {
 			case SI:
 				return si ;

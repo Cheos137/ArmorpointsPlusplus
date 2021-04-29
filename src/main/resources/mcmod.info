@@ -1,0 +1,16 @@
+[
+{
+  "modid": "armorpointspp",
+  "name": "ArmorPoints++",
+  "description": "Umm... please check out the curseforge page :)\nhttps://www.curseforge.com/minecraft/mc-mods/armorpoints",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Cheos"],
+  "credits": "Cheos",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

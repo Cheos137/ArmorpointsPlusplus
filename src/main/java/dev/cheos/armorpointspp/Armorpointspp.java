@@ -1,40 +1,39 @@
 package dev.cheos.armorpointspp;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dev.cheos.armorpointspp.config.ApppConfig;
 import dev.cheos.armorpointspp.render.RenderGameOverlayHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.ExtensionPoint;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.network.FMLNetworkConstants;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(Armorpointspp.MODID)
+@Mod(modid = Armorpointspp.MODID,
+	 name = "Armorpoints++",
+	 version = "v2.0.0-rc1",
+	 clientSideOnly = true,
+	 acceptableRemoteVersions = "*",
+	 acceptedMinecraftVersions = "[1.12,1.12.2]")
 public class Armorpointspp {
 	private static boolean attributefix;
 	public static final String MODID = "armorpointspp";
 	private static final Logger LOGGER = LogManager.getLogger("Armorpoints++");
 	
-	public Armorpointspp() {
-		ModLoadingContext.get().registerExtensionPoint(
-				ExtensionPoint.DISPLAYTEST,
-				() -> Pair.of(
-						() -> FMLNetworkConstants.IGNORESERVERONLY,
-						(a, b) -> true));
-		attributefix = ModList.get().isLoaded("attributefix");
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::client);
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent event) {
+		attributefix = Loader.isModLoaded("attributefix");
 		ApppConfig.init();
 		checkCompat();
 	}
 	
-	private void client(FMLClientSetupEvent event) {
-		MinecraftForge.EVENT_BUS.register(new RenderGameOverlayHandler(event.getMinecraftSupplier().get()));
+	@EventHandler
+	private void init(FMLInitializationEvent event) {
+		MinecraftForge.EVENT_BUS.register(new RenderGameOverlayHandler(Minecraft.getMinecraft()));
 		LOGGER.info("oh hi there... :)");
 		LOGGER.info("I heared you wanted some fancy health/armor bars?");
 	}
@@ -44,13 +43,13 @@ public class Armorpointspp {
 	}
 	
 	private void checkCompat() {
-		if (ModList.get().isLoaded("colorfulhealthbar")) {
+		if (Loader.isModLoaded("colorfulhealthbar")) {
 			LOGGER.warn("-=================================================================-");
 			LOGGER.warn("NOTICE: ColorfulHealthBar is installed!");
 			logIncompatible();
 		}
 		
-		if (ModList.get().isLoaded("overloadedarmorbar")) {
+		if (Loader.isModLoaded("overloadedarmorbar")) {
 			LOGGER.warn("-=================================================================-");
 			LOGGER.warn("NOTICE: OverloadedArmorBar is installed!");
 			logIncompatible();
