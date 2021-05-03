@@ -21,13 +21,13 @@ public class RenderGameOverlayHandler {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
 	public void renderGameOverlayFirst(RenderGameOverlayEvent.Pre event) {
-		if (event.getType() == ElementType.ALL)
+		if (event.type == ElementType.ALL)
 			renderArmor = renderHealth = false; // this will happen ALWAYS, FIRST (before anything else can possibly happen)
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void renderGameOverlayPre(RenderGameOverlayEvent.Pre event) {
-		switch (event.getType()) {
+		switch (event.type) {
 			case ARMOR:
 				this.lastArmorHeight = baseY(event);
 				this.renderArmor = true;
@@ -58,7 +58,7 @@ public class RenderGameOverlayHandler {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void renderGameOverlayPost(RenderGameOverlayEvent.Post event) {
-		switch (event.getType()) {
+		switch (event.type) {
 			case ARMOR:
 				if (conf("enableArmorBar"))
 					enable();
@@ -77,7 +77,7 @@ public class RenderGameOverlayHandler {
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void renderGameOverlayLast(RenderGameOverlayEvent.Post event) { // top overlays will get rendered LAST to maximize compatibility
-		switch (event.getType()) {
+		switch (event.type) {
 			case ARMOR:
 				if (conf("showResistance"))
 					hudRenderer.renderResistance(baseX(event), lastArmorHeight);
@@ -106,15 +106,15 @@ public class RenderGameOverlayHandler {
 	}
 
 	private int baseX(RenderGameOverlayEvent event) {
-		return event.getResolution().getScaledWidth() / 2 - 91;
+		return event.resolution.getScaledWidth() / 2 - 91;
 	}
 
 	private int baseY(RenderGameOverlayEvent event) {
-		return event.getResolution().getScaledHeight() - GuiIngameForge.left_height;
+		return event.resolution.getScaledHeight() - GuiIngameForge.left_height;
 	}
 
 	private int forgeLeftHeight(RenderGameOverlayEvent event, int height) {
-		return event.getResolution().getScaledHeight() - height;
+		return event.resolution.getScaledHeight() - height;
 	}
 
 	private void enable() {

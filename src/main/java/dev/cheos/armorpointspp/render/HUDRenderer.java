@@ -9,15 +9,14 @@ import dev.cheos.armorpointspp.config.ApppConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Enchantments;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 
 public class HUDRenderer {
 	private static final ResourceLocation VANILLA_ICONS = new ResourceLocation(                     "textures/gui/icons.png");
@@ -33,7 +32,7 @@ public class HUDRenderer {
 	}
 	
 	public void renderArmor(int x, int y) {
-		int armor = Math.min(armor(this.minecraft.player), 240);
+		int armor = Math.min(armor(this.minecraft.thePlayer), 240);
 		if (armor <= 0 && !confB("showArmorWhenZero")) return;
 		
 		if (armor == 137 || (!Armorpointspp.isAttributeFixLoaded() && armor == 30)) {
@@ -70,11 +69,11 @@ public class HUDRenderer {
 	}
 	
 	public void renderResistance(int x, int y) {
-		int armor = armor(this.minecraft.player);
+		int armor = armor(this.minecraft.thePlayer);
 		int resistance = -1;
 		
-		if (this.minecraft.player.isPotionActive(MobEffects.RESISTANCE))
-			resistance = 1 + this.minecraft.player.getActivePotionEffect(MobEffects.RESISTANCE).getAmplifier();
+		if (this.minecraft.thePlayer.isPotionActive(Potion.resistance))
+			resistance = 1 + this.minecraft.thePlayer.getActivePotionEffect(Potion.resistance).getAmplifier();
 		if (resistance <= 0 || (armor <= 0 && !confB("showArmorWhenZero"))) return;
 		bind(APPP_ICONS);
 		for (int i = 0; i < 10 && i < resistance * confF("resistance"); i++, armor -= 2)
@@ -85,8 +84,8 @@ public class HUDRenderer {
 	}
 	
 	public void renderArmorToughness(int x, int y) {
-		if (armor(this.minecraft.player) <= 0 && !confB("showArmorWhenZero")) return;
-		int toughness = MathHelper.ceil(toughness(this.minecraft.player) * confF("toughness"));
+		if (armor(this.minecraft.thePlayer) <= 0 && !confB("showArmorWhenZero")) return;
+		int toughness = MathHelper.ceiling_float_int(toughness(this.minecraft.thePlayer) * confF("toughness"));
 		if (toughness <= 0) return;
 		
 		GlStateManager.pushMatrix();
@@ -100,20 +99,21 @@ public class HUDRenderer {
 	}
 	
 	public void renderProtectionOverlay(int x, int y) {
-		if (armor(this.minecraft.player) <= 0 && !confB("showArmorWhenZero")) return;
+		if (armor(this.minecraft.thePlayer) <= 0 && !confB("showArmorWhenZero")) return;
 		
 		int protection = 0;
 		
 		// should this be separated for each protection type? -- maxes out with godarmor
-		for (ItemStack stack : this.minecraft.player.getArmorInventoryList()) { // adds 0 for empty stacks
-			protection += EnchantmentHelper.getEnchantmentLevel(Enchantments.PROTECTION           , stack);
-			protection += EnchantmentHelper.getEnchantmentLevel(Enchantments.BLAST_PROTECTION     , stack);
-			protection += EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_PROTECTION      , stack);
-			protection += EnchantmentHelper.getEnchantmentLevel(Enchantments.PROJECTILE_PROTECTION, stack);
+		for (int i = 0; i < 4; i++) { // adds 0 for empty stacks
+			ItemStack stack = this.minecraft.thePlayer.getEquipmentInSlot(i);
+			protection += EnchantmentHelper.getEnchantmentLevel(Enchantment.protection.effectId          , stack);
+			protection += EnchantmentHelper.getEnchantmentLevel(Enchantment.blastProtection.effectId     , stack);
+			protection += EnchantmentHelper.getEnchantmentLevel(Enchantment.fireProtection.effectId      , stack);
+			protection += EnchantmentHelper.getEnchantmentLevel(Enchantment.projectileProtection.effectId, stack);
 		}
 		
-		protection = MathHelper.ceil(protection * confF("protection"));
-		protection = MathHelper.clamp(protection, 0, 10);
+		protection = MathHelper.ceiling_float_int(protection * confF("protection"));
+		protection = MathHelper.clamp_int(protection, 0, 10);
 		if (protection <= 0) return;
 		
 		GlStateManager.enableBlend();
@@ -125,21 +125,21 @@ public class HUDRenderer {
 	}
 	
 	public void renderHealth(int x, int y) {
-		EntityPlayer player = this.minecraft.player;
-		int health      = MathHelper.ceil(player.getHealth());
+		EntityPlayer player = this.minecraft.thePlayer;
+		int health      = MathHelper.ceiling_float_int(player.getHealth());
 		int heartStack  = Math.min((health - 1) / 20, 10);
 		
 		this.lastGuiTicks = this.minecraft.ingameGUI.getUpdateCounter();
 		
 		boolean highlight = this.healthBlinkTime > this.lastGuiTicks && (this.healthBlinkTime - this.lastGuiTicks) / 3L % 2L == 1L;
-		int regen = this.minecraft.player.isPotionActive(MobEffects.REGENERATION)
+		int regen = this.minecraft.thePlayer.isPotionActive(Potion.regeneration)
 				? this.lastGuiTicks % 25 // in vanilla: % (maxHealth + 5), here: more than 20 + 5 does not make sense
 						: -1;
 		int margin = 36;
 		
-		if (player.world.getWorldInfo().isHardcoreModeEnabled()) margin += 108;
-		if (player.isPotionActive(MobEffects.POISON)) margin += 36;
-		else if (player.isPotionActive(MobEffects.WITHER)) margin += 72;
+		if (player.worldObj.getWorldInfo().isHardcoreModeEnabled()) margin += 108;
+		if (player.isPotionActive(Potion.poison)) margin += 36;
+		else if (player.isPotionActive(Potion.wither)) margin += 72;
 		
 		if (health < this.lastHealth && player.hurtResistantTime > 0) {
 			this.lastHealthTime = Minecraft.getSystemTime();
@@ -186,13 +186,13 @@ public class HUDRenderer {
 	}
 	
 	public void renderAbsorption(int x, int y) {
-		EntityPlayer player = this.minecraft.player;
-		int absorb = MathHelper.ceil(player.getAbsorptionAmount());
-		int fullBorders = MathHelper.floor(0.05F * absorb * confF("absorption"));
+		EntityPlayer player = this.minecraft.thePlayer;
+		int absorb = MathHelper.ceiling_float_int(player.getAbsorptionAmount());
+		int fullBorders = MathHelper.floor_float(0.05F * absorb * confF("absorption"));
 		
 		if (absorb <= 0 || confF("absorption") <= 0) return;
 		
-		int inv = MathHelper.floor(20F / confF("absorption"));
+		int inv = MathHelper.floor_float(20F / confF("absorption"));
 		boolean highlight = this.healthBlinkTime > this.lastGuiTicks && (this.healthBlinkTime - this.lastGuiTicks) / 3L % 2L == 1L;
 		
 		bind(APPP_ICONS);
@@ -206,28 +206,28 @@ public class HUDRenderer {
 			if (i < fullBorders) blit(heartX, heartY, highlight ? 18 : 0, 99, 9, 9);
 			else if (i == fullBorders && absorb % inv != 0)
 				blit(heartX, heartY,
-					(highlight ? 18 : 0) + 9 * (MathHelper.ceil(absorb * confF("absorption")) % 2),
-					9 + 9 * MathHelper.ceil((absorb % inv) / 8F), 9, 9);
+					(highlight ? 18 : 0) + 9 * (MathHelper.ceiling_float_int(absorb * confF("absorption")) % 2),
+					9 + 9 * MathHelper.ceiling_float_int((absorb % inv) / 8F), 9, 9);
 		}
 		
 		bind(VANILLA_ICONS);
 	}
 	
 	public void renderArmorText(int x, int y) {
-		int armor = armor(this.minecraft.player);
+		int armor = armor(this.minecraft.thePlayer);
 		
 		if (armor <= 0 && !confB("showArmorWhenZero")) return;
 		
 		Suffix.Type type = ApppConfig.getSuffix();
-		int resistance = this.minecraft.player.isPotionActive(MobEffects.RESISTANCE)
-				? this.minecraft.player.getActivePotionEffect(MobEffects.RESISTANCE).getAmplifier()
+		int resistance = this.minecraft.thePlayer.isPotionActive(Potion.resistance)
+				? this.minecraft.thePlayer.getActivePotionEffect(Potion.resistance).getAmplifier()
 						: 0;
 		
 		int power = armor == 0 ? 0 : (int) Math.log10(armor);
 		if (type != Suffix.Type.SCI && power < 27) power = power / 3 * 3; // 100 YOTTA is max. if higher switch to SCI notation
 		else type = Suffix.Type.SCI;
 		
-		String significand = String.valueOf(MathHelper.floor(armor / Math.pow(10, power) * 10F) / 10F);  // one decimal precision
+		String significand = String.valueOf(MathHelper.floor_double(armor / Math.pow(10, power) * 10F) / 10F);  // one decimal precision
 		if(significand.endsWith(".0")) significand = significand.substring(0, significand.length() - 2); // strip .0
 		significand += (type == Suffix.Type.SCI ? "E" + power : Suffix.byPow(power).getSuffix());        // add suffix
 		
@@ -244,9 +244,9 @@ public class HUDRenderer {
 	}
 	
 	public void renderHealthText(int x, int y) {
-		int maxHp  = MathHelper.ceil(this.minecraft.player.getMaxHealth());
-		int absorb = MathHelper.ceil(this.minecraft.player.getAbsorptionAmount());
-		int hp     = MathHelper.ceil(this.minecraft.player.getHealth());
+		int maxHp  = MathHelper.ceiling_float_int(this.minecraft.thePlayer.getMaxHealth());
+		int absorb = MathHelper.ceiling_float_int(this.minecraft.thePlayer.getAbsorptionAmount());
+		int hp     = MathHelper.ceiling_float_int(this.minecraft.thePlayer.getHealth());
 		
 		if(hp > maxHp) hp = maxHp;
 		y++;
@@ -255,9 +255,9 @@ public class HUDRenderer {
 		int lenplus   = width("+", absorb) + 1;
 		int lenfull   = width(     hp    ) + (absorb == 0 ? 1 : lenplus);
 		
-		int hpcol = this.minecraft.player.isPotionActive(MobEffects.POISON)
+		int hpcol = this.minecraft.thePlayer.isPotionActive(Potion.poison)
 				? confH("heartPoison")
-					: this.minecraft.player.isPotionActive(MobEffects.WITHER)
+					: this.minecraft.thePlayer.isPotionActive(Potion.wither)
 					? confH("heartWither")
 						: confH("heart");
 		
@@ -289,9 +289,9 @@ public class HUDRenderer {
 	}
 	
 	public void debugText(int x, int y) {
-		float maxHp  = this.minecraft.player.getMaxHealth();
-		float absorb = this.minecraft.player.getAbsorptionAmount();
-		int hpRows = MathHelper.ceil((maxHp + absorb) / 20F);
+		float maxHp  = this.minecraft.thePlayer.getMaxHealth();
+		float absorb = this.minecraft.thePlayer.getAbsorptionAmount();
+		int hpRows = MathHelper.ceiling_float_int((maxHp + absorb) / 20F);
 		
 		text("armor should be here (vanilla)", x, y, 0xff0000);
 		text("hp: "   + maxHp , 5,  5, 0xffffff);
@@ -310,12 +310,12 @@ public class HUDRenderer {
 	
 	private int width(Object... objs) {
 		if (objs == null) return 0;
-		if (objs.length == 1) return this.minecraft.fontRenderer.getStringWidth(String.valueOf(objs[0]));
+		if (objs.length == 1) return this.minecraft.fontRendererObj.getStringWidth(String.valueOf(objs[0]));
 		
 		String s = "";
 		for (Object obj : objs)
 			s += String.valueOf(obj);
-		return this.minecraft.fontRenderer.getStringWidth(s);
+		return this.minecraft.fontRendererObj.getStringWidth(s);
 	}
 	
 	private int armor(EntityLivingBase le) {
@@ -323,7 +323,8 @@ public class HUDRenderer {
 	}
 	
 	private int toughness(EntityLivingBase le) {
-		return MathHelper.floor(le.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
+		return 0;
+//		return MathHelper.floor(le.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
 	}
 	
 	private void resetColor() {
@@ -331,7 +332,7 @@ public class HUDRenderer {
 	}
 	
 	private void text(String text, int x, int y, int color) {
-		this.minecraft.fontRenderer.drawString(text, x, y, color);
+		this.minecraft.fontRendererObj.drawString(text, x, y, color);
 		resetColor();
 	}
 	

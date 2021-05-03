@@ -18,16 +18,16 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 	 version = "v2.0.0-rc1",
 	 clientSideOnly = true,
 	 acceptableRemoteVersions = "*",
-	 acceptedMinecraftVersions = "[1.12,1.12.2]")
+	 acceptedMinecraftVersions = "1.8")
 public class Armorpointspp {
-	private static boolean attributefix;
+//	private static boolean attributefix;
 	public static final String MODID = "armorpointspp";
 	private static final Logger LOGGER = LogManager.getLogger("Armorpoints++");
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		attributefix = Loader.isModLoaded("attributefix");
-		ApppConfig.init();
+//		attributefix = Loader.isModLoaded("attributefix");
+		ApppConfig.init(event.getSuggestedConfigurationFile());
 		checkCompat();
 	}
 	
@@ -39,7 +39,7 @@ public class Armorpointspp {
 	}
 	
 	public static boolean isAttributeFixLoaded() {
-		return attributefix;
+		return true; // it's 1.8 - just pretend it's loaded and everything is good :)
 	}
 	
 	private void checkCompat() {
