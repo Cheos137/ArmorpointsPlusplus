@@ -1,0 +1,100 @@
+[github]: https://github.com/Cheos137/ArmorpointsPlusplus/issues
+[curseforge]: https://www.curseforge.com/minecraft/mc-mods/armorpoints
+
+## v2.0.0 RC 1
+
+To be honest... when viewed from the code side, v1 was pretty crap.<br>
+No compatibility whatsoever, a couple of bugs which I only noticed by making v2 and a system in the background that was not scalable whatsoever.
+
+But now... v2 is in rc phase. This means features are final-ish and if no relevant bugs occur, the same versions will pass as release versions.
+
+**If you have ANY ideas on features / fixes / etc, LET ME KNOW!**
+
+As you might have known, 1.17 will add frost hearts; of course I will add support for them in the 1.17 version of this mod.
+
+## What has changed? (RC 1)
+
+No real new features. A lot of small fixes.
+
+FORGE 1.16.x RC 1  -> OK<br>
+FORGE 1.12.x RC 1  -> OK<br>
+FORGE 1.8 RC 1     -> FORGE SRC CURRENTLY NOT AVAILABLE FOR THIS VERSION<br>
+FABRIC 1.16.x BETA -> SOON™
+
+## What has changed? (BETA 3)
+
+Add config options for changing how many icons should be used to show a value of 1 for absorption, armor toughness and resistance.
+Config additions:
+```toml
+[representative]
+    # 0 - 200
+    absorption = 0.25
+    # 0 - 10
+    protection = 0.5
+    # 0 - 10
+    toughness = 0.5
+    # 0 - 10
+    resistance = 2.0
+```
+
+Added warning messages, when installed with `overloadedarmorbar` or `colorfulhealthbar`.
+Due to the way, both of the mentioned mods are made, they are ought to cause incompatibility issues with Armorpoints++.
+This is THEIR fault, not mine.
+
+Implemented an easteregg/secret. Good luck finding it!
+
+## What has changed? (BETA 2)
+
+The Protection Enchantment level is now visible in the armor bar. (Toggleable in the config using the `showProtection` value).
+Each two levels of protection (no matter the type) will be represented in one icon (rounded up).
+
+Also, Armor Toughness will now get shown in the armor bar. (Toggleable in the config using the `showToughness` value).
+Much like the protection icons, each icon will represent a value of 2. (again, rounded up)
+This does not scale like health or armor right now, but that would be a feature I would add if it were requested from me.
+
+BUGFIX: The armor and health texts are no longer shown when the armor / health bar is not able to render (either through cancelled events or other reasons like creative mode).
+
+## What has changed? (BETA 1)
+
+Well... it doesn't seem like much from the outside...<br>
+The biggest difference may be that the two textures used in v1 are now in one combined file.<br>
+Also, highlighted absorption borders are now everso slightly brighter (which feels a LOT better than before)<br>
+You may also notice that resistance borders now work with the vanilla armor bar and that other mods (like mekanism) do no longer render over each other.
+
+If you take a look at the config, you can see that some of the values have changed name.<br>
+A new possible value has been added to `suffix`. `SI`, which is the new default takes the place of `SCI`,<br>
+while `SCI`'s functionality has been altered to always show the armor value in scientific notation.<br>
+`showAbsorption` is an entirely new config option which allows you to turn off absorption borders individually from health stacking.<br>
+There is one thing to note: `showAbsorption` will only work if health stacking is enabled - it will NOT work with the vanilla health bar.
+
+<span style="color:orange;">This update **WILL BREAK** your config files! (your old config files will simply not work)</span>
+
+What you probably won't see is that on the inside basically everything has changed.<br>
+It's a much more clean approach than in v1 (as i said, v1 was pretty awful).
+
+## Which versions (ports) will receive a v2 beta?
+
+Beta will only exist for FORGE 1.16.5 for now, but there will probably a beta for FABRIC 1.16.5 as well, anytime soon (maybe 1-2 weeks from now).
+
+Other versions that are eligible for a port (i.e. 1.8 and 1.12.2) will NOT receive any beta versions;<br>
+But there will be release candidate versions for them (as well as for 1.16.5).<br>
+The release candidate versions will hit live all at the same time (after FORGE 1.16.5 is out of beta).
+
+## Beta testing
+
+There are probably many bugs.<br>
+But you see... I will never be able to find all of them.<br>
+So, if you have some time to spare, I would really appreciate it if you tried to sniff out some of them.
+
+Found one? Report it [here][github] using the `Bug report` template.
+
+Do you have any ideas for improvement or new features?<br>
+Create an issue using the `Feature request` template [here][github].
+
+Any questions? You can reach me in the comment section on [CurseForge][curseforge] or [GitHub][github] by using the `General question / etc` template.
+
+Discord? Not right now, but I will set one up if there is demand.
+
+
+<hr>
+2021, Cheos
