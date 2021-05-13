@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 version = '1.8-2.0.0-rc1'
-group = 'dev.cheos.armorpointspp'
+group = 'dev.cheos'
 archivesBaseName = 'armorpointspp'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
