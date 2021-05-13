@@ -13,7 +13,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 version = '1.16.5-2.0.0-rc1'
-group = 'dev.cheos.armorpointspp'
+group = 'dev.cheos'
 archivesBaseName = 'armorpointspp'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
