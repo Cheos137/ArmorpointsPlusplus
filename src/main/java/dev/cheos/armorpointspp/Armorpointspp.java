@@ -43,23 +43,21 @@ public class Armorpointspp {
 	}
 	
 	private void checkCompat() {
-		if (Loader.isModLoaded("colorfulhealthbar")) {
-			LOGGER.warn("-=================================================================-");
-			LOGGER.warn("NOTICE: ColorfulHealthBar is installed!");
-			logIncompatible();
-		}
-		
-		if (Loader.isModLoaded("overloadedarmorbar")) {
-			LOGGER.warn("-=================================================================-");
-			LOGGER.warn("NOTICE: OverloadedArmorBar is installed!");
-			logIncompatible();
-		}
+		checkIncompatible("colorfulhealthbar", "ColorfulHealthBar");
+		checkIncompatible("overloadedarmorbar", "OverloadedArmorBar");
+		checkIncompatible("mantle", "Mantle");
 	}
 	
-	private void logIncompatible() {
+	private void checkIncompatible(String modId, String name) {
+		if (Loader.isModLoaded(modId)) logIncompatible(name);
+	}
+	
+	private void logIncompatible(String mod) {
+		LOGGER.warn("-=================================================================-");
+		LOGGER.warn("NOTICE: " + mod + " is installed!");
 		LOGGER.warn("");
 		LOGGER.warn("NOTICE: Due to the way THAT mod is made,");
-		LOGGER.warn("NOTICE: it can cause major incompatibilities");
+		LOGGER.warn("NOTICE: it CAN cause major incompatibilities");
 		LOGGER.warn("NOTICE: with Armorpoints++, even if some of");
 		LOGGER.warn("NOTICE: THIS mod's features are disabled via config.");
 		LOGGER.warn("");
@@ -67,6 +65,14 @@ public class Armorpointspp {
 		LOGGER.warn("");
 		LOGGER.warn("NOTICE: Thus you will get NO SUPPORT if you are using this mod");
 		LOGGER.warn("NOTICE: in combination with the mod named above!");
+		LOGGER.warn("");
+		LOGGER.warn("NOTICE: This warning can be safely ignored if you can say for sure");
+		LOGGER.warn("NOTICE: that conflicting features of the mod named above");
+		LOGGER.warn("NOTICE: are fully disabled or the mod named above is not installed.");
+		LOGGER.warn("");
+		LOGGER.warn("NOTICE: You can mostly solve this issue by simply removing " + mod + ".");
+		LOGGER.warn("NOTICE: If that is not an option for you, please double-check your");
+		LOGGER.warn("NOTICE: configuration files to make sure everything works.");
 		LOGGER.warn("-=================================================================-");
 	}
 }
