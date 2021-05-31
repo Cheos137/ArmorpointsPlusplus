@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.16.5-2.0.0-rc1'
+version = '1.16.5-2.0.0'
 group = 'dev.cheos'
 archivesBaseName = 'armorpointspp'
 
@@ -32,7 +32,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                examplemod {
+                armorpointspp {
                     source sourceSets.main
                 }
             }
@@ -44,7 +44,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                examplemod {
+                armorpointspp {
                     source sourceSets.main
                 }
             }
@@ -57,7 +57,7 @@ minecraft {
             args '--mod', 'armorpointspp', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                examplemod {
+                armorpointspp {
                     source sourceSets.main
                 }
             }
@@ -68,7 +68,7 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.1.13'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.1.24'
 }
 
 jar {
