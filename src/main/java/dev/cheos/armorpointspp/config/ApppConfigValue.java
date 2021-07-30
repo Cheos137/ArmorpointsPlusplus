@@ -1,7 +1,7 @@
 package dev.cheos.armorpointspp.config;
 
 import dev.cheos.armorpointspp.Suffix;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 
@@ -56,7 +56,7 @@ public abstract class ApppConfigValue<T, U> {
 		public FloatValue(String name, float def, String... comments) { this(name, def, Float.MAX_VALUE, comments); }
 		public FloatValue(String name, float def, float max, String... comments) { this(name, def, 0, max, comments); }
 		public FloatValue(String name, float def, float min, float max, String... comments) {
-			super(name, (double) MathHelper.clamp(def, min, max), new String[comments.length]);
+			super(name, (double) Mth.clamp(def, min, max), new String[comments.length]);
 			this.min = min;
 			this.max = max;
 			reformatComments(comments);
