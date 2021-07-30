@@ -3,6 +3,11 @@ package dev.cheos.armorpointspp.render;
 import static net.minecraftforge.client.gui.ForgeIngameGui.BOSS_HEALTH_ELEMENT;
 import static net.minecraftforge.client.gui.ForgeIngameGui.HUD_TEXT_ELEMENT;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.List;
+import java.util.Map;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import dev.cheos.armorpointspp.Armorpointspp;
@@ -32,10 +37,22 @@ public class Overlays {
 								  DEBUG              = OverlayRegistry.registerOverlayTop(                       "Appp Debug",            Overlays::debug);
 	
 	public static void init() {
+		// disable forge overlays
+		OverlayRegistry.enableOverlay(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, false);
+		OverlayRegistry.enableOverlay(ForgeIngameGui.ARMOR_LEVEL_ELEMENT, false);
+		// try to unregister them
 		unregister(ForgeIngameGui.PLAYER_HEALTH_ELEMENT);
 		unregister(ForgeIngameGui.ARMOR_LEVEL_ELEMENT);
-		ForgeIngameGui.PLAYER_HEALTH_ELEMENT = PLAYER_HEALTH;
-		ForgeIngameGui.ARMOR_LEVEL_ELEMENT = ARMOR_LEVEL;
+		// try to override them
+		try {
+			Field health = unfinalize(ForgeIngameGui.class.getDeclaredField("PLAYER_HEALTH_ELEMENT"));
+			health.set(null, PLAYER_HEALTH);
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) { }
+		try {
+			Field armor = unfinalize(ForgeIngameGui.class.getDeclaredField("ARMOR_LEVEL_ELEMENT"));
+			armor.set(null, ARMOR_LEVEL);
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) { }
+		// hopefully, they're completely gone now
 	}
 	
 	private static void playerHealth(ForgeIngameGui gui, PoseStack pStack, float partialTicks, int screenWidth, int screenHeight) {
@@ -130,9 +147,25 @@ public class Overlays {
 		return ApppConfig.getBool(name);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private static void unregister(IIngameOverlay overlay) {
-		OverlayEntry entry = OverlayRegistry.overlays.remove(overlay);
-		if (entry != null)
-			OverlayRegistry.overlaysOrdered.remove(entry);
+		try {
+			Field overlays = OverlayRegistry.class.getDeclaredField("overlays");
+			Field overlaysOrdered = OverlayRegistry.class.getDeclaredField("overlaysOrdered");
+			overlays.setAccessible(true);
+			overlaysOrdered.setAccessible(true);
+			OverlayEntry entry = ((Map<IIngameOverlay, OverlayEntry>) overlays.get(null)).remove(overlay);
+//			OverlayEntry entry = OverlayRegistry.overlays.remove(overlay);
+			if (entry != null)
+				((List<OverlayEntry>) overlaysOrdered.get(null)).remove(entry);
+//				OverlayRegistry.overlaysOrdered.remove(entry);
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) { }
+	}
+	
+	private static Field unfinalize(Field field) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		Field modifiers = Field.class.getDeclaredField("modifiers");
+		modifiers.setAccessible(true);
+		modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+		return field;
 	}
 }
