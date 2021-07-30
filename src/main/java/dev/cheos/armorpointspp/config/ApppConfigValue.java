@@ -37,7 +37,7 @@ public abstract class ApppConfigValue<T, U> {
 	
 	public static class HexValue extends ApppConfigValue<String, Integer> {
 		public HexValue(String name, Integer def, String... comments) { super(name, hex(def, 6), comments); }
-
+		
 		@Override
 		public Integer get() { return fromHex(this.value.get()); }
 		private static String hex(int i, int minlen) { return String.format("0x%0" + minlen + "x", i); }
@@ -50,9 +50,14 @@ public abstract class ApppConfigValue<T, U> {
 	}
 	
 	
+	public static class StringValue extends ApppConfigValue<String, String> {
+		public StringValue(String name, String def, String... comments) { super(name, def, comments); }
+	}
+	
+	
 	public static class FloatValue extends ApppConfigValue<Double, Float> {
 		private final float min, max;
-
+		
 		public FloatValue(String name, float def, String... comments) { this(name, def, Float.MAX_VALUE, comments); }
 		public FloatValue(String name, float def, float max, String... comments) { this(name, def, 0, max, comments); }
 		public FloatValue(String name, float def, float min, float max, String... comments) {
@@ -82,7 +87,7 @@ public abstract class ApppConfigValue<T, U> {
 	
 	public static class SuffixTypeValue extends ApppConfigValue<String, Suffix.Type> {
 		protected SuffixTypeValue(String name, Suffix.Type def, String... comments) { super(name, def.name(), comments); }
-
+		
 		@Override
 		public Suffix.Type get() { return Suffix.Type.fromName(this.value.get()); }
 	}

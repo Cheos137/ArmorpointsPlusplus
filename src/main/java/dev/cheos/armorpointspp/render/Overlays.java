@@ -23,7 +23,6 @@ public class Overlays {
 	
 	public static final IIngameOverlay PLAYER_HEALTH = OverlayRegistry.registerOverlayAbove(BOSS_HEALTH_ELEMENT, "Player Health",         Overlays::playerHealth),
 								  ABSORPTION         = OverlayRegistry.registerOverlayAbove(PLAYER_HEALTH,       "Appp Absorption",       Overlays::absorption),
-								  FROSTBITE_HEARTS   = OverlayRegistry.registerOverlayAbove(ABSORPTION,          "Appp Frostbite Hearts", Overlays::frostbiteHearts),
 								  ARMOR_LEVEL        = OverlayRegistry.registerOverlayAbove(ABSORPTION,          "Armor Level",           Overlays::armorLevel),
 								  RESISTANCE         = OverlayRegistry.registerOverlayAbove(ARMOR_LEVEL,         "Appp Resistance",       Overlays::resistance),
 								  PROTECTION         = OverlayRegistry.registerOverlayAbove(RESISTANCE,          "Appp Protection",       Overlays::protection),
@@ -56,12 +55,6 @@ public class Overlays {
 		if (hidden() || !gui.shouldDrawSurvivalElements() || !conf("enableHealthBar") || !conf("showAbsorption")) return;
 		setup(gui);
 		hudRenderer.renderAbsorption(pStack, baseX(screenWidth), lastHealthY);
-	}
-	
-	private static void frostbiteHearts(ForgeIngameGui gui, PoseStack pStack, float partialTicks, int screenWidth, int screenHeight) {
-		if (hidden() || !gui.shouldDrawSurvivalElements() || !conf("enableHealthBar")) return;
-		setup(gui);
-		// hudRenderer.renderFrostbiteHearts(pStack, baseX(screenWidth), lastHealthY); // TODO: frostbite
 	}
 	
 	private static void armorLevel(ForgeIngameGui gui, PoseStack pStack, float partialTicks, int screenWidth, int screenHeight) {
@@ -102,7 +95,7 @@ public class Overlays {
 	
 	private static void healthText(ForgeIngameGui gui, PoseStack pStack, float partialTicks, int screenWidth, int screenHeight) {
 		if (hidden() || !gui.shouldDrawSurvivalElements() || !conf("showHealthValue")) return;
-		hudRenderer.renderArmorText(pStack, baseX(screenWidth), lastHealthY);
+		hudRenderer.renderHealthText(pStack, baseX(screenWidth), lastHealthY);
 	}
 	
 	private static void debug(ForgeIngameGui gui, PoseStack pStack, float partialTicks, int screenWidth, int screenHeight) {

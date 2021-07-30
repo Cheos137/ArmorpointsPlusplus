@@ -137,18 +137,20 @@ public class HUDRenderer {
 	
 	public void renderHealth(PoseStack pStack, int x, int y) { // TODO: frostbite
 		LocalPlayer player = this.minecraft.player;
-		int health      = Mth.ceil(player.getHealth());
-		int heartStack  = Math.min((health - 1) / 20, 10);
+		boolean frozen   = player.isFullyFrozen();
+		boolean hardcore = player.level.getLevelData().isHardcore();
+		int health       = Mth.ceil(player.getHealth());
+		int heartStack   = Math.min((health - 1) / 20, 10);
 		
 		this.lastGuiTicks = this.minecraft.gui.getGuiTicks();
 		
-		boolean highlight = this.healthBlinkTime > this.lastGuiTicks && (this.healthBlinkTime - this.lastGuiTicks) / 3L % 2L == 1L;
+		boolean blink = !frozen && this.healthBlinkTime > this.lastGuiTicks && (this.healthBlinkTime - this.lastGuiTicks) / 3L % 2L == 1L;
 		int regen = this.minecraft.player.hasEffect(MobEffects.REGENERATION)
 				? this.lastGuiTicks % 25 // in vanilla: % (maxHealth + 5), here: more than 20 + 5 does not make sense
 				: -1;
 		int margin = 36;
 		
-		if (player.level.getLevelData().isHardcore()) margin += 108;
+		if (hardcore) margin += 108;
 		if (player.hasEffect(MobEffects.POISON)) margin += 36;
 		else if (player.hasEffect(MobEffects.WITHER)) margin += 72;
 		
@@ -174,22 +176,49 @@ public class HUDRenderer {
 		for (int i = 9; i >= 0; i--) {
 			int heartX = x + i * 8;
 			int heartY = y;
+			int heartValue = i * 2 + heartStack * 20 + 1;
 			
 			if (health <= 4) heartY += random.nextInt(2);
-			if (i == regen) heartY -= 2;
+			if (i == regen && !frozen) heartY -= 2;
 			
 			lastHeartY[i] = heartY;
 			
-			blit(pStack, heartX, heartY, highlight ? 18 : 0, 9, 9, 9); // draw background
-			if (i * 2 + heartStack * 20 + 2 >  health && heartStack > 0) blit(pStack, heartX, heartY, margin, heartStack * 9, 9, 9); // part. draw row below
-
-			if (highlight) {
-				if      (i * 2 + heartStack * 20 + 1 <  this.displayHealth) blit(pStack, heartX, heartY, margin + 18, 9 + heartStack * 9, 9, 9); // full
-				else if (i * 2 + heartStack * 20 + 1 == this.displayHealth) blit(pStack, heartX, heartY, margin + 27, 9 + heartStack * 9, 9, 9); // half
+			blit(pStack, heartX, heartY, blink ? 18 : 0, 9, 9, 9); // draw background
+			if (heartValue >  health && heartStack > 0) blit(pStack, heartX, heartY, margin, heartStack * 9, 9, 9); // part. draw row below
+			
+			if (blink) {
+				if      (heartValue <  this.displayHealth) blit(pStack, heartX, heartY, margin + 18, 9 + heartStack * 9, 9, 9); // full
+				else if (heartValue == this.displayHealth) blit(pStack, heartX, heartY, margin + 27, 9 + heartStack * 9, 9, 9); // half
 			}
 			
-			if      (i * 2 + heartStack * 20 + 1 <  health) blit(pStack, heartX, heartY, margin    , 9 + heartStack * 9, 9, 9); // full
-			else if (i * 2 + heartStack * 20 + 1 == health) blit(pStack, heartX, heartY, margin + 9, 9 + heartStack * 9, 9, 9); // half
+			if      (heartValue <  health) blit(pStack, heartX, heartY, margin    , 9 + heartStack * 9, 9, 9); // full
+			else if (heartValue == health) blit(pStack, heartX, heartY, margin + 9, 9 + heartStack * 9, 9, 9); // half
+			
+			String test = confS("frostbiteStyle").toLowerCase();
+			test = "full";
+			
+			if (frozen)
+				switch (test) {
+					case "full":
+						if (heartValue < health)
+							blit(pStack, heartX, heartY, hardcore ? 18 : 0, 117, 9, 9);
+						else if (heartValue == health)
+							blit(pStack, heartX, heartY, hardcore ? 27 : 9, 117, 5, 9); // only half width frostbite
+						break;
+					case "overlay":
+						if (heartValue < health)
+							blit(pStack, heartX, heartY, hardcore ? 18 : 0, 108, 9, 9);
+						else if (heartValue == health)
+							blit(pStack, heartX, heartY, hardcore ? 27 : 9, 108, 5, 9); // only half width frostbite
+						break;
+					case "icon": // fallthrough, icon is default
+					default:
+						pStack.pushPose();
+						pStack.scale(0.5F, 0.5F, 1);
+						blit(pStack, 2 * heartX + 8, 2 * heartY + 1, 36, 108, 9, 9);
+						pStack.popPose();
+						break;
+				}
 		}
 		
 		RenderSystem.disableBlend();
@@ -255,6 +284,7 @@ public class HUDRenderer {
 	}
 	
 	public void renderHealthText(PoseStack pStack, int x, int y) { // TODO: frostbite
+		int freeze = Math.round(100 * this.minecraft.player.getPercentFrozen());
 		int maxHp  = Mth.ceil(this.minecraft.player.getMaxHealth());
 		int absorb = Mth.ceil(this.minecraft.player.getAbsorptionAmount());
 		int hp     = Mth.ceil(this.minecraft.player.getHealth());
@@ -262,18 +292,21 @@ public class HUDRenderer {
 		if(hp > maxHp) hp = maxHp;
 		y++;
 		
+		int lenfreeze = freeze > 0 && confB("showFrostbitePercentage") ? width(", ", freeze, "%") : 0;
 		int lenabsorb = width(     absorb) + 1;
 		int lenplus   = width("+", absorb) + 1;
-		int lenfull   = width(     hp    ) + (absorb == 0 ? 1 : lenplus);
+		int lenfull   = width(     hp    ) + (absorb == 0 ? 1 : lenplus) + lenfreeze;
 		
-		int hpcol = this.minecraft.player.hasEffect(MobEffects.POISON)
-				? confH("heartPoison")
-				: this.minecraft.player.hasEffect(MobEffects.WITHER)
-						? confH("heartWither")
-						: confH("heart");
+		int hpcol = this.minecraft.player.isFullyFrozen()
+				? confH("heartFrostbite")
+				: this.minecraft.player.hasEffect(MobEffects.POISON)
+						? confH("heartPoison")
+						: this.minecraft.player.hasEffect(MobEffects.WITHER)
+								? confH("heartWither")
+								: confH("heart");
 		
 		if(hp < maxHp) {
-			int lenmaxhp = width(maxHp) + (absorb == 0 ? 1 : lenplus);
+			int lenmaxhp = width(maxHp) + (absorb == 0 ? 1 : lenplus) + lenfreeze;
 			int lenslash = width("/")   + lenmaxhp;
 			
 			text(pStack, "/"       , x - lenslash, y, confH("separator"));
@@ -283,9 +316,15 @@ public class HUDRenderer {
 		}
 		
 		text(pStack, "" + hp, x - lenfull, y, hpcol);
+		
 		if(absorb > 0) {
 			text(pStack, "+"        , x - lenplus  , y, confH("separator"));
 			text(pStack, "" + absorb, x - lenabsorb, y, confH("absorption"));
+		}
+		
+		if (freeze > 0 && confB("showFrostbitePercentage")) {
+			text(pStack, ", "        , x - lenfreeze         , y, confH("separator"));
+			text(pStack, freeze + "%", x - width(freeze, "%"), y, confH("heartFrostbite"));
 		}
 	}
 	
@@ -358,6 +397,10 @@ public class HUDRenderer {
 	
 	private int confH(String name) {
 		return ApppConfig.getHex(name);
+	}
+	
+	private String confS(String name) {
+		return ApppConfig.getString(name);
 	}
 	
 	private float confF(String name) {
