@@ -33,6 +33,7 @@ public class HUDRenderer {
 	}
 	
 	public void renderArmor(int x, int y) {
+		GlStateManager.enableAlpha();
 		int armor = Math.min(armor(this.minecraft.player), 240);
 		if (armor <= 0 && !confB("showArmorWhenZero")) return;
 		
@@ -70,6 +71,7 @@ public class HUDRenderer {
 	}
 	
 	public void renderResistance(int x, int y) {
+		GlStateManager.enableAlpha();
 		int armor = armor(this.minecraft.player);
 		int resistance = -1;
 		
@@ -85,6 +87,7 @@ public class HUDRenderer {
 	}
 	
 	public void renderArmorToughness(int x, int y) {
+		GlStateManager.enableAlpha();
 		if (armor(this.minecraft.player) <= 0 && !confB("showArmorWhenZero")) return;
 		int toughness = MathHelper.ceil(toughness(this.minecraft.player) * confF("toughness"));
 		if (toughness <= 0) return;
@@ -100,6 +103,7 @@ public class HUDRenderer {
 	}
 	
 	public void renderProtectionOverlay(int x, int y) {
+		GlStateManager.enableAlpha();
 		if (armor(this.minecraft.player) <= 0 && !confB("showArmorWhenZero")) return;
 		
 		int protection = 0;
@@ -157,6 +161,7 @@ public class HUDRenderer {
 		this.lastHealth = health;
 		this.random.setSeed(this.lastGuiTicks * 312871L);
 		
+		GlStateManager.enableAlpha();
 		GlStateManager.enableBlend();
 		bind(APPP_ICONS);
 		
@@ -186,6 +191,7 @@ public class HUDRenderer {
 	}
 	
 	public void renderAbsorption(int x, int y) {
+		GlStateManager.enableAlpha();
 		EntityPlayer player = this.minecraft.player;
 		int absorb = MathHelper.ceil(player.getAbsorptionAmount());
 		int fullBorders = MathHelper.floor(0.05F * absorb * confF("absorption"));
@@ -214,6 +220,7 @@ public class HUDRenderer {
 	}
 	
 	public void renderArmorText(int x, int y) {
+		GlStateManager.enableAlpha();
 		int armor = armor(this.minecraft.player);
 		
 		if (armor <= 0 && !confB("showArmorWhenZero")) return;
@@ -244,6 +251,7 @@ public class HUDRenderer {
 	}
 	
 	public void renderHealthText(int x, int y) {
+		GlStateManager.enableAlpha();
 		int maxHp  = MathHelper.ceil(this.minecraft.player.getMaxHealth());
 		int absorb = MathHelper.ceil(this.minecraft.player.getAbsorptionAmount());
 		int hp     = MathHelper.ceil(this.minecraft.player.getHealth());
@@ -279,6 +287,7 @@ public class HUDRenderer {
 	}
 	
 	public void debugTexture() {
+		GlStateManager.enableAlpha();
 		GlStateManager.pushMatrix();
 		GlStateManager.scale(0.8F, 0.8F, 1);
 		GlStateManager.translate(1.25D, 6.25D, 0);
@@ -289,6 +298,7 @@ public class HUDRenderer {
 	}
 	
 	public void debugText(int x, int y) {
+		GlStateManager.enableAlpha();
 		float maxHp  = this.minecraft.player.getMaxHealth();
 		float absorb = this.minecraft.player.getAbsorptionAmount();
 		int hpRows = MathHelper.ceil((maxHp + absorb) / 20F);
@@ -327,6 +337,7 @@ public class HUDRenderer {
 	}
 	
 	private void resetColor() {
+		GlStateManager.enableAlpha();
 		GlStateManager.color(1, 1, 1, 1);
 	}
 	
