@@ -44,7 +44,7 @@ public enum Suffix {
 				return pre;
 		return NONE;
 	}
-
+	
 	public static enum Type {
 		SI ,
 		SCI,

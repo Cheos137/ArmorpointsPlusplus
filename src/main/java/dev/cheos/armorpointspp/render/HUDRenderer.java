@@ -55,10 +55,10 @@ public class HUDRenderer {
 	
 	public void renderVanillaArmor(PoseStack pStack, int x, int y) {
 		int level = minecraft.player.getArmorValue();
-        for (int i = 1; level > 0 && i < 20; i += 2) {
-            blit(pStack, x, y, i < level ? 34 : i == level ? 25 : 16, 9, 9, 9);
-            x += 8;
-        }
+		for (int i = 1; level > 0 && i < 20; i += 2) {
+			blit(pStack, x, y, i < level ? 34 : i == level ? 25 : 16, 9, 9, 9);
+			x += 8;
+		}
 	}
 	
 	// fun rainbow armor bar only visible on 137 armor -- why? because 137 is my favourite number ^^
@@ -96,9 +96,9 @@ public class HUDRenderer {
 	
 	public void renderProtectionOverlay(PoseStack pStack, int x, int y) {
 		if (armor(this.minecraft.player) <= 0 && !confB("showArmorWhenZero")) return;
-
+		
 		int protection = 0;
-
+		
 		// should this be separated for each protection type? -- maxes out with godarmor
 		for (ItemStack stack : this.minecraft.player.getArmorSlots()) { // adds 0 for empty stacks
 			protection += EnchantmentHelper.getItemEnchantmentLevel(Enchantments.ALL_DAMAGE_PROTECTION, stack);
@@ -106,7 +106,7 @@ public class HUDRenderer {
 			protection += EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FIRE_PROTECTION      , stack);
 			protection += EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PROJECTILE_PROTECTION, stack);
 		}
-
+		
 		protection = Mth.ceil(protection * confF("protection"));
 		protection = Mth.clamp(protection, 0, 10);
 		if (protection <= 0) return;
@@ -135,7 +135,7 @@ public class HUDRenderer {
 		pStack.popPose();
 	}
 	
-	public void renderHealth(PoseStack pStack, int x, int y) { // TODO: frostbite
+	public void renderHealth(PoseStack pStack, int x, int y) {
 		LocalPlayer player = this.minecraft.player;
 		boolean frozen   = player.isFullyFrozen();
 		boolean hardcore = player.level.getLevelData().isHardcore();
@@ -195,7 +195,6 @@ public class HUDRenderer {
 			else if (heartValue == health) blit(pStack, heartX, heartY, margin + 9, 9 + heartStack * 9, 9, 9); // half
 			
 			String test = confS("frostbiteStyle").toLowerCase();
-			test = "full";
 			
 			if (frozen)
 				switch (test) {
@@ -249,7 +248,7 @@ public class HUDRenderer {
 						(highlight ? 18 : 0) + 9 * (Mth.ceil(absorb * confF("absorption")) % 2),
 						9 + 9 * Mth.ceil((absorb % inv) / 8F), 9, 9);
 		}
-
+		
 		bind(VANILLA_ICONS);
 	}
 	
@@ -283,7 +282,7 @@ public class HUDRenderer {
 		text(pStack, significand, x - width(significand) - 1, y + 1, color);
 	}
 	
-	public void renderHealthText(PoseStack pStack, int x, int y) { // TODO: frostbite
+	public void renderHealthText(PoseStack pStack, int x, int y) {
 		int freeze = Math.round(100 * this.minecraft.player.getPercentFrozen());
 		int maxHp  = Mth.ceil(this.minecraft.player.getMaxHealth());
 		int absorb = Mth.ceil(this.minecraft.player.getAbsorptionAmount());
@@ -346,7 +345,7 @@ public class HUDRenderer {
 		text(pStack, "armor should be here (vanilla)", x, y, 0xff0000);
 		text(pStack, "hp: "   + maxHp , 5,  5, 0xffffff);
 		text(pStack, "rows: " + hpRows, 5, 15, 0xffffff);
-
+		
 		text(pStack, "armor = 0" , x, y - 40, confH("armor0"));
 		text(pStack, "armor < 25", x, y - 30, confH("armorLT25"));
 		text(pStack, "armor = 25", x, y - 20, confH("armorEQ25"));
@@ -356,8 +355,8 @@ public class HUDRenderer {
 	
 	private void bind(ResourceLocation res) {
 //		this.minecraft.textureManager.bindForSetup(res);
-        RenderSystem.setShaderTexture(0, res);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShaderTexture(0, res);
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 	}
 	
 	private int width(Object... objs) {
