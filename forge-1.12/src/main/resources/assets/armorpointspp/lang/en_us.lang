@@ -1,0 +1,11 @@
+armorpointspp/compatibility=compatibility
+armorpointspp/debug=debug
+armorpointspp/general=general
+armorpointspp/representative=representative
+armorpointspp/textcolors=textcolors
+
+armorpointspp/compatibility.tooltip=compatibility options
+armorpointspp/debug.tooltip=debug options
+armorpointspp/general.tooltip=general options
+armorpointspp/representative.tooltip=representative options
+armorpointspp/textcolors.tooltip=textcolors options
