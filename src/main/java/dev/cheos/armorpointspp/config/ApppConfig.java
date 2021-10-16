@@ -8,7 +8,7 @@ import dev.cheos.armorpointspp.Armorpointspp;
 import dev.cheos.armorpointspp.Suffix;
 import net.minecraftforge.common.config.Config;
 
-@Config(modid = Armorpointspp.MODID, name = "general")
+@Config(modid = Armorpointspp.MODID, name = Armorpointspp.MODID + "/general")
 public class ApppConfig {
 	@Config.Ignore
 	private static final Map<String, Supplier<Boolean>>  boolValues = new HashMap<>();
@@ -100,7 +100,7 @@ public class ApppConfig {
 		return Integer.parseInt(hex.substring(2), 16);
 	}
 	
-	@Config(modid = Armorpointspp.MODID, name = "representative", category = "representative")
+	@Config(modid = Armorpointspp.MODID, name = Armorpointspp.MODID + "/representative", category = "representative")
 	public static class ApppConfigRep {
 		@Config.Name("resistance")
 		@Config.Comment({ "Number of icons to show a resistance of 1"     , "Available: 0.0 ~ 10.0 [default: 2.0]" })
@@ -124,7 +124,7 @@ public class ApppConfig {
 		public static double absorption = 0.25;
 	}
 	
-	@Config(modid = Armorpointspp.MODID, name = "textcolors", category = "textcolors")
+	@Config(modid = Armorpointspp.MODID, name = Armorpointspp.MODID + "/textcolors", category = "textcolors")
 	public static class ApppConfigTextCol {
 		@Config.Name("resistanceFull")
 		@Config.Comment({ "Color when resistance > 5", "Available: 0x000000 ~ 0xffffff [default: 0x4c0000]" })
@@ -158,7 +158,7 @@ public class ApppConfig {
 		public static String separator = "0x3d3d3d";
 	}
 	
-	@Config(modid = Armorpointspp.MODID, name = "compatibility", category = "compatibility")
+	@Config(modid = Armorpointspp.MODID, name = Armorpointspp.MODID + "/compatibility", category = "compatibility")
 	public static class ApppConfigCompat {
 		@Config.Name("mantle")
 		@Config.Comment({ "If enabled, fixes compatibilty issues with mantle by disabling mantles heart renderer", "Available: true, false [default: false]" })
@@ -166,7 +166,7 @@ public class ApppConfig {
 		public static boolean mantle = true;
 	}
 	
-	@Config(modid = Armorpointspp.MODID, name = "debug", category = "debug")
+	@Config(modid = Armorpointspp.MODID, name = Armorpointspp.MODID + "/debug", category = "debug")
 	public static class ApppConfigDebug {
 		@Config.Name("debug")
 		@Config.Comment({ "You don't want this to be on. Believe me", "Available: true, false [default: false]" })
