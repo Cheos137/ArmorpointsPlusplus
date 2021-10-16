@@ -1,0 +1,6 @@
+rootProject.name = 'armorpointspp'
+
+include 'core'
+include 'forge-1.12'
+include 'forge-1.16'
+include 'forge-1.17'
