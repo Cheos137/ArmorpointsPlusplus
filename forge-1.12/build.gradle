@@ -9,7 +9,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle'
 
-version = '1.12.2-' + modVersion
+version = 'forge-1.12.2-' + modVersion
 group = modGroup
 archivesBaseName = modName
 
@@ -26,18 +26,7 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-
-            mods {
-                armorpointspp {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
+            taskName 'runApppClient-1.12'
 
             mods {
                 armorpointspp {
@@ -54,9 +43,14 @@ dependencies {
 }
 
 processResources {
-    inputs.property "version", modVersion
-    inputs.property "mcversion", '1.12.2'
+    inputs.property 'version', modVersion
+    inputs.property 'mcversion', '1.12.2'
 
+    filesMatching('mcmod.info') {
+        expand 'version':modVersion, 'mcversion':'1.12.2'
+    }
+
+    /*
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
         expand 'version':modVersion, 'mcversion':'1.12.2'
@@ -64,7 +58,7 @@ processResources {
 
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
-    }
+    }*/
 }
 
 jar.finalizedBy('reobfJar')
