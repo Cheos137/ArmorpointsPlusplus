@@ -42,7 +42,8 @@ public class Armorpointspp {
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		if (Loader.isModLoaded("mantle")) MantleCompat.hackMantle();
+		if (Loader.isModLoaded("mantle") && ApppConfig.getBool("mantle"))
+			MantleCompat.hackMantle();
 	}
 	
 	public static boolean isAttributeFixLoaded() {
