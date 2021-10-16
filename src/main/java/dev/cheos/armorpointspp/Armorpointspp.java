@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = Armorpointspp.MODID,
@@ -18,7 +19,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 	 version = "v2.0.0-rc1",
 	 clientSideOnly = true,
 	 acceptableRemoteVersions = "*",
-	 acceptedMinecraftVersions = "[1.12,1.12.2]")
+	 acceptedMinecraftVersions = "[1.12,1.12.2]",
+	 dependencies = "after:mantle")
 public class Armorpointspp {
 	private static boolean attributefix;
 	public static final String MODID = "armorpointspp";
@@ -32,10 +34,15 @@ public class Armorpointspp {
 	}
 	
 	@EventHandler
-	private void init(FMLInitializationEvent event) {
+	public void init(FMLInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(new RenderGameOverlayHandler(Minecraft.getMinecraft()));
 		LOGGER.info("oh hi there... :)");
 		LOGGER.info("I heared you wanted some fancy health/armor bars?");
+	}
+	
+	@EventHandler
+	public void postInit(FMLPostInitializationEvent event) {
+		if (Loader.isModLoaded("mantle")) MantleCompat.hackMantle();
 	}
 	
 	public static boolean isAttributeFixLoaded() {
@@ -54,7 +61,7 @@ public class Armorpointspp {
 	
 	private void logIncompatible(String mod) {
 		LOGGER.warn("-=================================================================-");
-		LOGGER.warn("NOTICE: " + mod + " is installed!");
+		LOGGER.warn("NOTICE: [" + mod + "] is installed!");
 		LOGGER.warn("");
 		LOGGER.warn("NOTICE: Due to the way THAT mod is made,");
 		LOGGER.warn("NOTICE: it CAN cause major incompatibilities");
@@ -70,7 +77,7 @@ public class Armorpointspp {
 		LOGGER.warn("NOTICE: that conflicting features of the mod named above");
 		LOGGER.warn("NOTICE: are fully disabled or the mod named above is not installed.");
 		LOGGER.warn("");
-		LOGGER.warn("NOTICE: You can mostly solve this issue by simply removing " + mod + ".");
+		LOGGER.warn("NOTICE: You can usually solve this issue by simply removing [" + mod + "].");
 		LOGGER.warn("NOTICE: If that is not an option for you, please double-check your");
 		LOGGER.warn("NOTICE: configuration files to make sure everything works.");
 		LOGGER.warn("-=================================================================-");
