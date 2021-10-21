@@ -1,6 +1,5 @@
 name: General Question
 description: Anything not fitting any other templates goes here
-title: ""
 labels: ["type: general"]
 body:
 - type: textarea
