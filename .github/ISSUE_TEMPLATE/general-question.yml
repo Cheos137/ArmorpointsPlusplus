@@ -1,0 +1,22 @@
+name: General Question
+description: Anything not fitting any other templates goes here
+title: ""
+labels: ["type: general"]
+body:
+- type: textarea
+  id: description
+  attributes:
+    label: Description
+    description: What do you need? How can we help you?
+  validations:
+    required: true
+- type: textarea
+  id: screenshots
+  attributes:
+    label: Screenshots
+    description: Are there any screenshots you can provide to better describe your question?
+- type: textarea
+  id: other
+  attributes:
+    label: Other Files
+    description: Are there any log files / crash reports / other files you need us to see?
