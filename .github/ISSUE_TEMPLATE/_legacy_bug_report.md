@@ -1,5 +1,5 @@
 ---
-name: Bug report
+name: \[Legacy\] Bug report
 about: Report anything you suspect to not be intended / broken
 title: ''
 labels: 'type: bug'
