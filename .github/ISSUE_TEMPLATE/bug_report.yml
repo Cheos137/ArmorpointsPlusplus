@@ -62,8 +62,8 @@ body:
       label: Screenshots
       description: If applicable, add screenshots to help explain your problem.
   - type: textarea
-      id: logs
-      attributes:
-        label: Relevant Log / Crash-Report Output
-        description: Please copy and paste any relevant log output. This will be automatically formatted into code.
-        render: shell
+    id: logs
+    attributes:
+      label: Relevant Log / Crash-Report Output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code.
+      render: shell
