@@ -1,0 +1,46 @@
+name: Bug Report
+description: Report anything you suspect to not be intended / broken
+title: "[Feature Request]: "
+labels: ["type: feature request"]
+body:
+  - type: checkboxes
+    id: unique
+    attributes:
+      label: Is there an existing issue for this?
+      description: Please search to see if an issue already exists for the feature you want to request.
+      options:
+      - label: I have searched the existing issues
+        required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of the feature.
+      placeholder: |
+        Is this request related to an issue?
+        What is it that you want to see implemented?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solution
+      description: Are there any more specific requirements? If so describe.
+      placeholder: |
+        Are there any mechanics that have to work in a specific way?
+        How should they work?
+        Do you already have an idea of how something could be implemented?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Are there any alternatives you would like to see if the main feature will be implemented? If so describe.
+      placeholder: |
+        Have you considered any alternatives or compromises?
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context or screenshots regarding the feature here.
