@@ -9,11 +9,12 @@ buildscript {
 }
 apply plugin: 'fabric-loom'
 
-version = 'fabric-1.16.5-' + modVersion
+version = '1.16.5-' + modVersion
 group = modGroup
-archivesBaseName = modName
+archivesBaseName = modName + '-fabric'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
 dependencies {
     minecraft 'com.mojang:minecraft:1.16.5'

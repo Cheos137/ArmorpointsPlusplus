@@ -21,7 +21,7 @@ import net.minecraftforge.client.gui.OverlayRegistry.OverlayEntry;
 
 //the cool thing about this update is that i can just go in and edit vanilla stuff without worrying about breaking something - it'll never be my fault again
 public class Overlays {
-	private static final ResourceLocation ICONS = new ResourceLocation(Armorpointspp.MODID, "textures/gui/icons.png");
+	private static final ResourceLocation ICONS      = new ResourceLocation(Armorpointspp.MODID, "textures/gui/icons.png");
 	private static final HUDRenderer hudRenderer     = new HUDRenderer();
 	private static final Minecraft minecraft         = Minecraft.getInstance();
 	private static int lastArmorY = 0, lastHealthY = 0;
@@ -52,7 +52,7 @@ public class Overlays {
 			Field armor = unfinalize(ForgeIngameGui.class.getDeclaredField("ARMOR_LEVEL_ELEMENT"));
 			armor.set(null, ARMOR_LEVEL);
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) { }
-		// hopefully, they're completely gone now
+		// hopefully, they're completely replaced now
 	}
 	
 	private static void playerHealth(ForgeIngameGui gui, PoseStack pStack, float partialTicks, int screenWidth, int screenHeight) {

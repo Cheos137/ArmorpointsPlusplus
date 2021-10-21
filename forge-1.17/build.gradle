@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle'
 
 version = 'forge-1.17.1-' + modVersion
 group = modGroup
-archivesBaseName = modName
+archivesBaseName = modName + '-forge'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
@@ -36,6 +36,8 @@ minecraft {
         }
     }
 }
+
+sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.17.1-37.0.95'

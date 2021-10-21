@@ -184,7 +184,7 @@ public class HUDRenderer {
 			lastHeartY[i] = heartY;
 			
 			blit(pStack, heartX, heartY, blink ? 18 : 0, 9, 9, 9); // draw background
-			if (heartValue >  health && heartStack > 0) blit(pStack, heartX, heartY, margin, heartStack * 9, 9, 9); // part. draw row below
+			if (heartValue >= health && heartStack > 0) blit(pStack, heartX, heartY, margin, heartStack * 9, 9, 9); // part. draw row below
 			
 			if (blink) {
 				if      (heartValue <  this.displayHealth) blit(pStack, heartX, heartY, margin + 18, 9 + heartStack * 9, 9, 9); // full
@@ -194,10 +194,8 @@ public class HUDRenderer {
 			if      (heartValue <  health) blit(pStack, heartX, heartY, margin    , 9 + heartStack * 9, 9, 9); // full
 			else if (heartValue == health) blit(pStack, heartX, heartY, margin + 9, 9 + heartStack * 9, 9, 9); // half
 			
-			String test = confS("frostbiteStyle").toLowerCase();
-			
 			if (frozen)
-				switch (test) {
+				switch (confS("frostbiteStyle").toLowerCase()) {
 					case "full":
 						if (heartValue < health)
 							blit(pStack, heartX, heartY, hardcore ? 18 : 0, 117, 9, 9);

@@ -9,9 +9,9 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle'
 
-version = 'forge-1.12.2-' + modVersion
+version = '1.12.2-' + modVersion
 group = modGroup
-archivesBaseName = modName
+archivesBaseName = modName + '-forge'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
@@ -36,6 +36,8 @@ minecraft {
         }
     }
 }
+
+sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2855'

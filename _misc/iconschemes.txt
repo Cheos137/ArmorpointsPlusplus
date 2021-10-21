@@ -1,0 +1,10 @@
+classic (red = first armor icon)
+default (red = last armor icon, rest equal to classic)
+simple
+flat
+modern
+fantasy
+smooth
+high-detail
+highres
+config
