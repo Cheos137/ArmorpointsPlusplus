@@ -3,13 +3,14 @@ description: Report anything you suspect to not be intended / broken
 title: "[Bug]: "
 labels: ["type: bug"]
 body:
-- type: checkboxes
-  attributes:
-    label: Is there an existing issue for this?
-    description: Please search to see if an issue already exists for the bug you encountered.
-    options:
-    - label: I have searched the existing issues
-      required: true
+  - type: checkboxes
+    id: unique
+    attributes:
+      label: Is there an existing issue for this?
+      description: Please search to see if an issue already exists for the bug you encountered.
+      options:
+      - label: I have searched the existing issues
+        required: true
   - type: textarea
     id: description
     attributes:
@@ -61,8 +62,8 @@ body:
       label: Screenshots
       description: If applicable, add screenshots to help explain your problem.
   - type: textarea
-    id: logs
-    attributes:
-      label: Relevant Log / Crash-Report Output
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code.
-      render: shell
+      id: logs
+      attributes:
+        label: Relevant Log / Crash-Report Output
+        description: Please copy and paste any relevant log output. This will be automatically formatted into code.
+        render: shell
