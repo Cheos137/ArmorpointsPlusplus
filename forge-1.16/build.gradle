@@ -9,7 +9,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle'
 
-version = 'forge-1.16.5-' + modVersion
+version = '1.16.5-' + modVersion
 group = modGroup
 archivesBaseName = modName + '-forge'
 

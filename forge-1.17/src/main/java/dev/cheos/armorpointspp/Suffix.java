@@ -2,6 +2,7 @@ package dev.cheos.armorpointspp;
 
 import dev.cheos.armorpointspp.config.ApppConfig;
 
+@Deprecated
 public enum Suffix {
 	NONE ( 0, "" , ""      , ""       ),
 	KILO ( 3, "k", " Tsd." , " thous."),
@@ -45,6 +46,7 @@ public enum Suffix {
 		return NONE;
 	}
 	
+	@Deprecated
 	public static enum Type {
 		SI ,
 		SCI,

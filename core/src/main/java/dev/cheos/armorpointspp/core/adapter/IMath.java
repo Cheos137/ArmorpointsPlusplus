@@ -1,8 +1,24 @@
 package dev.cheos.armorpointspp.core.adapter;
 
 public interface IMath {
-	int ceil(float f);
-	int floor(float f);
-	int clamp(int i, int min, int max);
-	long floor(double d);
+	public static final IMath INSTANCE = new IMath() { };
+	
+	default int ceil(float f) {
+		int i = (int) f;
+		return f > i ? i + 1 : i;
+	}
+	
+	default int floor(float f) {
+		int i = (int) f;
+		return f < i ? i - 1 : i;
+	}
+	
+	default int clamp(int i, int min, int max) {
+		return i < min ? min : i > max ? max : i;
+	}
+	
+	default long floor(double d) {
+		long l = (long) d;
+		return d < l ? l -1 : l;
+	}
 }

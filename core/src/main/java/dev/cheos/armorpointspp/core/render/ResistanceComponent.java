@@ -2,14 +2,16 @@ package dev.cheos.armorpointspp.core.render;
 
 import dev.cheos.armorpointspp.core.IRenderComponent;
 import dev.cheos.armorpointspp.core.RenderContext;
+import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.FloatOption;
 
 public class ResistanceComponent implements IRenderComponent {
 	@Override
 	public void render(RenderContext ctx) {
-		if (!ctx.shouldRenderArmor())
+		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.RESISTANCE_ENABLE))
 			return;
 		
+		ctx.renderer.setupAppp();
 		int armor = ctx.data.armor();
 		int resistance = 0;
 		

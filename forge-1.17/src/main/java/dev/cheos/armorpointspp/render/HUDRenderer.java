@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 
+@Deprecated
 public class HUDRenderer {
 	private static final ResourceLocation VANILLA_ICONS = new ResourceLocation(                     "textures/gui/icons.png");
 	private static final ResourceLocation    APPP_ICONS = new ResourceLocation(Armorpointspp.MODID, "textures/gui/icons.png");

@@ -1,8 +1,6 @@
 package dev.cheos.armorpointspp.core.adapter;
 
 public interface IDataProvider {
-	IResourceLocation apppIcons();
-	IResourceLocation vanillaIcons();
 	int armor();
 	int toughness();
 	int guiTicks();
@@ -19,6 +17,7 @@ public interface IDataProvider {
 	boolean isFullyFrozen();
 	boolean isHardcore();
 	boolean isEffectActive(IMobEffect effect);
+	boolean shouldDrawSurvivalElements();
 	IMobEffectInstance getActiveEffect(IMobEffect effect);
 	Iterable<IItemStack> armorSlots();
 }

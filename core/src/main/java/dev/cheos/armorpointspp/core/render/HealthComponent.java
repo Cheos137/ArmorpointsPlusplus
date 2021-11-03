@@ -4,6 +4,7 @@ import java.util.Random;
 
 import dev.cheos.armorpointspp.core.IRenderComponent;
 import dev.cheos.armorpointspp.core.RenderContext;
+import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
 
 public class HealthComponent implements IRenderComponent {
@@ -14,9 +15,10 @@ public class HealthComponent implements IRenderComponent {
 	
 	@Override
 	public void render(RenderContext ctx) {
-		if (!ctx.shouldRender())
+		if (!ctx.shouldRender() || !ctx.config.bool(BooleanOption.HEALTH_ENABLE))
 			return;
 		
+		ctx.renderer.setupAppp();
 		boolean frozen   = ctx.data.isFullyFrozen();
 		boolean hardcore = ctx.data.isHardcore();
 		int health       = ctx.math.ceil(ctx.data.health());

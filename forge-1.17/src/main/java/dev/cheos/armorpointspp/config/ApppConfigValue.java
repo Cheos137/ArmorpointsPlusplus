@@ -4,35 +4,38 @@ import dev.cheos.armorpointspp.Suffix;
 import net.minecraft.util.Mth;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
+import net.minecraftforge.common.util.Lazy;
 
 public abstract class ApppConfigValue<T, U> {
 	
 	protected final String name;
 	protected final String[] comments;
 	protected final T def;
-	protected ConfigValue<T> value;
+	protected ConfigValue<T> confValue;
+	protected Lazy<T> value;
 	
 	protected ApppConfigValue(String name, T def, String... comments) {
 		this.name = name;
 		this.def  = def;
-		this.comments = formatComments(comments, def);
+		this.comments = comments; // formatComments(comments, def);
 	}
 	
-	protected String[] formatComments(String[] comments, T def) {
-		String[] cmts = new String[comments.length];
-		for (int i = 0; i < comments.length; i++)
-			if (comments[i] != null)
-				cmts[i] = String.format(comments[i], String.valueOf(def));
-		return cmts;
-	}
+//	protected String[] formatComments(String[] comments, T def) {
+//		String[] cmts = new String[comments.length];
+//		for (int i = 0; i < comments.length; i++)
+//			if (comments[i] != null)
+//				cmts[i] = String.format(comments[i], String.valueOf(def));
+//		return cmts;
+//	}
 	
 	public void define(ForgeConfigSpec.Builder builder) {
 		builder.comment(this.comments);
-		this.value = builder.define(name, def);
+		this.confValue = builder.define(this.name, this.def);
+		this.value = Lazy.of(this.confValue::get);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public U get() { return (U) value.get(); }
+	public U get() { return (U) this.value.get(); }
 	
 	
 	public static class HexValue extends ApppConfigValue<String, Integer> {
@@ -61,27 +64,49 @@ public abstract class ApppConfigValue<T, U> {
 		public FloatValue(String name, float def, String... comments) { this(name, def, Float.MAX_VALUE, comments); }
 		public FloatValue(String name, float def, float max, String... comments) { this(name, def, 0, max, comments); }
 		public FloatValue(String name, float def, float min, float max, String... comments) {
-			super(name, (double) Mth.clamp(def, min, max), new String[comments.length]);
+			super(name, (double) Mth.clamp(def, min, max), comments /*new String[comments.length]*/);
 			this.min = min;
 			this.max = max;
-			reformatComments(comments);
+			// reformatComments(comments);
 		}
 		
-		private void reformatComments(String[] comments) {
-			for (int i = 0; i < comments.length; i++)
-				this.comments[i] = String.format(comments[i], String.valueOf(this.min), String.valueOf(this.max), String.valueOf(this.def));
-		}
+//		private void reformatComments(String[] comments) {
+//			for (int i = 0; i < comments.length; i++)
+//				this.comments[i] = String.format(comments[i], String.valueOf(this.min), String.valueOf(this.max), String.valueOf(this.def));
+//		}
 		
 		@Override
 		public void define(ForgeConfigSpec.Builder builder) {
 			builder.comment(this.comments);
-			this.value = builder.defineInRange(name, def, min, max);
+			this.confValue = builder.defineInRange(this.name, this.def, this.min, this.max);
+			this.value = Lazy.of(this.confValue::get);
 		}
 		
 		@Override
 		public Float get() {
 			return this.value.get().floatValue();
 		}
+	}
+	
+	
+	public static class EnumValue<T extends Enum<T>> extends ApppConfigValue<String, T> {
+		private final Class<T> type;
+		
+		@SuppressWarnings("unchecked")
+		public EnumValue(String name, T def, String[] comments) {
+			super(name, def.name(), comments);
+			this.type = (Class<T>) def.getClass();
+		}
+		
+		@Override
+		public void define(ForgeConfigSpec.Builder builder) {
+			builder.comment(this.comments);
+			this.confValue = builder.define(this.name, this.def);
+			this.value = Lazy.of(this.confValue::get);
+		}
+		
+		@Override
+		public T get() { return Enum.valueOf(this.type, this.value.get()); }
 	}
 	
 	

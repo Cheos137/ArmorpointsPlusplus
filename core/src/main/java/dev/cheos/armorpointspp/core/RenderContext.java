@@ -10,23 +10,21 @@ public class RenderContext {
 	public final IMath math;
 	public final IRenderer renderer;
 	public final IPoseStack poseStack;
-	public final IUtil util;
 	public final int x, y;
 	
-	public RenderContext(IConfig config, IDataProvider data, IEnchantmentHelper ench, IMath math, IRenderer renderer, IPoseStack poseStack, IUtil util, int x, int y) {
+	public RenderContext(IConfig config, IDataProvider data, IEnchantmentHelper ench, IMath math, IRenderer renderer, IPoseStack poseStack, int x, int y) {
 		this.config = config;
 		this.data   = data;
 		this.ench   = ench;
 		this.math   = math;
 		this.renderer  = renderer;
 		this.poseStack = poseStack;
-		this.util = util;
 		this.x = x;
 		this.y = y;
 	}
 	
 	public boolean shouldRender() {
-		return !this.data.hidden();
+		return !this.data.hidden() && this.data.shouldDrawSurvivalElements();
 	}
 	
 	public boolean shouldRenderArmor() {

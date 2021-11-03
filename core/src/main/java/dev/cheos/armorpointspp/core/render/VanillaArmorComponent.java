@@ -2,11 +2,12 @@ package dev.cheos.armorpointspp.core.render;
 
 import dev.cheos.armorpointspp.core.IRenderComponent;
 import dev.cheos.armorpointspp.core.RenderContext;
+import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 
 public class VanillaArmorComponent implements IRenderComponent {
 	@Override
 	public void render(RenderContext ctx) {
-		if (!ctx.shouldRenderArmor())
+		if (!ctx.shouldRenderArmor() || ctx.config.bool(BooleanOption.ARMOR_ENABLE))
 			return;
 		
 		ctx.renderer.setupVanilla();

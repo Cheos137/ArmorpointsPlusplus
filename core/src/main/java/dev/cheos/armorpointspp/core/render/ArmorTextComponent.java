@@ -12,7 +12,7 @@ import dev.cheos.armorpointspp.core.adapter.IConfig.IntegerOption;
 public class ArmorTextComponent implements IRenderComponent {
 	@Override
 	public void render(RenderContext ctx) {
-		if (!ctx.shouldRenderArmor())
+		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.ARMOR_TEXT_ENABLE))
 			return;
 		
 		int armor = ctx.data.armor();
@@ -38,6 +38,6 @@ public class ArmorTextComponent implements IRenderComponent {
 		else if (armor > 25) color = ctx.config.hex(IntegerOption.TEXT_COLOR_ARMOR_GT25);
 		else color = ctx.config.hex(IntegerOption.TEXT_COLOR_ARMOR_EQ25);
 		
-		ctx.renderer.text(ctx.poseStack, significand, ctx.x - ctx.renderer.width(significand) - 1, ctx.y + 1, color, ctx.config.bool(BooleanOption.TEXT_SHADOW));
+		ctx.renderer.text(ctx.poseStack, significand, ctx.x - ctx.renderer.width(significand) - 1, ctx.y + 1, color);
 	}
 }

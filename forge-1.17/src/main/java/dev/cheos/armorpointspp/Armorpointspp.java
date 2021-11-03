@@ -14,7 +14,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fmllegacy.network.FMLNetworkConstants;
 
 @Mod(Armorpointspp.MODID)
-public class Armorpointspp {
+public class Armorpointspp { // TODO allow armor/health text to be leftbound, too (instead of only rightbound)
+	@Deprecated
 	private static boolean attributefix;
 	public static final String MODID = "armorpointspp";
 	private static final Logger LOGGER = LogManager.getLogger("Armorpoints++");
@@ -37,6 +38,7 @@ public class Armorpointspp {
 		LOGGER.info("I heared you wanted some fancy health/armor bars?");
 	}
 	
+	@Deprecated
 	public static boolean isAttributeFixLoaded() {
 		return attributefix;
 	}

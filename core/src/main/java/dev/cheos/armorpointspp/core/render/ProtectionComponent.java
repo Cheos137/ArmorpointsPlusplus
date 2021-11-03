@@ -2,15 +2,17 @@ package dev.cheos.armorpointspp.core.render;
 
 import dev.cheos.armorpointspp.core.IRenderComponent;
 import dev.cheos.armorpointspp.core.RenderContext;
+import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.FloatOption;
 import dev.cheos.armorpointspp.core.adapter.IItemStack;
 
 public class ProtectionComponent implements IRenderComponent {
 	@Override
 	public void render(RenderContext ctx) {
-		if (!ctx.shouldRenderArmor())
+		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.PROTECTION_ENABLE))
 			return;
 		
+		ctx.renderer.setupAppp();
 		int protection = 0;
 		for (IItemStack stack : ctx.data.armorSlots()) { // adds 0 for empty stacks
 			ctx.ench.getLevel(ctx.data.enchantments().protection(), stack);

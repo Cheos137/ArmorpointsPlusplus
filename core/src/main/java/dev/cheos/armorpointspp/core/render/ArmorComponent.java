@@ -4,13 +4,15 @@ import java.awt.Color;
 
 import dev.cheos.armorpointspp.core.IRenderComponent;
 import dev.cheos.armorpointspp.core.RenderContext;
+import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 
 public class ArmorComponent implements IRenderComponent {
 	@Override
 	public void render(RenderContext ctx) {
-		if (!ctx.shouldRenderArmor())
+		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.ARMOR_ENABLE))
 			return;
 		
+		ctx.renderer.setupAppp();
 		int armor = Math.min(ctx.data.armor(), 240);
 		if (armor == 137 || (!ctx.data.isAttributeFixLoaded() && armor == 30)) {
 			renderRainbowArmor(ctx, ctx.x, ctx.y);
@@ -29,7 +31,7 @@ public class ArmorComponent implements IRenderComponent {
 	private void renderRainbowArmor(RenderContext ctx, int x, int y) {
 		ctx.poseStack.pushPose();
 		
-		long millis = ctx.util.getMillis() / 40;
+		long millis = ctx.data.millis() / 40;
 		int color = 0;
 		
 		for (int i = 0; i < 10; i++) {

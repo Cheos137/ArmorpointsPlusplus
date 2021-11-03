@@ -1,8 +1,11 @@
 package dev.cheos.armorpointspp.core.adapter;
 
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import com.google.common.collect.ImmutableList;
 
@@ -10,6 +13,8 @@ import dev.cheos.armorpointspp.core.FrostbiteStyle;
 import dev.cheos.armorpointspp.core.Suffix;
 
 public interface IConfig {
+	public static final DecimalFormat FLOAT_FORMAT = new DecimalFormat("#.##", DecimalFormatSymbols.getInstance(Locale.ROOT));
+	
 	boolean               bool  (Option<Boolean> key);
 	int                   hex   (Option<Integer> key);
 	float                 dec   (Option<Float  > key);
@@ -19,6 +24,7 @@ public interface IConfig {
 		String key();
 		String[] comments();
 		T def();
+		Class<T> type();
 		
 		default BoundedOption<T> asBounded() {
 			return this instanceof BoundedOption<?> ? (BoundedOption<T>) this : new NullBoundedOptionWrapper<>(this);
@@ -51,22 +57,27 @@ public interface IConfig {
 			}
 			
 			@Override
+			public Class<T> type() {
+				return this.opt.type();
+			}
+			
+			@Override
 			@SuppressWarnings("unchecked")
-			public T getMin() {
+			public T min() {
 				return (T) (this.num ? 0 : this.bool ? false : null);
 			}
 			
 			@Override
 			@SuppressWarnings("unchecked")
-			public T getMax() {
+			public T max() {
 				return (T) (this.num ? 0 : this.bool ? false : null);
 			}
 		}
 	}
 	
 	public static interface BoundedOption<T> extends Option<T> {
-		T getMin();
-		T getMax();
+		T min();
+		T max();
 	}
 	
 	public static enum BooleanOption implements Option<Boolean> {
@@ -106,9 +117,14 @@ public interface IConfig {
 		public Boolean def() {
 			return this.def;
 		}
+		
+		@Override
+		public Class<Boolean> type() {
+			return Boolean.class;
+		}
 	}
 	
-	public static enum IntegerOption implements Option<Integer> {
+	public static enum IntegerOption implements BoundedOption<Integer> {
 		TEXT_COLOR_FULL_RESISTANCE("resistanceFull", 0x4c0000, " Color when resistance > 5"                     , " Available: 0x000000 ~ 0xffffff [default: %s]"),
 		TEXT_COLOR_ARMOR_0        ("armor0"        , 0x3d3d3d, " Color when armor = 0"                          , " Available: 0x000000 ~ 0xffffff [default: %s]"),
 		TEXT_COLOR_ARMOR_LT25     ("armorLT25"     , 0x44ff11, " Color when armor < 25"                         , " Available: 0x000000 ~ 0xffffff [default: %s]"),
@@ -144,6 +160,21 @@ public interface IConfig {
 		public Integer def() {
 			return this.def;
 		}
+		
+		@Override
+		public Integer min() {
+			return 0;
+		}
+		
+		@Override
+		public Integer max() {
+			return 0xffffff;
+		}
+		
+		@Override
+		public Class<Integer> type() {
+			return Integer.class;
+		}
 	}
 	
 	public static enum FloatOption implements BoundedOption<Float> {
@@ -163,9 +194,9 @@ public interface IConfig {
 			this.max = max;
 			this.comments = Arrays.stream(comments).map(s ->
 					String.format(s,
-							String.format("%0.3f", this.min),
-							String.format("%0.3f", this.max),
-							String.format("%0.3f", this.def))).collect(ImmutableList.toImmutableList());
+							FLOAT_FORMAT.format(this.min),
+							FLOAT_FORMAT.format(this.max),
+							FLOAT_FORMAT.format(this.def))).collect(ImmutableList.toImmutableList());
 		}
 		
 		@Override
@@ -184,13 +215,18 @@ public interface IConfig {
 		}
 		
 		@Override
-		public Float getMin() {
+		public Float min() {
 			return this.min;
 		}
 		
 		@Override
-		public Float getMax() {
+		public Float max() {
 			return this.max;
+		}
+		
+		@Override
+		public Class<Float> type() {
+			return Float.class;
 		}
 	}
 	
@@ -203,11 +239,14 @@ public interface IConfig {
 		final String key;
 		final T def;
 		final List<String> comments;
+		final Class<T> type;
+		
 		@SuppressWarnings("unchecked")
 		EnumOption(String key, T def, String... comments) {
 			this.key = key;
 			this.def = def;
 			this.comments = Arrays.stream(comments).map(s -> String.format(s, formatOptions(def.getClass()), def.name())).collect(ImmutableList.toImmutableList());
+			this.type = (Class<T>) def.getClass();
 		}
 		
 		@Override
@@ -223,6 +262,11 @@ public interface IConfig {
 		@Override
 		public T def() {
 			return this.def;
+		}
+		
+		@Override
+		public Class<T> type() {
+			return this.type;
 		}
 		
 		private static <T extends Enum<T>> String formatOptions(Class<T> clazz) {

@@ -2,14 +2,16 @@ package dev.cheos.armorpointspp.core.render;
 
 import dev.cheos.armorpointspp.core.IRenderComponent;
 import dev.cheos.armorpointspp.core.RenderContext;
+import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.FloatOption;
 
 public class AbsorptionComponent implements IRenderComponent {
 	@Override
 	public void render(RenderContext ctx) {
-		if (!ctx.shouldRender())
+		if (!ctx.shouldRender() || !ctx.config.bool(BooleanOption.ABSORPTION_ENABLE) || !ctx.config.bool(BooleanOption.HEALTH_ENABLE))
 			return;
 		
+		ctx.renderer.setupAppp();
 		float absorbAmp = ctx.config.dec(FloatOption.ABSORPTION_VALUE);
 		int absorb = ctx.math.ceil(ctx.data.absorption());
 		int fullBorders = ctx.math.floor(0.05F * absorb * absorbAmp);

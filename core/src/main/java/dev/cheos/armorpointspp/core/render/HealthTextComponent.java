@@ -8,7 +8,7 @@ import dev.cheos.armorpointspp.core.adapter.IConfig.IntegerOption;
 public class HealthTextComponent implements IRenderComponent {
 	@Override
 	public void render(RenderContext ctx) {
-		if (!ctx.shouldRenderArmor())
+		if (!ctx.shouldRender() || !ctx.config.bool(BooleanOption.HEALTH_TEXT_ENABLE))
 			return;
 		
 		int freeze = Math.round(100 * ctx.data.percentFrozen());

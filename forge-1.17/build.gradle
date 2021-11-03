@@ -9,7 +9,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle'
 
-version = 'forge-1.17.1-' + modVersion
+version = '1.17.1-' + modVersion
 group = modGroup
 archivesBaseName = modName + '-forge'
 
@@ -19,7 +19,7 @@ println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getPro
 minecraft {
     mappings channel: 'official', version: '1.17.1'
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
@@ -37,10 +37,11 @@ minecraft {
     }
 }
 
+sourceSets.main.java { srcDir project(':core').sourceSets.main.java }
 sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.95'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.104'
     implementation project(':core')
 }
 
