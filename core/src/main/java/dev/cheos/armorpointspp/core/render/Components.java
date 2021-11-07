@@ -1,6 +1,6 @@
 package dev.cheos.armorpointspp.core.render;
 
-public class Components { // TODO each component should be able to trust that their caller handles all the pre-render setup (blend settings, etc.) and texture binding
+public class Components {
 	public static final        ArmorComponent ARMOR         = new        ArmorComponent();
 	public static final VanillaArmorComponent VANILLA_ARMOR = new VanillaArmorComponent();
 	public static final   ResistanceComponent RESISTANCE    = new   ResistanceComponent();

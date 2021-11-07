@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dev.cheos.armorpointspp.config.ApppConfig;
-import dev.cheos.armorpointspp.render.Overlays;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -18,7 +17,7 @@ public class Armorpointspp { // TODO allow armor/health text to be leftbound, to
 	@Deprecated
 	private static boolean attributefix;
 	public static final String MODID = "armorpointspp";
-	private static final Logger LOGGER = LogManager.getLogger("Armorpoints++");
+	public static final Logger LOGGER = LogManager.getLogger("Armorpoints++");
 	
 	public Armorpointspp() {
 		ModLoadingContext.get().registerExtensionPoint(

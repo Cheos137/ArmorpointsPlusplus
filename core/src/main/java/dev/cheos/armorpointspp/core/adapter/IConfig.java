@@ -15,10 +15,10 @@ import dev.cheos.armorpointspp.core.Suffix;
 public interface IConfig {
 	public static final DecimalFormat FLOAT_FORMAT = new DecimalFormat("#.##", DecimalFormatSymbols.getInstance(Locale.ROOT));
 	
-	boolean               bool  (Option<Boolean> key);
-	int                   hex   (Option<Integer> key);
-	float                 dec   (Option<Float  > key);
-	<T extends Enum<T>> T enm   (Option<T      > key);
+	boolean               bool(Option<Boolean> key);
+	int                   hex (Option<Integer> key);
+	float                 dec (Option<Float  > key);
+	<T extends Enum<T>> T enm (Option<T      > key);
 	
 	public static interface Option<T> {
 		String key();
