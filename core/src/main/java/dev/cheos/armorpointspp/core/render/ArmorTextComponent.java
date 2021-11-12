@@ -4,6 +4,8 @@ import java.awt.Color;
 
 import dev.cheos.armorpointspp.core.IRenderComponent;
 import dev.cheos.armorpointspp.core.RenderContext;
+import dev.cheos.armorpointspp.core.RenderableText;
+import dev.cheos.armorpointspp.core.RenderableText.Alignment;
 import dev.cheos.armorpointspp.core.Suffix;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
@@ -38,6 +40,10 @@ public class ArmorTextComponent implements IRenderComponent {
 		else if (armor > 25) color = ctx.config.hex(IntegerOption.TEXT_COLOR_ARMOR_GT25);
 		else color = ctx.config.hex(IntegerOption.TEXT_COLOR_ARMOR_EQ25);
 		
-		ctx.renderer.text(ctx.poseStack, significand, ctx.x - ctx.renderer.width(significand) - 1, ctx.y + 1, color);
+		new RenderableText(significand)
+				.withAlignment(Alignment.RIGHT)
+				.withColor(color)
+				.withShadow(ctx.config.bool(BooleanOption.TEXT_SHADOW))
+				.render(ctx.poseStack, ctx.renderer, ctx.x - 1, ctx.y + 1);
 	}
 }
