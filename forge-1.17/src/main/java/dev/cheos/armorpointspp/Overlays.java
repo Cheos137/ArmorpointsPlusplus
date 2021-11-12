@@ -45,7 +45,7 @@ public class Overlays { // TODO: profiling minecraft.getProfiler().push("xxx"); 
 								  DEBUG              = OverlayRegistry.registerOverlayTop(                       "Appp Debug",            Overlays::debug);
 	
 	public static void init() {
-		// disable forge overlays
+		// disable forge / vanilla overlays
 		OverlayRegistry.enableOverlay(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, false);
 		OverlayRegistry.enableOverlay(ForgeIngameGui.ARMOR_LEVEL_ELEMENT, false);
 		// try to unregister them
@@ -65,10 +65,10 @@ public class Overlays { // TODO: profiling minecraft.getProfiler().push("xxx"); 
 	
 	private static void playerHealth(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		lastHealthY = baseY(gui, screenHeight);
-		if (!ApppConfig.instance().bool(BooleanOption.HEALTH_ENABLE))
+		if (!ApppConfig.instance().bool(BooleanOption.HEALTH_ENABLE)) {
 			if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
 				gui.renderHealth(screenWidth, screenHeight, poseStack);
-		else {
+		} else {
 			Components.HEALTH.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
 			gui.left_height += 10;
 		}
