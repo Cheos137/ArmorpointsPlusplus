@@ -9,6 +9,7 @@ import dev.cheos.armorpointspp.core.RenderableText.Alignment;
 import dev.cheos.armorpointspp.core.Suffix;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
+import dev.cheos.armorpointspp.core.adapter.IConfig.FloatOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.IntegerOption;
 
 public class ArmorTextComponent implements IRenderComponent {
@@ -40,7 +41,13 @@ public class ArmorTextComponent implements IRenderComponent {
 		else if (armor > 25) color = ctx.config.hex(IntegerOption.TEXT_COLOR_ARMOR_GT25);
 		else color = ctx.config.hex(IntegerOption.TEXT_COLOR_ARMOR_EQ25);
 		
-		new RenderableText(significand)
+		if (ctx.config.bool(BooleanOption.ARMOR_TEXT_CONFIG_ENABLE))
+			 new RenderableText(significand)
+				.withAlignment(ctx.config.enm(EnumOption.ARMOR_TEXT_ALIGNMENT))
+				.withColor(color)
+				.withShadow(ctx.config.bool(BooleanOption.TEXT_SHADOW))
+				.render(ctx.poseStack, ctx.renderer, ctx.config.dec(FloatOption.ARMOR_TEXT_X), ctx.config.dec(FloatOption.ARMOR_TEXT_Y));
+		else new RenderableText(significand)
 				.withAlignment(Alignment.RIGHT)
 				.withColor(color)
 				.withShadow(ctx.config.bool(BooleanOption.TEXT_SHADOW))

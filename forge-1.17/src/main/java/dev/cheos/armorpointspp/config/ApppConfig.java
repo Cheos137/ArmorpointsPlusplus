@@ -14,7 +14,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 
-public class ApppConfig implements IConfig {
+public class ApppConfig implements IConfig { // TODO: reload config on world restart
 	private static ApppConfig INSTANCE;
 	private static final Map<String, BoolValue>    boolConfigs   = new HashMap<>();
 	private static final Map<String, HexValue>     hexConfigs    = new HashMap<>();
@@ -65,23 +65,30 @@ public class ApppConfig implements IConfig {
 			floatConfigs.put(opt.key(), new FloatValue (opt.key(), opt.def(), opt.min(), opt.max(), opt.comments()));
 		enumConfigs.put(EnumOption.FROSTBITE_STYLE.key(), new EnumValue<>(EnumOption.FROSTBITE_STYLE.key(), EnumOption.FROSTBITE_STYLE.def(), EnumOption.FROSTBITE_STYLE.comments()));
 		enumConfigs.put(EnumOption.SUFFIX.key(), new EnumValue<>(EnumOption.SUFFIX.key(), EnumOption.SUFFIX.def(), EnumOption.SUFFIX.comments()));
+		enumConfigs.put(EnumOption.ARMOR_TEXT_ALIGNMENT.key(), new EnumValue<>(EnumOption.ARMOR_TEXT_ALIGNMENT.key(), EnumOption.ARMOR_TEXT_ALIGNMENT.def(), EnumOption.ARMOR_TEXT_ALIGNMENT.comments()));
+		enumConfigs.put(EnumOption.HEALTH_TEXT_ALIGNMENT.key(), new EnumValue<>(EnumOption.HEALTH_TEXT_ALIGNMENT.key(), EnumOption.HEALTH_TEXT_ALIGNMENT.def(), EnumOption.HEALTH_TEXT_ALIGNMENT.comments()));
 	}
 	
 	public static class ConfigBuilder {
 		public ConfigBuilder(ForgeConfigSpec.Builder builder) {
-			builder.push("general");
-			builder.push("debug");
-			ApppConfig.boolConfigs.get("debug").define(builder);
-			builder.pop();
-			ApppConfig.boolConfigs.values().forEach(v -> { if (!"debug".equals(v.name)) v.define(builder); });
-			ApppConfig.enumConfigs.values().forEach(v -> v.define(builder));
-			builder.pop();
-			builder.push("representative");
-			ApppConfig.floatConfigs.values().forEach(v -> v.define(builder));
-			builder.pop();
-			builder.push("textcolors");
-			ApppConfig.hexConfigs.values().forEach(v -> v.define(builder));
-			builder.pop();
+			for (Category category : Category.values()) {
+				builder.push(category.getPath());
+				for (Option<?> option : category.getOptions())
+					findValue(option).define(builder); // if we can't find a value, this is a serious issue (either an error in the code or something else), which should crash
+				builder.pop(category.getPath().size());
+			}
 		}
+	}
+	
+	private static ApppConfigValue<?, ?> findValue(Option<?> option) {
+		if (option instanceof BooleanOption)
+			return boolConfigs .get(option.key());
+		if (option instanceof IntegerOption)
+			return hexConfigs  .get(option.key());
+		if (option instanceof FloatOption)
+			return floatConfigs.get(option.key());
+		if (option instanceof EnumOption<?>)
+			return enumConfigs .get(option.key());
+		return null;
 	}
 }

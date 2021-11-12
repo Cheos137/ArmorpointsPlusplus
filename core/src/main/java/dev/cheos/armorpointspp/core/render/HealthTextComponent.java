@@ -5,6 +5,8 @@ import dev.cheos.armorpointspp.core.RenderContext;
 import dev.cheos.armorpointspp.core.RenderableText;
 import dev.cheos.armorpointspp.core.RenderableText.Alignment;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
+import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
+import dev.cheos.armorpointspp.core.adapter.IConfig.FloatOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.IntegerOption;
 
 public class HealthTextComponent implements IRenderComponent {
@@ -14,7 +16,6 @@ public class HealthTextComponent implements IRenderComponent {
 			return;
 		
 		RenderableText text = new RenderableText("")
-				.withAlignment(Alignment.RIGHT)
 				.withShadow(ctx.config.bool(BooleanOption.TEXT_SHADOW));
 		
 		int freeze = Math.round(100 * ctx.data.percentFrozen());
@@ -48,7 +49,9 @@ public class HealthTextComponent implements IRenderComponent {
 			text.append(new RenderableText(freeze).padRight(1).withColor(ctx.config.hex(IntegerOption.TEXT_COLOR_FROSTBITE)));
 			text.append(new RenderableText("%"   ).padRight(1).withColor(ctx.config.hex(IntegerOption.TEXT_COLOR_SEPARATOR)));
 		}
-		
-		text.render(ctx.poseStack, ctx.renderer, ctx.x, ctx.y + 1);
+
+		if (ctx.config.bool(BooleanOption.HEALTH_TEXT_CONFIG_ENABLE))
+			 text.withAlignment(ctx.config.enm(EnumOption.HEALTH_TEXT_ALIGNMENT)).render(ctx.poseStack, ctx.renderer, ctx.config.dec(FloatOption.HEALTH_TEXT_X), ctx.config.dec(FloatOption.HEALTH_TEXT_Y));
+		else text.withAlignment(Alignment.RIGHT).render(ctx.poseStack, ctx.renderer, ctx.x, ctx.y + 1);
 	}
 }
