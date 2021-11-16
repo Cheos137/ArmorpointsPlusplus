@@ -4,6 +4,7 @@ import dev.cheos.armorpointspp.core.IRenderComponent;
 import dev.cheos.armorpointspp.core.RenderContext;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.FloatOption;
+import dev.cheos.armorpointspp.core.texture.ITextureSheet.OverlaySprite;
 
 public class ToughnessComponent implements IRenderComponent {
 	@Override
@@ -15,12 +16,13 @@ public class ToughnessComponent implements IRenderComponent {
 		if (toughness <= 0) return;
 		
 		ctx.renderer.setupAppp();
-		ctx.poseStack.pushPose();
-		ctx.poseStack.scale(0.5F, 0.5F, 1);
+//		ctx.poseStack.pushPose();
+//		ctx.poseStack.scale(0.5F, 0.5F, 1);
 		
 		for (int i = 0; i < 10 && i < toughness; i++)
-			ctx.renderer.blit(ctx.poseStack, 2 * (ctx.x + 8 * i) + 9, 2 * ctx.y + 8, 27, 9, 9, 9);
+			tex(ctx).drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.TOUGHNESS_ICON);
+			//ctx.renderer.blit(ctx.poseStack, 2 * (ctx.x + 8 * i) + 9, 2 * ctx.y + 8, 27, 9, 9, 9);
 		
-		ctx.poseStack.popPose();
+//		ctx.poseStack.popPose();
 	}
 }

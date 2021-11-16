@@ -5,6 +5,7 @@ import dev.cheos.armorpointspp.core.RenderContext;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.FloatOption;
 import dev.cheos.armorpointspp.core.adapter.IItemStack;
+import dev.cheos.armorpointspp.core.texture.ITextureSheet.OverlaySprite;
 
 public class ProtectionComponent implements IRenderComponent {
 	@Override
@@ -27,6 +28,7 @@ public class ProtectionComponent implements IRenderComponent {
 		if (protection <= 0) return;
 		
 		for (int i = 0; i < 10 && i < protection; i++)
-			ctx.renderer.blit(ctx.poseStack, ctx.x + 8 * i, ctx.y, 9, 9, 9, 9);
+			tex(ctx).drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.PROTECTION);
+//			ctx.renderer.blit(ctx.poseStack, ctx.x + 8 * i, ctx.y, 9, 9, 9, 9);
 	}
 }

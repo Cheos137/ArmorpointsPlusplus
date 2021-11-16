@@ -4,6 +4,7 @@ import dev.cheos.armorpointspp.core.IRenderComponent;
 import dev.cheos.armorpointspp.core.RenderContext;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.FloatOption;
+import dev.cheos.armorpointspp.core.texture.ITextureSheet.OverlaySprite;
 
 public class ResistanceComponent implements IRenderComponent {
 	@Override
@@ -19,8 +20,8 @@ public class ResistanceComponent implements IRenderComponent {
 			resistance = 1 + ctx.data.getActiveEffect(ctx.data.effects().resistance()).amplifier();
 		if (resistance <= 0) return;
 		for (int i = 0; i < 10 && i < resistance * ctx.config.dec(FloatOption.RESISTANCE_VALUE); i++, armor -= 2)
-			if      (armor      <= 0) ctx.renderer.blit(ctx.poseStack, ctx.x + 8 * i, ctx.y,  0, 0, 9, 9);
-			else if (armor % 20 == 1) ctx.renderer.blit(ctx.poseStack, ctx.x + 8 * i, ctx.y,  9, 0, 9, 9);
-			else                      ctx.renderer.blit(ctx.poseStack, ctx.x + 8 * i, ctx.y, 18, 0, 9, 9);
+			if      (armor      <= 0) tex(ctx).drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.RESISTANCE_NONE); // ctx.renderer.blit(ctx.poseStack, ctx.x + 8 * i, ctx.y,  0, 0, 9, 9);
+			else if (armor % 20 == 1) tex(ctx).drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.RESISTANCE_HALF); // ctx.renderer.blit(ctx.poseStack, ctx.x + 8 * i, ctx.y,  9, 0, 9, 9);
+			else                      tex(ctx).drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.RESISTANCE_FULL); // ctx.renderer.blit(ctx.poseStack, ctx.x + 8 * i, ctx.y, 18, 0, 9, 9);
 	}
 }

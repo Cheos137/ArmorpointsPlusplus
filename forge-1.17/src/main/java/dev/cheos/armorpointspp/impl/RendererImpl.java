@@ -8,6 +8,7 @@ import dev.cheos.armorpointspp.config.ApppConfig;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IPoseStack;
 import dev.cheos.armorpointspp.core.adapter.IRenderer;
+import dev.cheos.armorpointspp.core.texture.ITextureSheet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.network.chat.Component;
@@ -17,13 +18,19 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 
 public class RendererImpl implements IRenderer {
-	private static final ResourceLocation ICONS = new ResourceLocation(Armorpointspp.MODID, "textures/gui/icons.png");
+	// fallback / default texture sheet location
+	private static final ResourceLocation ICONS = new ResourceLocation(Armorpointspp.MODID, "textures/gui/" + ITextureSheet.defaultSheet().texLocation() + ".png");
 	private final Minecraft minecraft = Minecraft.getInstance();
 	private final ForgeIngameGui gui = (ForgeIngameGui) this.minecraft.gui;
 	
 	@Override
+	public void blit(IPoseStack pStack, int x, int y, float u, float v, int width, int height, int texWidth, int texHeight) {
+		GuiComponent.blit((PoseStack) pStack.getPoseStack(), x, y, u, v, width, height, texWidth, texHeight);
+	}
+	
+	@Override
 	public void blit(IPoseStack pStack, int x, int y, float u, float v, int width, int height) {
-		GuiComponent.blit((PoseStack) pStack.getPoseStack(), x, y, u, v, width, height, 256, 128);
+		blit(pStack, x, y, u, v, width, height, 256, 128);
 	}
 	
 	@Override
@@ -33,12 +40,21 @@ public class RendererImpl implements IRenderer {
 	
 	@Override
 	public void setupAppp() {
-		gui.setupOverlayRenderState(true, false, ICONS);
+		this.gui.setupOverlayRenderState(true, false, ICONS);
+	}
+	
+	@Override
+	public void setupTexture(ITextureSheet texSheet) {
+		ResourceLocation location = new ResourceLocation(Armorpointspp.MODID,
+				"textures/gui/"
+				+ texSheet.texLocation()
+				+ ".png");
+		this.gui.setupOverlayRenderState(true, false, this.minecraft.getResourceManager().hasResource(location) ? location : ICONS);
 	}
 	
 	@Override
 	public void setupVanilla() {
-		gui.setupOverlayRenderState(true, false);
+		this.gui.setupOverlayRenderState(true, false);
 	}
 	
 	@Override
@@ -51,7 +67,6 @@ public class RendererImpl implements IRenderer {
 		if (shadow)
 			this.minecraft.font.drawShadow((PoseStack) poseStack.getPoseStack(), comp(renderType, text), x, y, color);
 		else this.minecraft.font.draw((PoseStack) poseStack.getPoseStack(), comp(renderType, text), x, y, color);
-		// TODO check if it is not neccessary anymore to reset color after rendering text in 1.17 :)
 	}
 	
 	@Override
