@@ -14,14 +14,14 @@ Umm... please check out the curseforge page :)
 https://www.curseforge.com/minecraft/mc-mods/armorpoints
 '''
 
-[[dependencies.examplemod]]
+[[dependencies.armorpointspp]]
     modId="forge"
     mandatory=true
     versionRange="[36,)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.examplemod]]
+[[dependencies.armorpointspp]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.16.5,1.17)"
