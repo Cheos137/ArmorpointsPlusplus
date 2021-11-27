@@ -61,7 +61,7 @@ public class StandardTextureSheet implements ITextureSheet {
 	
 	@Override
 	public void drawArmor(RenderContext ctx, int x, int y, int spriteLevel, boolean half) {
-		// TODO Auto-generated method stub
+		// 0 -> "empty" background
 		
 	}
 	

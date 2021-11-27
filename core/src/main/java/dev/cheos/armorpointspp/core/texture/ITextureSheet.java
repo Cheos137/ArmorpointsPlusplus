@@ -19,16 +19,18 @@ public interface ITextureSheet {
 	default int texWidth()     { return 256; } // assumed tex width  (scaled if other)
 	default int texHeight()    { return 128; } // assumed tex height (scaled if other)
 	
-	default void blit(RenderContext ctx, int x, int y, float u, float v) {
-		ctx.renderer.blit(ctx.poseStack, x, y, u, v, spriteWidth(), spriteHeight());
+	default ITextureSheet bind(RenderContext ctx) { ctx.renderer.setupTexture(this); return this; }
+	default ITextureSheet blit(RenderContext ctx, int x, int y, float u, float v) {
+		ctx.renderer.blit(ctx.poseStack, x, y, u, v, spriteWidth(), spriteHeight()); return this;
 	}
-	
 	
 	static final List<ITextureSheet> sheets = new ArrayList<>();
 	static final ITextureSheet defaultSheet = new StandardTextureSheet("icons");
 	// TODO add other builtin texture sheets
-	public static ITextureSheet defaultSheet() {
-		return defaultSheet;
+	public static ITextureSheet defaultSheet() { return defaultSheet; }
+	
+	public static ITextureSheet currentSheet(RenderContext ctx) {
+		return defaultSheet(); // TODO actually implement
 	}
 	
 	

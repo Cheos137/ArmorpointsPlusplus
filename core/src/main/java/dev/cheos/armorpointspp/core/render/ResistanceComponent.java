@@ -12,7 +12,7 @@ public class ResistanceComponent implements IRenderComponent {
 		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.RESISTANCE_ENABLE))
 			return;
 		
-		ctx.renderer.setupAppp();
+		tex(ctx).bind(ctx);
 		int armor = ctx.data.armor();
 		int resistance = 0;
 		
@@ -20,8 +20,8 @@ public class ResistanceComponent implements IRenderComponent {
 			resistance = 1 + ctx.data.getActiveEffect(ctx.data.effects().resistance()).amplifier();
 		if (resistance <= 0) return;
 		for (int i = 0; i < 10 && i < resistance * ctx.config.dec(FloatOption.RESISTANCE_VALUE); i++, armor -= 2)
-			if      (armor      <= 0) tex(ctx).drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.RESISTANCE_NONE); // ctx.renderer.blit(ctx.poseStack, ctx.x + 8 * i, ctx.y,  0, 0, 9, 9);
-			else if (armor % 20 == 1) tex(ctx).drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.RESISTANCE_HALF); // ctx.renderer.blit(ctx.poseStack, ctx.x + 8 * i, ctx.y,  9, 0, 9, 9);
-			else                      tex(ctx).drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.RESISTANCE_FULL); // ctx.renderer.blit(ctx.poseStack, ctx.x + 8 * i, ctx.y, 18, 0, 9, 9);
+			if      (armor      <= 0) tex(ctx).drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.RESISTANCE_NONE);
+			else if (armor % 20 == 1) tex(ctx).drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.RESISTANCE_HALF);
+			else                      tex(ctx).drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.RESISTANCE_FULL);
 	}
 }

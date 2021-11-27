@@ -13,7 +13,7 @@ public class ProtectionComponent implements IRenderComponent {
 		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.PROTECTION_ENABLE))
 			return;
 		
-		ctx.renderer.setupAppp();
+		tex(ctx).bind(ctx);
 		int protection = 0;
 		for (IItemStack stack : ctx.data.armorSlots()) { // adds 0 for empty stacks
 			ctx.ench.getLevel(ctx.data.enchantments().protection(), stack);
@@ -29,6 +29,5 @@ public class ProtectionComponent implements IRenderComponent {
 		
 		for (int i = 0; i < 10 && i < protection; i++)
 			tex(ctx).drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.PROTECTION);
-//			ctx.renderer.blit(ctx.poseStack, ctx.x + 8 * i, ctx.y, 9, 9, 9, 9);
 	}
 }
