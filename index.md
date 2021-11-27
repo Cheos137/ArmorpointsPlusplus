@@ -2,10 +2,12 @@
 [beta2]: https://cheos137.github.io/ArmorpointsPlusplus/v2-BETA2
 [beta3]: https://cheos137.github.io/ArmorpointsPlusplus/v2-BETA3
 [rc1]: https://cheos137.github.io/ArmorpointsPlusplus/v2-RC1
+[ctexsh]: https://cheos137.github.io/ArmorpointsPlusplus/texturesheets
 
 ## Looking for one of these?
 
 [v2 BETA1][beta1]<br>
 [v2 BETA2][beta2]<br>
 [v2 BETA3][beta3]<br>
-[v2 RC1][rc1]
+[v2 RC1][rc1]<br>
+[Custom Texture Sheets][ctexsh]
