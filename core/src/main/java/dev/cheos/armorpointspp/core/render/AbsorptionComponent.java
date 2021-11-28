@@ -19,7 +19,6 @@ public class AbsorptionComponent implements IRenderComponent {
 		
 		if (absorb <= 0 || absorbAmp <= 0) return;
 		
-		float inv = 20F / absorbAmp;
 		boolean highlight = Components.HEALTH.healthBlinkTime() > Components.HEALTH.lastGuiTicks()
 				&& (Components.HEALTH.healthBlinkTime() - Components.HEALTH.lastGuiTicks()) / 3L % 2L == 1L;
 		
