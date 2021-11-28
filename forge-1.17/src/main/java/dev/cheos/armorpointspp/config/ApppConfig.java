@@ -5,10 +5,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import dev.cheos.armorpointspp.config.ApppConfigValue.BoolValue;
-import dev.cheos.armorpointspp.config.ApppConfigValue.EnumValue;
-import dev.cheos.armorpointspp.config.ApppConfigValue.FloatValue;
-import dev.cheos.armorpointspp.config.ApppConfigValue.HexValue;
+import dev.cheos.armorpointspp.config.ApppConfigValue.*;
 import dev.cheos.armorpointspp.core.adapter.IConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -19,6 +16,7 @@ public class ApppConfig implements IConfig { // TODO: reload config on world res
 	private static final Map<String, BoolValue>    boolConfigs   = new HashMap<>();
 	private static final Map<String, HexValue>     hexConfigs    = new HashMap<>();
 	private static final Map<String, FloatValue>   floatConfigs  = new HashMap<>();
+	private static final Map<String, StringValue>  stringConfigs = new HashMap<>();
 	private static final Map<String, EnumValue<?>> enumConfigs   = new HashMap<>();
 	
 	public static void init() {
@@ -51,6 +49,11 @@ public class ApppConfig implements IConfig { // TODO: reload config on world res
 	}
 	
 	@Override
+	public String str(Option<String> key) {
+		return stringConfigs.containsKey(key.key()) ? stringConfigs.get(key.key()).get() : key.def();
+	}
+	
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends Enum<T>> T enm(Option<T> key) {
 		return enumConfigs.containsKey(key.key()) ? (T) enumConfigs.get(key.key()).get() : key.def();
@@ -58,11 +61,13 @@ public class ApppConfig implements IConfig { // TODO: reload config on world res
 	
 	private static void define() {
 		for (BooleanOption opt : BooleanOption.values())
-			boolConfigs .put(opt.key(), new BoolValue  (opt.key(), opt.def(), opt.comments()));
+			boolConfigs  .put(opt.key(), new BoolValue  (opt.key(), opt.def(), opt.comments()));
 		for (IntegerOption opt : IntegerOption.values())
-			hexConfigs  .put(opt.key(), new HexValue   (opt.key(), opt.def(), opt.comments()));
+			hexConfigs   .put(opt.key(), new HexValue   (opt.key(), opt.def(), opt.comments()));
 		for (FloatOption opt : FloatOption.values())
-			floatConfigs.put(opt.key(), new FloatValue (opt.key(), opt.def(), opt.min(), opt.max(), opt.comments()));
+			floatConfigs .put(opt.key(), new FloatValue (opt.key(), opt.def(), opt.min(), opt.max(), opt.comments()));
+		for (StringOption opt : StringOption.values())
+			stringConfigs.put(opt.key(), new StringValue(opt.key(), opt.def(), opt.comments()));
 		enumConfigs.put(EnumOption.FROSTBITE_STYLE.key(), new EnumValue<>(EnumOption.FROSTBITE_STYLE.key(), EnumOption.FROSTBITE_STYLE.def(), EnumOption.FROSTBITE_STYLE.comments()));
 		enumConfigs.put(EnumOption.SUFFIX.key(), new EnumValue<>(EnumOption.SUFFIX.key(), EnumOption.SUFFIX.def(), EnumOption.SUFFIX.comments()));
 		enumConfigs.put(EnumOption.ARMOR_TEXT_ALIGNMENT.key(), new EnumValue<>(EnumOption.ARMOR_TEXT_ALIGNMENT.key(), EnumOption.ARMOR_TEXT_ALIGNMENT.def(), EnumOption.ARMOR_TEXT_ALIGNMENT.comments()));
@@ -82,13 +87,15 @@ public class ApppConfig implements IConfig { // TODO: reload config on world res
 	
 	private static ApppConfigValue<?, ?> findValue(Option<?> option) {
 		if (option instanceof BooleanOption)
-			return boolConfigs .get(option.key());
+			return boolConfigs  .get(option.key());
 		if (option instanceof IntegerOption)
-			return hexConfigs  .get(option.key());
+			return hexConfigs   .get(option.key());
 		if (option instanceof FloatOption)
-			return floatConfigs.get(option.key());
+			return floatConfigs .get(option.key());
+		if (option instanceof StringOption)
+			return stringConfigs.get(option.key());
 		if (option instanceof EnumOption<?>)
-			return enumConfigs .get(option.key());
+			return enumConfigs  .get(option.key());
 		return null;
 	}
 }

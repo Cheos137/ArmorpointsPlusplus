@@ -1,9 +1,13 @@
 package dev.cheos.armorpointspp.core.texture;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableList;
+
 import dev.cheos.armorpointspp.core.RenderContext;
+import dev.cheos.armorpointspp.core.adapter.IConfig.StringOption;
 
 public interface ITextureSheet {
 	void drawOverlay(RenderContext ctx, int x, int y,                  boolean half,                 boolean hardcore, OverlaySprite sprite); //
@@ -21,16 +25,30 @@ public interface ITextureSheet {
 	
 	default ITextureSheet bind(RenderContext ctx) { ctx.renderer.setupTexture(this); return this; }
 	default ITextureSheet blit(RenderContext ctx, int x, int y, float u, float v) {
-		ctx.renderer.blit(ctx.poseStack, x, y, u, v, spriteWidth(), spriteHeight()); return this;
+		ctx.renderer.blit(ctx.poseStack, x, y, u, v, spriteWidth(), spriteHeight(), texWidth(), texHeight()); return this;
 	}
 	
-	static final List<ITextureSheet> sheets = new ArrayList<>();
-	static final ITextureSheet defaultSheet = new StandardTextureSheet("icons");
+	
+	static final BiMap<String, ITextureSheet> sheets = HashBiMap.create();
+	static final ITextureSheet vanillaSheet = register("vanilla", new VanillaTextureSheet());
+	static final ITextureSheet defaultSheet = register("default", new StandardTextureSheet("icons"));
+	static final List<ITextureSheet> builtins = ImmutableList.of(defaultSheet); // only to be used for config option, does not contain vanilla sheet
 	// TODO add other builtin texture sheets
+	public static ITextureSheet vanillaSheet() { return vanillaSheet; }
 	public static ITextureSheet defaultSheet() { return defaultSheet; }
 	
 	public static ITextureSheet currentSheet(RenderContext ctx) {
-		return defaultSheet(); // TODO actually implement
+		return sheets.computeIfAbsent(ctx.config.str(StringOption.TEXTURE_SHEET), id -> register(new StandardTextureSheet(id)));
+	}
+	
+	static ITextureSheet register(ITextureSheet sheet) {
+		return register(sheet.texLocation(), sheet);
+	}
+	
+	static ITextureSheet register(String id, ITextureSheet sheet) {
+		if (sheets.putIfAbsent(id, sheet) != null)
+			throw new IllegalStateException("Tried to register a texture sheet with the same id twice");
+		return sheet;
 	}
 	
 	

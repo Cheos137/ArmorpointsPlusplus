@@ -6,6 +6,9 @@ import dev.cheos.armorpointspp.core.IRenderComponent;
 import dev.cheos.armorpointspp.core.RenderContext;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
+import dev.cheos.armorpointspp.core.texture.ITextureSheet;
+import dev.cheos.armorpointspp.core.texture.ITextureSheet.HeartStyle;
+import dev.cheos.armorpointspp.core.texture.ITextureSheet.OverlaySprite;
 
 public class HealthComponent implements IRenderComponent {
 	private final Random random = new Random();
@@ -18,7 +21,8 @@ public class HealthComponent implements IRenderComponent {
 		if (!ctx.shouldRender() || !ctx.config.bool(BooleanOption.HEALTH_ENABLE))
 			return;
 		
-		ctx.renderer.setupAppp();
+		ITextureSheet tex = tex(ctx);
+		tex.bind(ctx);
 		boolean frozen   = ctx.data.isFullyFrozen();
 		boolean hardcore = ctx.data.isHardcore();
 		int health       = ctx.math.ceil(ctx.data.health());
@@ -30,6 +34,11 @@ public class HealthComponent implements IRenderComponent {
 		int regen = ctx.data.isEffectActive(ctx.data.effects().regeneration())
 				? this.lastGuiTicks % 25 // in vanilla: % (maxHealth + 5), here: more than 20 + 5 does not make sense as bars are stacked
 				: -1;
+		HeartStyle style = ctx.data.isEffectActive(ctx.data.effects().poison())
+				? HeartStyle.POISON
+				: ctx.data.isEffectActive(ctx.data.effects().wither())
+					? HeartStyle.WITHER
+					: HeartStyle.NORMAL;
 		int margin = 36;
 		
 		if (hardcore) margin += 108;
@@ -62,37 +71,25 @@ public class HealthComponent implements IRenderComponent {
 			
 			this.lastHeartY[i] = heartY;
 			
-			ctx.renderer.blit(ctx.poseStack, heartX, heartY, blink ? 18 : 0, 9, 9, 9); // draw background
-			if (heartValue >= health && heartStack > 0) ctx.renderer.blit(ctx.poseStack, heartX, heartY, margin, heartStack * 9, 9, 9); // part. draw row below
-			
-			if (blink) {
-				if      (heartValue <  this.displayHealth) ctx.renderer.blit(ctx.poseStack, heartX, heartY, margin + 18, 9 + heartStack * 9, 9, 9); // full
-				else if (heartValue == this.displayHealth) ctx.renderer.blit(ctx.poseStack, heartX, heartY, margin + 27, 9 + heartStack * 9, 9, 9); // half
-			}
-			
-			if      (heartValue <  health) ctx.renderer.blit(ctx.poseStack, heartX, heartY, margin    , 9 + heartStack * 9, 9, 9); // full
-			else if (heartValue == health) ctx.renderer.blit(ctx.poseStack, heartX, heartY, margin + 9, 9 + heartStack * 9, 9, 9); // half
+			tex.drawHeartBG(ctx, heartX, heartY, blink); // draw background
+			if (heartValue >= health && heartStack > 0)    tex.drawHeart(ctx, heartX, heartY, heartStack - 1, false, blink, hardcore, style); // draw heart row below
+			if (blink && heartValue <= this.displayHealth) tex.drawHeart(ctx, heartX, heartY, heartStack, heartValue == this.displayHealth, true , hardcore, style);
+			if (         heartValue <=             health) tex.drawHeart(ctx, heartX, heartY, heartStack, heartValue ==             health, false, hardcore, style);
 			
 			if (frozen)
 				switch (ctx.config.enm(EnumOption.FROSTBITE_STYLE)) {
 					case FULL:
-						if (heartValue < health)
-							ctx.renderer.blit(ctx.poseStack, heartX, heartY, hardcore ? 18 : 0, 117, 9, 9);
-						else if (heartValue == health)
-							ctx.renderer.blit(ctx.poseStack, heartX, heartY, hardcore ? 27 : 9, 117, 5, 9); // only half width frostbite
+						if (heartValue <= health)
+							tex.drawOverlay(ctx, heartX, heartY, heartValue == health, hardcore, OverlaySprite.FROSTBITE_FULL);
 						break;
 					case OVERLAY:
-						if (heartValue < health)
-							ctx.renderer.blit(ctx.poseStack, heartX, heartY, hardcore ? 18 : 0, 108, 9, 9);
-						else if (heartValue == health)
-							ctx.renderer.blit(ctx.poseStack, heartX, heartY, hardcore ? 27 : 9, 108, 5, 9); // only half width frostbite
+						if (heartValue <= health)
+							tex.drawOverlay(ctx, heartX, heartY, heartValue == health, hardcore, OverlaySprite.FROSTBITE);
 						break;
 					case ICON: // fallthrough, icon is default
 					default:
-						ctx.poseStack.pushPose();
-						ctx.poseStack.scale(0.5F, 0.5F, 1);
-						ctx.renderer.blit(ctx.poseStack, 2 * heartX + 8, 2 * heartY + 1, 36, 108, 9, 9);
-						ctx.poseStack.popPose();
+						if (heartValue <  health)
+							tex.drawOverlay(ctx, heartX, heartY, false, hardcore, OverlaySprite.FROSTBITE_ICON);
 						break;
 				}
 		}

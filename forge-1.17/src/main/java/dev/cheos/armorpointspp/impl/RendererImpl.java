@@ -45,10 +45,12 @@ public class RendererImpl implements IRenderer {
 	
 	@Override
 	public void setupTexture(ITextureSheet texSheet) {
-		ResourceLocation location = new ResourceLocation(Armorpointspp.MODID,
-				"textures/gui/"
-				+ texSheet.texLocation()
-				+ ".png");
+		ResourceLocation location = texSheet.texLocation().indexOf(':') == -1
+				? new ResourceLocation(Armorpointspp.MODID,
+					"textures/gui/"
+					+ texSheet.texLocation()
+					+ ".png")
+				: new ResourceLocation(texSheet.texLocation());
 		this.gui.setupOverlayRenderState(true, false, this.minecraft.getResourceManager().hasResource(location) ? location : ICONS);
 	}
 	

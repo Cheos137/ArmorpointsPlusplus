@@ -14,7 +14,7 @@ public class MantleCompat {
 	private static final String MANTLE_HEALTH_RENDERER_CLASS = "slimeknights.mantle.client.ExtraHeartRenderHandler";
 	
 	@SuppressWarnings("unchecked")
-	public static void hackMantle() { // TODO config option
+	public static void hackMantle() {
 		try {
 			LOGGER.info("Trying to fix mantle compat (trying to remove mantle's extraheart-renderer)...");
 			boolean success = false;

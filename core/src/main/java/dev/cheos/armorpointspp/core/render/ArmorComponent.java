@@ -5,6 +5,7 @@ import java.awt.Color;
 import dev.cheos.armorpointspp.core.IRenderComponent;
 import dev.cheos.armorpointspp.core.RenderContext;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
+import dev.cheos.armorpointspp.core.texture.ITextureSheet;
 
 public class ArmorComponent implements IRenderComponent {
 	@Override
@@ -12,7 +13,8 @@ public class ArmorComponent implements IRenderComponent {
 		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.ARMOR_ENABLE))
 			return;
 		
-		ctx.renderer.setupAppp();
+		ITextureSheet tex = tex(ctx);
+		tex.bind(ctx);
 		int armor = Math.min(ctx.data.armor(), 240);
 		if (armor == 137 || (!ctx.data.isAttributeFixLoaded() && armor == 30)) {
 			renderRainbowArmor(ctx, ctx.x, ctx.y);
@@ -20,15 +22,12 @@ public class ArmorComponent implements IRenderComponent {
 		}
 		
 		for (int i = 0; i < 10; i++)
-			ctx.renderer.blit(ctx.poseStack, ctx.x + 8 * i, ctx.y,
-					18 * (armor / 20)
-					+ ((armor % 20) - 2 * i == 1
-					? 36 : (armor % 20) - 2 * i >= 2
-					? 45 : 27), 0, 9, 9);
+			tex.drawArmor(ctx, ctx.x + 8 * i, ctx.y, (armor - i * 2 + 19) / 20, (armor % 20) - 2 * i == 1);
 	}
 	
 	// fun rainbow armor bar only visible on 137 armor -- why? because 137 is my favourite number ^^
 	private void renderRainbowArmor(RenderContext ctx, int x, int y) {
+		ITextureSheet tex = tex(ctx);
 		ctx.poseStack.pushPose();
 		
 		long millis = ctx.data.millis() / 40;
@@ -38,7 +37,7 @@ public class ArmorComponent implements IRenderComponent {
 			millis += 5;
 			color = Color.HSBtoRGB((millis % 360) / 360F, 1, 1);
 			ctx.renderer.setColor(((color >> 16) & 0xFF) / 255F, ((color >> 8) & 0xFF) / 255F, (color & 0xFF) / 255F, 1);
-			ctx.renderer.blit(ctx.poseStack, x + 8 * i, y, 45, 0, 9, 9);
+			tex.drawArmor(ctx, x + 8 * i, y, 1, false);
 		}
 		ctx.poseStack.popPose();
 	}

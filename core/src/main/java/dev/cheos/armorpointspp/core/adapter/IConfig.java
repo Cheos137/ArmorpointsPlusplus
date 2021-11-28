@@ -11,13 +11,15 @@ import com.google.common.collect.ImmutableSet;
 import dev.cheos.armorpointspp.core.FrostbiteStyle;
 import dev.cheos.armorpointspp.core.RenderableText.Alignment;
 import dev.cheos.armorpointspp.core.Suffix;
+import dev.cheos.armorpointspp.core.texture.ITextureSheet;
 
-public interface IConfig {
+public interface IConfig { // use forges config update system... somehow
 	public static final DecimalFormat FLOAT_FORMAT = new DecimalFormat("#.##", DecimalFormatSymbols.getInstance(Locale.ROOT));
 	
 	boolean               bool(Option<Boolean> key);
 	int                   hex (Option<Integer> key);
 	float                 dec (Option<Float  > key);
+	String                str (Option<String > key);
 	<T extends Enum<T>> T enm (Option<T      > key);
 	
 	public static enum Category {
@@ -286,6 +288,54 @@ public interface IConfig {
 		@Override
 		public Class<Float> type() {
 			return Float.class;
+		}
+	}
+	
+	public static enum StringOption implements Option<String> {
+		TEXTURE_SHEET("textureSheet", "default", Category.GENERAL, " Sets the texture sheet used for rendering", " See https://github.com/Cheos137/ArmorpointsPlusplus/wiki/Custom-Texture-Sheets for more information", " Builtin: %s [default: %s]");
+		
+		final String key;
+		final String def;
+		final Category category;
+		final List<String> comments;
+		StringOption(String key, String def, Category category, String... comments) {
+			this.key = key;
+			this.def = def;
+			this.category = category;
+			this.comments = Arrays.stream(comments).map(s -> String.format(s, formatBuiltinTexSheets(), def)).collect(ImmutableList.toImmutableList());
+			this.category.options.add(this);
+		}
+		
+		@Override
+		public String key() {
+			return this.key;
+		}
+
+		@Override
+		public String[] comments() {
+			return this.comments.toArray(new String[0]);
+		}
+
+		@Override
+		public String def() {
+			return this.def;
+		}
+
+		@Override
+		public Category category() {
+			return this.category;
+		}
+
+		@Override
+		public Class<String> type() {
+			return String.class;
+		}
+		
+		private static String formatBuiltinTexSheets() {
+			StringBuilder out = new StringBuilder();
+			for (int i = 0; i < ITextureSheet.builtins.size(); i++)
+				out.append(i != 0 ? ", " : "").append(ITextureSheet.sheets.inverse().get(ITextureSheet.builtins.get(i)));
+			return out.toString();
 		}
 	}
 	
