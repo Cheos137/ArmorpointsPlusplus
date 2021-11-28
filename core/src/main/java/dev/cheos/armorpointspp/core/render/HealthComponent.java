@@ -39,11 +39,6 @@ public class HealthComponent implements IRenderComponent {
 				: ctx.data.isEffectActive(ctx.data.effects().wither())
 					? HeartStyle.WITHER
 					: HeartStyle.NORMAL;
-		int margin = 36;
-		
-		if (hardcore) margin += 108;
-		if (ctx.data.isEffectActive(ctx.data.effects().poison())) margin += 36;
-		else if (ctx.data.isEffectActive(ctx.data.effects().wither())) margin += 72;
 		
 		if (health < this.lastHealth && ctx.data.invulnTime() > 0) {
 			this.lastHealthTime = ctx.data.millis();
