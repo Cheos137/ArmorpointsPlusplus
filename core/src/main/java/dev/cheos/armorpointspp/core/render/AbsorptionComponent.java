@@ -4,6 +4,7 @@ import dev.cheos.armorpointspp.core.IRenderComponent;
 import dev.cheos.armorpointspp.core.RenderContext;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.FloatOption;
+import dev.cheos.armorpointspp.core.texture.ITextureSheet;
 
 public class AbsorptionComponent implements IRenderComponent {
 	@Override
@@ -11,14 +12,14 @@ public class AbsorptionComponent implements IRenderComponent {
 		if (!ctx.shouldRender() || !ctx.config.bool(BooleanOption.ABSORPTION_ENABLE) || !ctx.config.bool(BooleanOption.HEALTH_ENABLE))
 			return;
 		
-		ctx.renderer.setupAppp();
+		ITextureSheet tex = tex(ctx).bind(ctx);
 		float absorbAmp = ctx.config.dec(FloatOption.ABSORPTION_VALUE);
 		int absorb = ctx.math.ceil(ctx.data.absorption());
 		int fullBorders = ctx.math.floor(0.05F * absorb * absorbAmp);
 		
 		if (absorb <= 0 || absorbAmp <= 0) return;
 		
-		int inv = ctx.math.floor(20F / absorbAmp);
+		float inv = 20F / absorbAmp;
 		boolean highlight = Components.HEALTH.healthBlinkTime() > Components.HEALTH.lastGuiTicks()
 				&& (Components.HEALTH.healthBlinkTime() - Components.HEALTH.lastGuiTicks()) / 3L % 2L == 1L;
 		
@@ -28,11 +29,9 @@ public class AbsorptionComponent implements IRenderComponent {
 			int heartX = ctx.x + i * 8;
 			int heartY = Components.HEALTH.lastHeartY()[i]; // borders should of course line up with hearts :)
 			
-			if (i < fullBorders) ctx.renderer.blit(ctx.poseStack, heartX, heartY, highlight ? 18 : 0, 99, 9, 9);
-			else if (i == fullBorders && absorb % inv != 0)
-				ctx.renderer.blit(ctx.poseStack, heartX, heartY,
-						(highlight ? 18 : 0) + 9 * (ctx.math.ceil(absorb * absorbAmp) % 2),
-						9 + 9 * ctx.math.ceil((absorb % inv) / 8F), 9, 9);
+			if (i < fullBorders) tex.drawAbsorb(ctx, heartX, heartY, 20, highlight);
+			else if (i == fullBorders && (absorb * absorbAmp) % 20 != 0)
+				tex.drawAbsorb(ctx, heartX, heartY, ctx.math.ceil(absorb * absorbAmp) % 20, highlight);
 		}
 	}
 }

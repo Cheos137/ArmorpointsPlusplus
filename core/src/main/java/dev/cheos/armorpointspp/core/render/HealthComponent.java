@@ -21,8 +21,7 @@ public class HealthComponent implements IRenderComponent {
 		if (!ctx.shouldRender() || !ctx.config.bool(BooleanOption.HEALTH_ENABLE))
 			return;
 		
-		ITextureSheet tex = tex(ctx);
-		tex.bind(ctx);
+		ITextureSheet tex = tex(ctx).bind(ctx);
 		boolean frozen   = ctx.data.isFullyFrozen();
 		boolean hardcore = ctx.data.isHardcore();
 		int health       = ctx.math.ceil(ctx.data.health());

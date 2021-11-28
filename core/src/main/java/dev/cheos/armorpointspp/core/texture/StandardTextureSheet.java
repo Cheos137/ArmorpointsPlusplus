@@ -56,7 +56,7 @@ public class StandardTextureSheet implements ITextureSheet {
 	
 	@Override
 	public void drawAbsorb(RenderContext ctx, int x, int y, int amount, boolean bright) {
-		blit(ctx, x, y, (bright ? 18 : 0) + 9 * (amount % 2), 9 + 9 * amount);
+		blit(ctx, x, y, (bright ? 18 : 0) + 9 * (amount % 2), 9 + 9 * ((amount + 1) / 2));
 	}
 	
 	@Override

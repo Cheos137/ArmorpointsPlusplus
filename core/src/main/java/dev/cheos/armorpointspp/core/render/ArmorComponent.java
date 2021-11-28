@@ -13,8 +13,7 @@ public class ArmorComponent implements IRenderComponent {
 		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.ARMOR_ENABLE))
 			return;
 		
-		ITextureSheet tex = tex(ctx);
-		tex.bind(ctx);
+		ITextureSheet tex = tex(ctx).bind(ctx);
 		int armor = Math.min(ctx.data.armor(), 240);
 		if (armor == 137 || (!ctx.data.isAttributeFixLoaded() && armor == 30)) {
 			renderRainbowArmor(ctx, ctx.x, ctx.y);
