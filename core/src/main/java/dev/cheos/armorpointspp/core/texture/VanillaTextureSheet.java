@@ -38,6 +38,11 @@ public final class VanillaTextureSheet implements ITextureSheet {
 	}
 	
 	@Override
+	public void drawToughness(RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean icon) {
+		throw new UnsupportedOperationException("Appp toughness not available with vanilla texture");
+	}
+	
+	@Override
 	public String texLocation() {
 		return "minecraft:textures/gui/icons.png";
 	}

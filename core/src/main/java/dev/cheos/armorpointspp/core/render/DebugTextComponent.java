@@ -13,9 +13,9 @@ public class DebugTextComponent implements IRenderComponent {
 	private static RenderableText left   = new RenderableText("this should be right and blue"             ).withAlignment(Alignment.RIGHT ).withColor(0x0000ff);
 	
 	@Override
-	public void render(RenderContext ctx) {
+	public boolean render(RenderContext ctx) {
 		if (!ctx.shouldRender() || !ctx.config.bool(BooleanOption.DEBUG))
-			return;
+			return false;
 		
 		float maxHp  = ctx.data.maxHealth();
 		float absorb = ctx.data.absorption();
@@ -48,5 +48,6 @@ public class DebugTextComponent implements IRenderComponent {
 				.withColor(0xffffff)
 				.withShadow(false))
 		.render(ctx.poseStack, ctx.renderer, ctx.x, ctx.y - 50);
+		return true;
 	}
 }

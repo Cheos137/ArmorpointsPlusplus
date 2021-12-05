@@ -17,9 +17,9 @@ public class HealthComponent implements IRenderComponent {
 	private int[] lastHeartY = new int[10];
 	
 	@Override
-	public void render(RenderContext ctx) {
+	public boolean render(RenderContext ctx) {
 		if (!ctx.shouldRender() || !ctx.config.bool(BooleanOption.HEALTH_ENABLE))
-			return;
+			return false;
 		
 		ITextureSheet tex = tex(ctx).bind(ctx);
 		boolean frozen   = ctx.data.isFullyFrozen();
@@ -87,6 +87,7 @@ public class HealthComponent implements IRenderComponent {
 						break;
 				}
 		}
+		return true;
 	}
 	
 	int[] lastHeartY() {

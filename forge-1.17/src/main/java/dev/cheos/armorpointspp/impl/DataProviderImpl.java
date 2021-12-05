@@ -1,5 +1,6 @@
 package dev.cheos.armorpointspp.impl;
 
+import dev.cheos.armorpointspp.compat.PotionCore;
 import dev.cheos.armorpointspp.core.adapter.*;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -79,6 +80,11 @@ public class DataProviderImpl implements IDataProvider {
 	}
 	
 	@Override
+	public boolean isPotionCoreLoaded() {
+		return false; // Unsupported in 1.17
+	}
+	
+	@Override
 	public boolean isFullyFrozen() {
 		return this.minecraft.player.isFullyFrozen();
 	}
@@ -101,6 +107,11 @@ public class DataProviderImpl implements IDataProvider {
 	@Override
 	public IMobEffectInstance getActiveEffect(IMobEffect effect) {
 		return new MobEffectInstanceImpl(this.minecraft.player.getEffect((MobEffect) effect.getEffect()));
+	}
+	
+	@Override
+	public IPotionCore potionCore() {
+		return PotionCore.INSTANCE;
 	}
 	
 	@Override

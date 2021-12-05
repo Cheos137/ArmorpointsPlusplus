@@ -9,5 +9,8 @@ public interface IRenderComponent {
 	default Random random() { return RANDOM; }
 	default ITextureSheet tex(RenderContext ctx) { return ITextureSheet.currentSheet(ctx); }
 	
-	void render(RenderContext ctx);
+	/**
+	 * @return true if the component did render, else false
+	 */
+	boolean render(RenderContext ctx);
 }

@@ -14,9 +14,9 @@ import dev.cheos.armorpointspp.core.adapter.IConfig.IntegerOption;
 
 public class ArmorTextComponent implements IRenderComponent {
 	@Override
-	public void render(RenderContext ctx) {
+	public boolean render(RenderContext ctx) {
 		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.ARMOR_TEXT_ENABLE))
-			return;
+			return false;
 		
 		int armor = ctx.data.armor();
 		Suffix.Type type = ctx.config.enm(EnumOption.SUFFIX);
@@ -46,11 +46,39 @@ public class ArmorTextComponent implements IRenderComponent {
 				.withAlignment(ctx.config.enm(EnumOption.ARMOR_TEXT_ALIGNMENT))
 				.withColor(color)
 				.withShadow(ctx.config.bool(BooleanOption.TEXT_SHADOW))
+				.append(toughness(ctx))
 				.render(ctx.poseStack, ctx.renderer, ctx.config.dec(FloatOption.ARMOR_TEXT_X), ctx.config.dec(FloatOption.ARMOR_TEXT_Y));
 		else new RenderableText(significand)
 				.withAlignment(Alignment.RIGHT)
 				.withColor(color)
 				.withShadow(ctx.config.bool(BooleanOption.TEXT_SHADOW))
-				.render(ctx.poseStack, ctx.renderer, ctx.x - 1, ctx.y + 1);
+				.append(toughness(ctx))
+				.render(ctx.poseStack, ctx.renderer, ctx.x - 1, ctx.y + 0.5F);
+		return true;
+	}
+	
+	private static RenderableText toughness(RenderContext ctx) {
+		if (!ctx.config.bool(BooleanOption.TOUGHNESS_ENABLE) || ctx.config.bool(BooleanOption.TOUGHNESS_BAR))
+			return RenderableText.EMPTY;
+		
+		int toughness = ctx.data.toughness();
+		if (toughness == 0)
+			return RenderableText.EMPTY;
+		
+		Suffix.Type type = ctx.config.enm(EnumOption.SUFFIX);
+		int power = toughness == 0 ? 0 : (int) Math.log10(toughness);
+		if (type != Suffix.Type.SCI && power < 27) power = power / 3 * 3; // 100 YOTTA is max. if higher switch to SCI notation
+		else type = Suffix.Type.SCI;
+		
+		String significand = String.valueOf(ctx.math.floor(toughness / Math.pow(10, power) * 10F) / 10F);    // one decimal precision
+		if(significand.endsWith(".0")) significand = significand.substring(0, significand.length() - 2); // strip .0
+		significand += (type == Suffix.Type.SCI ? "E" + power : Suffix.byPow(power).getSuffix(type));    // add suffix
+		
+		int color = ctx.config.hex(IntegerOption.TEXT_COLOR_TOUGHNESS);
+		return new RenderableText("+")
+				.pad(1)
+				.withColor(ctx.config.hex(IntegerOption.TEXT_COLOR_SEPARATOR))
+				.append(new RenderableText(significand).withColor(color));
+		
 	}
 }

@@ -8,6 +8,7 @@ import dev.cheos.armorpointspp.core.adapter.IRenderer;
 import dev.cheos.armorpointspp.core.adapter.IRenderer.TextRenderType;
 
 public class RenderableText {
+	public static final RenderableText EMPTY = new RenderableText("");
 	public static final RenderableText SPACE = new RenderableText(" ");
 	
 	private RenderableText parent;
@@ -20,6 +21,8 @@ public class RenderableText {
 	public RenderableText(String text) { this.text = text; }
 	
 	public RenderableText append(RenderableText text) {
+		if (text == EMPTY || text.text.isEmpty())
+			return this;
 		text.parent = this;
 		this.children.add(text);
 		return this;
@@ -102,7 +105,7 @@ public class RenderableText {
 					break;
 			}
 		
-		renderer.text(poseStack, this.text, pos.x - this.padLeft, pos.y, getColor(), TextRenderType.TEXT, hasShadow());
+		renderer.text(poseStack, this.text, pos.x + this.padLeft, pos.y, getColor(), TextRenderType.TEXT, hasShadow());
 		pos.x += renderer.width(this.text) + this.padLeft + this.padRight;
 		this.children.forEach(c -> c.draw(poseStack, renderer, pos));
 	}
@@ -116,6 +119,9 @@ public class RenderableText {
 	}
 	
 	
+	/**
+	 * needed to guarantee mutability for x and y coordinates
+	 */
 	private static final class Position {
 		private float x, y;
 		private Position(float x, float y) { this.x = x; this.y = y; }

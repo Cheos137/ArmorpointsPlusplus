@@ -13,6 +13,7 @@ import net.minecraftforge.fml.config.ModConfig;
 
 public class ApppConfig implements IConfig { // TODO: reload config on world restart
 	private static ApppConfig INSTANCE;
+	private static final Version VERSION = Version.v1_17;
 	private static final Map<String, BoolValue>    boolConfigs   = new HashMap<>();
 	private static final Map<String, HexValue>     hexConfigs    = new HashMap<>();
 	private static final Map<String, FloatValue>   floatConfigs  = new HashMap<>();
@@ -61,17 +62,19 @@ public class ApppConfig implements IConfig { // TODO: reload config on world res
 	
 	private static void define() {
 		for (BooleanOption opt : BooleanOption.values())
-			boolConfigs  .put(opt.key(), new BoolValue  (opt.key(), opt.def(), opt.comments()));
+			if (opt.isAvailableIn(VERSION))
+				boolConfigs  .put(opt.key(), new BoolValue  (opt.key(), opt.def(), opt.comments()));
 		for (IntegerOption opt : IntegerOption.values())
-			hexConfigs   .put(opt.key(), new HexValue   (opt.key(), opt.def(), opt.comments()));
+			if (opt.isAvailableIn(VERSION))
+				hexConfigs   .put(opt.key(), new HexValue   (opt.key(), opt.def(), opt.comments()));
 		for (FloatOption opt : FloatOption.values())
-			floatConfigs .put(opt.key(), new FloatValue (opt.key(), opt.def(), opt.min(), opt.max(), opt.comments()));
+			if (opt.isAvailableIn(VERSION))
+				floatConfigs .put(opt.key(), new FloatValue (opt.key(), opt.def(), opt.min(), opt.max(), opt.comments()));
 		for (StringOption opt : StringOption.values())
-			stringConfigs.put(opt.key(), new StringValue(opt.key(), opt.def(), opt.comments()));
-		enumConfigs.put(EnumOption.FROSTBITE_STYLE.key(), new EnumValue<>(EnumOption.FROSTBITE_STYLE.key(), EnumOption.FROSTBITE_STYLE.def(), EnumOption.FROSTBITE_STYLE.comments()));
-		enumConfigs.put(EnumOption.SUFFIX.key(), new EnumValue<>(EnumOption.SUFFIX.key(), EnumOption.SUFFIX.def(), EnumOption.SUFFIX.comments()));
-		enumConfigs.put(EnumOption.ARMOR_TEXT_ALIGNMENT.key(), new EnumValue<>(EnumOption.ARMOR_TEXT_ALIGNMENT.key(), EnumOption.ARMOR_TEXT_ALIGNMENT.def(), EnumOption.ARMOR_TEXT_ALIGNMENT.comments()));
-		enumConfigs.put(EnumOption.HEALTH_TEXT_ALIGNMENT.key(), new EnumValue<>(EnumOption.HEALTH_TEXT_ALIGNMENT.key(), EnumOption.HEALTH_TEXT_ALIGNMENT.def(), EnumOption.HEALTH_TEXT_ALIGNMENT.comments()));
+			if (opt.isAvailableIn(VERSION))
+				stringConfigs.put(opt.key(), new StringValue(opt.key(), opt.def(), opt.comments()));
+		for (EnumOption<?> opt : EnumOption.values())
+			enumConfigs.put(opt.key(), EnumValue.of(opt));
 	}
 	
 	public static class ConfigBuilder {
@@ -79,7 +82,8 @@ public class ApppConfig implements IConfig { // TODO: reload config on world res
 			for (Category category : Category.values()) {
 				builder.push(category.getPath());
 				for (Option<?> option : category.getOptions())
-					findValue(option).define(builder); // if we can't find a value, this is a serious issue (either an error in the code or something else), which should crash
+					if (option.isAvailableIn(VERSION))
+						findValue(option).define(builder); // if we can't find a value, this is a serious issue (either an error in the code or something else), which should crash
 				builder.pop(category.getPath().size());
 			}
 		}

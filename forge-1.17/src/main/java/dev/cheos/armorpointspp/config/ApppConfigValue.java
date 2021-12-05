@@ -1,5 +1,6 @@
 package dev.cheos.armorpointspp.config;
 
+import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
 import net.minecraft.util.Mth;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
@@ -91,5 +92,9 @@ public abstract class ApppConfigValue<T, U> {
 		
 		@Override
 		public T get() { return Enum.valueOf(this.type, this.value.get()); }
+		
+		public static <T extends Enum<T>> EnumValue<T> of(EnumOption<T> opt) {
+			return new EnumValue<>(opt.key(), opt.def(), opt.comments());
+		}
 	}
 }

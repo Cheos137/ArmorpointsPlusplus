@@ -30,4 +30,8 @@ public class RenderContext {
 	public boolean shouldRenderArmor() {
 		return shouldRender() && (this.data.armor() > 0 || this.config.bool(BooleanOption.ARMOR_SHOW_ON_0));
 	}
+	
+	public boolean shouldRenderToughness() {
+		return shouldRender() && (this.data.toughness() > 0 || this.config.bool(BooleanOption.TOUGHNESS_SHOW_ON_0));
+	}
 }

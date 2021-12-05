@@ -32,17 +32,19 @@ public class Overlays { // TODO: profiling minecraft.getProfiler().push("xxx"); 
 	private static final IDataProvider DATA_PROVIDER = new DataProviderImpl();
 	private static final IRenderer RENDERER          = new RendererImpl();
 	private static final Minecraft minecraft         = Minecraft.getInstance();
-	private static int lastArmorY = 0, lastHealthY = 0;
+	private static int lastArmorY = 0, lastHealthY = 0, lastToughnessY = 0;
 	
-	public static final IIngameOverlay PLAYER_HEALTH = OverlayRegistry.registerOverlayAbove(BOSS_HEALTH_ELEMENT, "Player Health",         Overlays::playerHealth),
-								  ABSORPTION         = OverlayRegistry.registerOverlayAbove(PLAYER_HEALTH,       "Appp Absorption",       Overlays::absorption),
-								  ARMOR_LEVEL        = OverlayRegistry.registerOverlayAbove(ABSORPTION,          "Armor Level",           Overlays::armorLevel),
-								  RESISTANCE         = OverlayRegistry.registerOverlayAbove(ARMOR_LEVEL,         "Appp Resistance",       Overlays::resistance),
-								  PROTECTION         = OverlayRegistry.registerOverlayAbove(RESISTANCE,          "Appp Protection",       Overlays::protection),
-								  ARMOR_TOUGHNESS    = OverlayRegistry.registerOverlayAbove(PROTECTION,          "Appp Armor Toughness",  Overlays::armorToughness),
-								  ARMOR_TEXT         = OverlayRegistry.registerOverlayAbove(HUD_TEXT_ELEMENT,    "Appp Armor Text",       Overlays::armorText),
-								  HEALTH_TEXT        = OverlayRegistry.registerOverlayAbove(HUD_TEXT_ELEMENT,    "Appp Health Text",      Overlays::healthText),
-								  DEBUG              = OverlayRegistry.registerOverlayTop(                       "Appp Debug",            Overlays::debug);
+	public static final IIngameOverlay PLAYER_HEALTH = OverlayRegistry.registerOverlayAbove(BOSS_HEALTH_ELEMENT, "Player Health",           Overlays::playerHealth),
+								  ABSORPTION         = OverlayRegistry.registerOverlayAbove(PLAYER_HEALTH,       "Appp Absorption",         Overlays::absorption),
+								  ARMOR_LEVEL        = OverlayRegistry.registerOverlayAbove(ABSORPTION,          "Armor Level",             Overlays::armorLevel),
+								  ARMOR_TOUGHNESS    = OverlayRegistry.registerOverlayAbove(ARMOR_LEVEL,         "Appp Armor Toughness",    Overlays::armorToughness),
+								  RESISTANCE         = OverlayRegistry.registerOverlayAbove(ARMOR_TOUGHNESS,     "Appp Resistance",         Overlays::resistance),
+								  PROTECTION         = OverlayRegistry.registerOverlayAbove(RESISTANCE,          "Appp Protection",         Overlays::protection),
+								  ARMOR_TOUGHNESS_OV = OverlayRegistry.registerOverlayAbove(PROTECTION,          "Appp Armor Toughness OV", Overlays::armorToughnessOv),
+								  ARMOR_TEXT         = OverlayRegistry.registerOverlayAbove(HUD_TEXT_ELEMENT,    "Appp Armor Text",         Overlays::armorText),
+								  HEALTH_TEXT        = OverlayRegistry.registerOverlayAbove(HUD_TEXT_ELEMENT,    "Appp Health Text",        Overlays::healthText),
+								  TOUGHNESS_TEXT     = OverlayRegistry.registerOverlayAbove(HUD_TEXT_ELEMENT,    "Appp Toughness Text",     Overlays::toughnessText),
+								  DEBUG              = OverlayRegistry.registerOverlayTop(                       "Appp Debug",              Overlays::debug);
 	
 	public static void init() {
 		// disable forge / vanilla overlays
@@ -68,10 +70,8 @@ public class Overlays { // TODO: profiling minecraft.getProfiler().push("xxx"); 
 		if (!ApppConfig.instance().bool(BooleanOption.HEALTH_ENABLE)) {
 			if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
 				gui.renderHealth(screenWidth, screenHeight, poseStack);
-		} else {
-			Components.HEALTH.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
+		} else if (Components.HEALTH.render(ctx(poseStack, baseX(screenWidth), lastHealthY)))
 			gui.left_height += 10;
-		}
 	}
 	
 	private static void absorption(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
@@ -80,10 +80,16 @@ public class Overlays { // TODO: profiling minecraft.getProfiler().push("xxx"); 
 	
 	private static void armorLevel(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		RenderContext ctx = ctx(poseStack, baseX(screenWidth), lastArmorY = baseY(gui, screenHeight));
+		boolean flag = false;
 		if (!ApppConfig.instance().bool(BooleanOption.ARMOR_ENABLE))
-			Components.VANILLA_ARMOR.render(ctx);
-		else Components.ARMOR.render(ctx);
-		gui.left_height += 10;
+			flag = Components.VANILLA_ARMOR.render(ctx);
+		else flag = Components.ARMOR.render(ctx);
+		if (flag) gui.left_height += 10;
+	}
+	
+	private static void armorToughness(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		if (Components.TOUGHNESS.render(ctx(poseStack, baseX(screenWidth), lastToughnessY = baseY(gui, screenHeight))))
+			gui.left_height += 10;
 	}
 	
 	private static void resistance(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
@@ -94,8 +100,8 @@ public class Overlays { // TODO: profiling minecraft.getProfiler().push("xxx"); 
 		Components.PROTECTION.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
 	}
 	
-	private static void armorToughness(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
-		Components.TOUGHNESS.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
+	private static void armorToughnessOv(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		Components.TOUGHNESS_OVER.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
 	}
 	
 	private static void armorText(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
@@ -104,6 +110,10 @@ public class Overlays { // TODO: profiling minecraft.getProfiler().push("xxx"); 
 	
 	private static void healthText(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		Components.HEALTH_TEXT.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
+	}
+	
+	private static void toughnessText(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		Components.TOUGHNESS_TEXT.render(ctx(poseStack, baseX(screenWidth), lastToughnessY));
 	}
 	
 	private static void debug(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {

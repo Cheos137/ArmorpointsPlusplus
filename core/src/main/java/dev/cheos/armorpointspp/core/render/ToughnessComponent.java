@@ -3,20 +3,19 @@ package dev.cheos.armorpointspp.core.render;
 import dev.cheos.armorpointspp.core.IRenderComponent;
 import dev.cheos.armorpointspp.core.RenderContext;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
-import dev.cheos.armorpointspp.core.adapter.IConfig.FloatOption;
-import dev.cheos.armorpointspp.core.texture.ITextureSheet.OverlaySprite;
+import dev.cheos.armorpointspp.core.texture.ITextureSheet;
 
 public class ToughnessComponent implements IRenderComponent {
 	@Override
-	public void render(RenderContext ctx) {
-		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.TOUTHNESS_ENABLE))
-			return;
+	public boolean render(RenderContext ctx) {
+		if (!ctx.shouldRenderToughness() || !ctx.config.bool(BooleanOption.TOUGHNESS_ENABLE) || !ctx.config.bool(BooleanOption.TOUGHNESS_BAR))
+			return false;
 		
-		tex(ctx).bind(ctx);
-		int toughness = ctx.math.ceil(ctx.data.toughness() * ctx.config.dec(FloatOption.TOUGHNESS_VALUE));
-		if (toughness <= 0) return;
+		ITextureSheet tex = tex(ctx).bind(ctx);
+		int toughness = ctx.data.toughness();
 		
-		for (int i = 0; i < 10 && i < toughness; i++)
-			tex(ctx).drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.TOUGHNESS_ICON);
+		for (int i = 0; i < 10; i++)
+			tex.drawToughness(ctx, ctx.x + 8 * i, ctx.y, (int) ((toughness - 2 * (i + 1) + 20) * 0.05F), (toughness % 20) - 2 * i == 1, false);
+		return true;
 	}
 }

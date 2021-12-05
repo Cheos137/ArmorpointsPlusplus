@@ -41,7 +41,7 @@ sourceSets.main.java { srcDir project(':core').sourceSets.main.java }
 sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.126'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.1.0'
     implementation project(':core')
 }
 

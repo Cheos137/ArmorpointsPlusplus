@@ -6,9 +6,9 @@ import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 
 public class DebugComponent implements IRenderComponent {
 	@Override
-	public void render(RenderContext ctx) {
+	public boolean render(RenderContext ctx) {
 		if (!ctx.shouldRender() || !ctx.config.bool(BooleanOption.DEBUG))
-			return;
+			return false;
 		
 		tex(ctx).bind(ctx);
 		ctx.poseStack.pushPose();
@@ -16,5 +16,6 @@ public class DebugComponent implements IRenderComponent {
 		ctx.poseStack.translate(1.25D, 6.25D, 0);
 		ctx.renderer.blit(ctx.poseStack, 5, 25, 0, 0, tex(ctx).texWidth(), tex(ctx).texHeight());
 		ctx.poseStack.popPose();
+		return true;
 	}
 }

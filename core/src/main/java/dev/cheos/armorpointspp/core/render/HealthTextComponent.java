@@ -11,9 +11,9 @@ import dev.cheos.armorpointspp.core.adapter.IConfig.IntegerOption;
 
 public class HealthTextComponent implements IRenderComponent {
 	@Override
-	public void render(RenderContext ctx) {
+	public boolean render(RenderContext ctx) {
 		if (!ctx.shouldRender() || !ctx.config.bool(BooleanOption.HEALTH_TEXT_ENABLE))
-			return;
+			return false;
 		
 		RenderableText text = new RenderableText("")
 				.withShadow(ctx.config.bool(BooleanOption.TEXT_SHADOW));
@@ -52,6 +52,7 @@ public class HealthTextComponent implements IRenderComponent {
 
 		if (ctx.config.bool(BooleanOption.HEALTH_TEXT_CONFIG_ENABLE))
 			 text.withAlignment(ctx.config.enm(EnumOption.HEALTH_TEXT_ALIGNMENT)).render(ctx.poseStack, ctx.renderer, ctx.config.dec(FloatOption.HEALTH_TEXT_X), ctx.config.dec(FloatOption.HEALTH_TEXT_Y));
-		else text.withAlignment(Alignment.RIGHT).render(ctx.poseStack, ctx.renderer, ctx.x, ctx.y + 1);
+		else text.withAlignment(Alignment.RIGHT).render(ctx.poseStack, ctx.renderer, ctx.x, ctx.y + 0.5F);
+		return true;
 	}
 }
