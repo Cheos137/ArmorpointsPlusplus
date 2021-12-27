@@ -2,7 +2,7 @@ package dev.cheos.armorpointspp.core.texture;
 
 import dev.cheos.armorpointspp.core.RenderContext;
 
-public class StandardTextureSheet implements ITextureSheet { // TODO magic shield overlay
+public class StandardTextureSheet implements ITextureSheet { // TODO magic shield overlay TODO add option for toughness bar to be on right side
 	private final String location;
 	
 	public StandardTextureSheet(String location) {
@@ -78,7 +78,7 @@ public class StandardTextureSheet implements ITextureSheet { // TODO magic shiel
 			ctx.poseStack.pushPose();
 			ctx.poseStack.scale(0.5F, 0.5F, 1);
 			blit(ctx, 2 * (x) + 9, 2 * y + 8, 45.5F + 18 * ctx.math.clamp(spriteLevel, 0, 11), 9); // no empty icons -> 0 = silver icon
-			// u should be 45px, but when scaled by 0.5, 45.5px somehow works better (45px includes a weird border from the lefthand sprite)
+			// u should be 45px, but when scaled by 0.5, 45.5px somehow works better (45px includes a weird border from the lefthand sprite) [offset]
 			// v should be  9px which i deemed to be the best option, even when scaled
 			ctx.poseStack.popPose();
 		} else blit(ctx, x, y, (half ? 36 : 27) + 18 * ctx.math.clamp(spriteLevel, 0, 12), 9);

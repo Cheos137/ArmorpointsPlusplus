@@ -13,18 +13,19 @@ public class ResistanceComponent implements IRenderComponent {
 		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.RESISTANCE_ENABLE))
 			return false;
 		
+		ctx.profiler.push("resistance");
 		int armor = ctx.data.armor();
 		int resistance = 0;
 		
 		if (ctx.data.isEffectActive(ctx.data.effects().resistance()))
 			resistance = 1 + ctx.data.getActiveEffect(ctx.data.effects().resistance()).amplifier();
-		if (resistance <= 0) return false;
+		if (resistance <= 0) return popReturn(ctx, false);
 		ITextureSheet tex = tex(ctx).bind(ctx);
 		
 		for (int i = 0; i < 10 && i < resistance * ctx.config.dec(FloatOption.RESISTANCE_VALUE); i++, armor -= 2)
 			if      (armor      <= 0) tex.drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.RESISTANCE_NONE);
 			else if (armor % 20 == 1) tex.drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.RESISTANCE_HALF);
 			else                      tex.drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.RESISTANCE_FULL);
-		return true;
+		return popReturn(ctx, true);
 	}
 }

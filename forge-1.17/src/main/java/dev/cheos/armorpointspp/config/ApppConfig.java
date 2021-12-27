@@ -11,7 +11,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 
-public class ApppConfig implements IConfig { // TODO: reload config on world restart
+public class ApppConfig implements IConfig {
 	private static ApppConfig INSTANCE;
 	private static final Version VERSION = Version.v1_17;
 	private static final Map<String, BoolValue>    boolConfigs   = new HashMap<>();
@@ -58,6 +58,14 @@ public class ApppConfig implements IConfig { // TODO: reload config on world res
 	@SuppressWarnings("unchecked")
 	public <T extends Enum<T>> T enm(Option<T> key) {
 		return enumConfigs.containsKey(key.key()) ? (T) enumConfigs.get(key.key()).get() : key.def();
+	}
+	
+	public void invalidateAll() {
+		  boolConfigs.values().forEach(ApppConfigValue::invalidate);
+		   hexConfigs.values().forEach(ApppConfigValue::invalidate);
+		 floatConfigs.values().forEach(ApppConfigValue::invalidate);
+		stringConfigs.values().forEach(ApppConfigValue::invalidate);
+		  enumConfigs.values().forEach(ApppConfigValue::invalidate);
 	}
 	
 	private static void define() {

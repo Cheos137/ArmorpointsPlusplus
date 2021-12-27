@@ -25,6 +25,10 @@ public abstract class ApppConfigValue<T, U> {
 		this.value = Lazy.of(this.confValue::get);
 	}
 	
+	public void invalidate() {
+		this.value = Lazy.of(this.confValue::get);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public U get() { return (U) this.value.get(); }
 	

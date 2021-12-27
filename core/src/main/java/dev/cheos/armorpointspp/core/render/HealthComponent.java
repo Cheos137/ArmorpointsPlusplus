@@ -21,6 +21,7 @@ public class HealthComponent implements IRenderComponent {
 		if (!ctx.shouldRender() || !ctx.config.bool(BooleanOption.HEALTH_ENABLE))
 			return false;
 		
+		ctx.profiler.push("health");
 		ITextureSheet tex = tex(ctx).bind(ctx);
 		boolean frozen   = ctx.data.isFullyFrozen();
 		boolean hardcore = ctx.data.isHardcore();
@@ -87,7 +88,7 @@ public class HealthComponent implements IRenderComponent {
 						break;
 				}
 		}
-		return true;
+		return popReturn(ctx, true);
 	}
 	
 	int[] lastHeartY() {

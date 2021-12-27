@@ -13,16 +13,17 @@ public class ArmorComponent implements IRenderComponent {
 		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.ARMOR_ENABLE))
 			return false;
 		
+		ctx.profiler.push("armor");
 		ITextureSheet tex = tex(ctx).bind(ctx);
 		int armor = Math.min(ctx.data.armor(), 240);
 		if (armor == 137 || (!ctx.data.isAttributeFixLoaded() && armor == 30)) {
 			renderRainbowArmor(ctx, ctx.x, ctx.y);
-			return true;
+			return popReturn(ctx, true);
 		}
 		
 		for (int i = 0; i < 10; i++)
 			tex.drawArmor(ctx, ctx.x + 8 * i, ctx.y, (int) ((armor - 2 * (i + 1) + 20) * 0.05F), (armor % 20) - 2 * i == 1);
-		return true;
+		return popReturn(ctx, true);
 	}
 	
 	// fun rainbow armor bar only visible on 137 armor -- why? because 137 is my favourite number ^^

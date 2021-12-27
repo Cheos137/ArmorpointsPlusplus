@@ -18,6 +18,7 @@ public class ArmorTextComponent implements IRenderComponent {
 		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.ARMOR_TEXT_ENABLE))
 			return false;
 		
+		ctx.profiler.push("armorText");
 		int armor = ctx.data.armor();
 		Suffix.Type type = ctx.config.enm(EnumOption.SUFFIX);
 		int resistance = ctx.data.isEffectActive(ctx.data.effects().resistance())
@@ -54,7 +55,7 @@ public class ArmorTextComponent implements IRenderComponent {
 				.withShadow(ctx.config.bool(BooleanOption.TEXT_SHADOW))
 				.append(toughness(ctx))
 				.render(ctx.poseStack, ctx.renderer, ctx.x - 1, ctx.y + 0.5F);
-		return true;
+		return popReturn(ctx, true);
 	}
 	
 	private static RenderableText toughness(RenderContext ctx) {

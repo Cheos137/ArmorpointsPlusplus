@@ -17,6 +17,7 @@ public class DebugTextComponent implements IRenderComponent {
 		if (!ctx.shouldRender() || !ctx.config.bool(BooleanOption.DEBUG))
 			return false;
 		
+		ctx.profiler.push("appp.debugText");
 		float maxHp  = ctx.data.maxHealth();
 		float absorb = ctx.data.absorption();
 		int   hpRows = ctx.math.ceil((maxHp + absorb) / 20F);
@@ -48,6 +49,6 @@ public class DebugTextComponent implements IRenderComponent {
 				.withColor(0xffffff)
 				.withShadow(false))
 		.render(ctx.poseStack, ctx.renderer, ctx.x, ctx.y - 50);
-		return true;
+		return popReturn(ctx, true);
 	}
 }

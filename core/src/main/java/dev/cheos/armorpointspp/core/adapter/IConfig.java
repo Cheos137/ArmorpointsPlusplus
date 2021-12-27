@@ -1,6 +1,5 @@
 package dev.cheos.armorpointspp.core.adapter;
 
-import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.*;
@@ -10,6 +9,7 @@ import com.google.common.collect.ImmutableSet;
 
 import dev.cheos.armorpointspp.core.FrostbiteStyle;
 import dev.cheos.armorpointspp.core.RenderableText.Alignment;
+import dev.cheos.armorpointspp.core.Side;
 import dev.cheos.armorpointspp.core.Suffix;
 import dev.cheos.armorpointspp.core.texture.ITextureSheet;
 
@@ -21,6 +21,7 @@ public interface IConfig { // use forges config update system... somehow
 	float                 dec (Option<Float  > key);
 	String                str (Option<String > key);
 	<T extends Enum<T>> T enm (Option<T      > key);
+	void invalidateAll();
 	
 	public static enum Category {
 		COMPAT("compatibility"),
@@ -413,13 +414,16 @@ public interface IConfig { // use forges config update system... somehow
 				ARMOR_TEXT_ALIGNMENT     = new EnumOption<>("armorValueAlignment"    , Alignment.RIGHT    , Category.TEXT_CONFIG, " if enabled, custom alignment of the armor value text"    , " Available: %s [default: %s]"),
 				HEALTH_TEXT_ALIGNMENT    = new EnumOption<>("healthValueAlignment"   , Alignment.RIGHT    , Category.TEXT_CONFIG, " if enabled, custom alignment of the health value text"   , " Available: %s [default: %s]"),
 				TOUGHNESS_TEXT_ALIGNMENT = new EnumOption<>("toughnessValueAlignment", Alignment.RIGHT    , Category.TEXT_CONFIG, " if enabled, custom alignment of the toughness value text", " Available: %s [default: %s]");
+		public static final EnumOption<Side>
+				TOUGHNESS_SIDE  = new EnumOption<>("toughnessSide"                   , Side.LEFT          , Category.GENERAL    , " Determines the side of the toughness bar"                , " Available: %s [default: %s]", " Only effective if useToughnessBar is set to true!");
 		
 		private static final List<EnumOption<?>> ALL = ImmutableList.copyOf(new EnumOption<?>[] {
 			FROSTBITE_STYLE,
 			SUFFIX,
 			ARMOR_TEXT_ALIGNMENT,
 			HEALTH_TEXT_ALIGNMENT,
-			TOUGHNESS_TEXT_ALIGNMENT
+			TOUGHNESS_TEXT_ALIGNMENT,
+			TOUGHNESS_SIDE
 		});
 		
 		final String key;
@@ -478,19 +482,13 @@ public interface IConfig { // use forges config update system... somehow
 		private static <T extends Enum<T>> String formatOptions(Class<T> clazz) {
 			StringBuilder out = new StringBuilder();
 			try {
-				T[] values = getValues(clazz);
+				T[] values = clazz.getEnumConstants();
 				if (values != null && values.length != 0)
 					for (int i = 0; i < values.length; i++)
 						out.append(i != 0 ? ", " : "").append(values[i].name());
 				else out.append("<none>");
 			} catch (Throwable t) { out.append("[!] <ERROR> [!]"); }
 			return out.toString();
-		}
-		
-		@SuppressWarnings("unchecked")
-		private static <T extends Enum<T>> T[] getValues(Class<T> clazz) throws Exception {
-			Method v = clazz.getDeclaredMethod("values");
-			return (T[]) v.invoke(null);
 		}
 	}
 }

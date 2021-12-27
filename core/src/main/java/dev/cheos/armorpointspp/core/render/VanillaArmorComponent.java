@@ -11,11 +11,12 @@ public class VanillaArmorComponent implements IRenderComponent {
 		if (!ctx.shouldRenderArmor() || ctx.config.bool(BooleanOption.ARMOR_ENABLE))
 			return false;
 		
+		ctx.profiler.push("armor");
 		ITextureSheet.vanillaSheet().bind(ctx);
 		int x = ctx.x;
 		int armor = ctx.data.armor();
 		for (int i = 1; armor > 0 && i < 20; i += 2, x += 8)
 			ITextureSheet.vanillaSheet().drawArmor(ctx, x, ctx.y, i > armor ? 0 : 1, i == armor);
-		return true;
+		return popReturn(ctx, true);
 	}
 }

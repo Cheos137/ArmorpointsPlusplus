@@ -11,11 +11,12 @@ public class ToughnessComponent implements IRenderComponent {
 		if (!ctx.shouldRenderToughness() || !ctx.config.bool(BooleanOption.TOUGHNESS_ENABLE) || !ctx.config.bool(BooleanOption.TOUGHNESS_BAR))
 			return false;
 		
+		ctx.profiler.push("toughness");
 		ITextureSheet tex = tex(ctx).bind(ctx);
 		int toughness = ctx.data.toughness();
 		
 		for (int i = 0; i < 10; i++)
 			tex.drawToughness(ctx, ctx.x + 8 * i, ctx.y, (int) ((toughness - 2 * (i + 1) + 20) * 0.05F), (toughness % 20) - 2 * i == 1, false);
-		return true;
+		return popReturn(ctx, true);
 	}
 }

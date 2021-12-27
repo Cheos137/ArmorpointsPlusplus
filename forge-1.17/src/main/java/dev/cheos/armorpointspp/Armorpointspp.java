@@ -4,15 +4,20 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dev.cheos.armorpointspp.config.ApppConfig;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggedInEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fmllegacy.network.FMLNetworkConstants;
 
 @Mod(Armorpointspp.MODID)
+@EventBusSubscriber(Dist.CLIENT)
 public class Armorpointspp {
 	public static final String MODID = "armorpointspp";
 	public static final Logger LOGGER = LogManager.getLogger("Armorpoints++");
@@ -66,5 +71,10 @@ public class Armorpointspp {
 		LOGGER.warn("NOTICE: If that is not an option for you, please double-check your");
 		LOGGER.warn("NOTICE: configuration files to make sure everything works.");
 		LOGGER.warn("-=================================================================-");
+	}
+	
+	@SubscribeEvent
+	public static void onLogin(LoggedInEvent event) { // seems to run on main thread -> no sync problems here
+		ApppConfig.instance().invalidateAll();
 	}
 }

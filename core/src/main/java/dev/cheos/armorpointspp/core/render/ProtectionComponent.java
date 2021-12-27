@@ -14,6 +14,7 @@ public class ProtectionComponent implements IRenderComponent {
 		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.PROTECTION_ENABLE))
 			return false;
 		
+		ctx.profiler.push("protection");
 		int protection = 0;
 		for (IItemStack stack : ctx.data.armorSlots()) { // adds 0 for empty stacks
 			ctx.ench.getLevel(ctx.data.enchantments().protection(), stack);
@@ -26,10 +27,10 @@ public class ProtectionComponent implements IRenderComponent {
 		
 		protection = ctx.math.ceil(protection * ctx.config.dec(FloatOption.PROTECTION_VALUE));
 		protection = ctx.math.clamp(protection, 0, 10);
-		if (protection <= 0) return false;
+		if (protection <= 0) return popReturn(ctx, false);
 		
 		for (int i = 0; i < 10 && i < protection; i++)
 			tex.drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.PROTECTION);
-		return true;
+		return popReturn(ctx, true);
 	}
 }

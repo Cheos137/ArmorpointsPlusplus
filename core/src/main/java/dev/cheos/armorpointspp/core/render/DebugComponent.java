@@ -10,12 +10,13 @@ public class DebugComponent implements IRenderComponent {
 		if (!ctx.shouldRender() || !ctx.config.bool(BooleanOption.DEBUG))
 			return false;
 		
+		ctx.profiler.push("appp.debug");
 		tex(ctx).bind(ctx);
 		ctx.poseStack.pushPose();
 		ctx.poseStack.scale(0.8F, 0.8F, 1);
 		ctx.poseStack.translate(1.25D, 6.25D, 0);
 		ctx.renderer.blit(ctx.poseStack, 5, 25, 0, 0, tex(ctx).texWidth(), tex(ctx).texHeight());
 		ctx.poseStack.popPose();
-		return true;
+		return popReturn(ctx, true);
 	}
 }

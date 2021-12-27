@@ -12,12 +12,13 @@ public class AbsorptionComponent implements IRenderComponent {
 		if (!ctx.shouldRender() || !ctx.config.bool(BooleanOption.ABSORPTION_ENABLE) || !ctx.config.bool(BooleanOption.HEALTH_ENABLE))
 			return false;
 		
+		ctx.profiler.push("absorption");
 		ITextureSheet tex = tex(ctx).bind(ctx);
 		float absorbAmp = ctx.config.dec(FloatOption.ABSORPTION_VALUE);
 		int absorb = ctx.math.ceil(ctx.data.absorption());
 		int fullBorders = ctx.math.floor(0.05F * absorb * absorbAmp);
 		
-		if (absorb <= 0 || absorbAmp <= 0) return false;
+		if (absorb <= 0 || absorbAmp <= 0) return popReturn(ctx, false);
 		
 		boolean highlight = Components.HEALTH.healthBlinkTime() > Components.HEALTH.lastGuiTicks()
 				&& (Components.HEALTH.healthBlinkTime() - Components.HEALTH.lastGuiTicks()) / 3L % 2L == 1L;
@@ -32,6 +33,6 @@ public class AbsorptionComponent implements IRenderComponent {
 			else if (i == fullBorders && (absorb * absorbAmp) % 20 != 0)
 				tex.drawAbsorb(ctx, heartX, heartY, ctx.math.ceil(absorb * absorbAmp) % 20, highlight);
 		}
-		return true;
+		return popReturn(ctx, true);
 	}
 }
