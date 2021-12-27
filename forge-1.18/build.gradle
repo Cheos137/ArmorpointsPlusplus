@@ -9,9 +9,9 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle'
 
-version = 'forge-1.18-' + modVersion
+version = '1.18-' + modVersion
 group = modGroup
-archivesBaseName = modName
+archivesBaseName =  modName + '-forge'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -38,7 +38,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18-38.0.12'
+    minecraft 'net.minecraftforge:forge:1.18-38.0.16'
     implementation project(':core')
 }
 
