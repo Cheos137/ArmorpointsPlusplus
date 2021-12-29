@@ -37,10 +37,12 @@ minecraft {
     }
 }
 
+sourceSets.main.java { srcDir project(':core').sourceSets.main.java }
 sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.2.8'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.20'
+    implementation project(':core')
 }
 
 jar.finalizedBy('reobfJar')

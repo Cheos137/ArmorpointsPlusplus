@@ -34,7 +34,10 @@ public class ReflectionHelper {
 	
 	public static <T, V> void setPrivateValue(Class<T> clazz, String name, T of, V value) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		Field field = findField(clazz, name);
+		boolean fin = isFinal(field);
+		if (fin) unfinalize(field);
 		field.set(of, value);
+		if (fin) finalize(field);
 	}
 	
 	/**
@@ -99,5 +102,9 @@ public class ReflectionHelper {
 		Field modifiers = findField(Field.class, "modifiers");
 		modifiers.setInt(field, field.getModifiers() | Modifier.FINAL);
 		return field;
+	}
+	
+	public static boolean isFinal(Field field) {
+		return (field.getModifiers() & Modifier.FINAL) != 0;
 	}
 }

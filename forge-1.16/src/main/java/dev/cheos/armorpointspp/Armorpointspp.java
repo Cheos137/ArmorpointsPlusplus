@@ -5,19 +5,21 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dev.cheos.armorpointspp.config.ApppConfig;
-import dev.cheos.armorpointspp.render.RenderGameOverlayHandler;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggedInEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.FMLNetworkConstants;
 
 @Mod(Armorpointspp.MODID)
+@EventBusSubscriber(Dist.CLIENT)
 public class Armorpointspp {
-	private static boolean attributefix;
 	public static final String MODID = "armorpointspp";
 	private static final Logger LOGGER = LogManager.getLogger("Armorpoints++");
 	
@@ -27,20 +29,15 @@ public class Armorpointspp {
 				() -> Pair.of(
 						() -> FMLNetworkConstants.IGNORESERVERONLY,
 						(a, b) -> true));
-		attributefix = ModList.get().isLoaded("attributefix");
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::client);
 		ApppConfig.init();
 		checkCompat();
 	}
 	
 	private void client(FMLClientSetupEvent event) {
-		MinecraftForge.EVENT_BUS.register(new RenderGameOverlayHandler(event.getMinecraftSupplier().get()));
+//		MinecraftForge.EVENT_BUS.register(new RenderGameOverlayHandler(event.getMinecraftSupplier().get()));
 		LOGGER.info("oh hi there... :)");
 		LOGGER.info("I heared you wanted some fancy health/armor bars?");
-	}
-	
-	public static boolean isAttributeFixLoaded() {
-		return attributefix;
 	}
 	
 	private void checkCompat() {
@@ -55,7 +52,7 @@ public class Armorpointspp {
 	
 	private void logIncompatible(String mod) {
 		LOGGER.warn("-=================================================================-");
-		LOGGER.warn("NOTICE: " + mod + " is installed!");
+		LOGGER.warn("NOTICE: [" + mod + "] is installed!");
 		LOGGER.warn("");
 		LOGGER.warn("NOTICE: Due to the way THAT mod is made,");
 		LOGGER.warn("NOTICE: it CAN cause major incompatibilities");
@@ -71,9 +68,14 @@ public class Armorpointspp {
 		LOGGER.warn("NOTICE: that conflicting features of the mod named above");
 		LOGGER.warn("NOTICE: are fully disabled or the mod named above is not installed.");
 		LOGGER.warn("");
-		LOGGER.warn("NOTICE: You can mostly solve this issue by simply removing " + mod + ".");
+		LOGGER.warn("NOTICE: You can usually solve this issue by simply removing [" + mod + "].");
 		LOGGER.warn("NOTICE: If that is not an option for you, please double-check your");
 		LOGGER.warn("NOTICE: configuration files to make sure everything works.");
 		LOGGER.warn("-=================================================================-");
+	}
+	
+	@SubscribeEvent
+	public static void onLogin(LoggedInEvent event) { // seems to run on main thread -> no sync problems here
+		ApppConfig.instance().invalidateAll();
 	}
 }
