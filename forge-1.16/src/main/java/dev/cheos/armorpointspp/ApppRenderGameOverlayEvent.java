@@ -73,11 +73,12 @@ public interface ApppRenderGameOverlayEvent {
 		ListenerList listenerList = EventListenerHelper.getListenerList(parent);
 		setListenerList(originalList == null ? new ListenerList(listenerList) : originalList);
 		
-        try {
-			listenerList.register(busID, EventPriority.HIGHEST, new ASMEventHandler(RenderGameOverlayListener.class, RenderGameOverlayListener.class.getDeclaredMethod("handle", RenderGameOverlayEvent.class), false));
-		} catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
-			throw new IllegalStateException("Error re-registering appp event handler", e);
-		}
+		if (listenerList.getListeners(busID).length == 0)
+			try {
+				listenerList.register(busID, EventPriority.HIGHEST, new ASMEventHandler(RenderGameOverlayListener.class, RenderGameOverlayListener.class.getDeclaredMethod("handle", RenderGameOverlayEvent.class), false));
+			} catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
+				throw new IllegalStateException("Error re-registering appp event handler", e);
+			}
 	}
 	
 	void setListenerList(ListenerList llist);

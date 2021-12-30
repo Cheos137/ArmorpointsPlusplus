@@ -28,7 +28,7 @@ import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.client.gui.OverlayRegistry.OverlayEntry;
 
 //the cool thing about this update is that i can just go in and edit vanilla stuff without worrying about breaking something - it'll never be my fault again
-public class Overlays { // TODO: profiling minecraft.getProfiler().push("xxx"); TODO: make config value save category
+public class Overlays {
 	private static final IDataProvider DATA_PROVIDER = new DataProviderImpl();
 	private static final IRenderer RENDERER          = new RendererImpl();
 	private static final IProfiler PROFILER          = new ProfilerImpl();

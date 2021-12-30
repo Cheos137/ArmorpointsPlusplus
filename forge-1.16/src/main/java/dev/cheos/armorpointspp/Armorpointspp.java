@@ -20,8 +20,9 @@ import net.minecraftforge.fml.network.FMLNetworkConstants;
 @Mod(Armorpointspp.MODID)
 @EventBusSubscriber(Dist.CLIENT)
 public class Armorpointspp {
-	public static final String MODID = "armorpointspp";
+	public  static final String MODID = "armorpointspp";
 	private static final Logger LOGGER = LogManager.getLogger("Armorpoints++");
+	public  static boolean MANTLE;
 	
 	public Armorpointspp() {
 		ModLoadingContext.get().registerExtensionPoint(
@@ -32,10 +33,10 @@ public class Armorpointspp {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::client);
 		ApppConfig.init();
 		checkCompat();
+		MANTLE = ModList.get().isLoaded("mantle");
 	}
 	
 	private void client(FMLClientSetupEvent event) {
-//		MinecraftForge.EVENT_BUS.register(new RenderGameOverlayHandler(event.getMinecraftSupplier().get()));
 		LOGGER.info("oh hi there... :)");
 		LOGGER.info("I heared you wanted some fancy health/armor bars?");
 	}
@@ -43,7 +44,7 @@ public class Armorpointspp {
 	private void checkCompat() {
 		checkIncompatible("colorfulhealthbar", "ColorfulHealthBar");
 		checkIncompatible("overloadedarmorbar", "OverloadedArmorBar");
-		checkIncompatible("mantle", "Mantle");
+//		checkIncompatible("mantle", "Mantle");
 	}
 	
 	private void checkIncompatible(String modId, String name) {
