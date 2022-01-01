@@ -3,10 +3,9 @@ package dev.cheos.armorpointspp;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import dev.cheos.armorpointspp.compat.MantleCompat;
 import dev.cheos.armorpointspp.config.ApppConfig;
-import dev.cheos.armorpointspp.render.RenderGameOverlayHandler;
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.common.MinecraftForge;
+import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -16,38 +15,33 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = Armorpointspp.MODID,
 	 name = "Armorpoints++",
-	 version = "v2.0.0-rc1",
+//	 version = "3.0.0",
 	 clientSideOnly = true,
 	 acceptableRemoteVersions = "*",
 	 acceptedMinecraftVersions = "[1.12,1.12.2]",
 	 dependencies = "after:mantle")
 public class Armorpointspp {
-	private static boolean attributefix;
 	public static final String MODID = "armorpointspp";
 	private static final Logger LOGGER = LogManager.getLogger("Armorpoints++");
+	public static boolean MANTLE;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		attributefix = Loader.isModLoaded("attributefix");
-		ApppConfig.init();
+		MANTLE = Loader.isModLoaded("mantle");
+		ApppConfig.init(event.getSuggestedConfigurationFile());
 		checkCompat();
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		MinecraftForge.EVENT_BUS.register(new RenderGameOverlayHandler(Minecraft.getMinecraft()));
 		LOGGER.info("oh hi there... :)");
 		LOGGER.info("I heared you wanted some fancy health/armor bars?");
 	}
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		if (Loader.isModLoaded("mantle") && ApppConfig.getBool("mantle"))
+		if (MANTLE && ApppConfig.instance().bool(BooleanOption.MANTLE_COMPAT))
 			MantleCompat.hackMantle();
-	}
-	
-	public static boolean isAttributeFixLoaded() {
-		return attributefix;
 	}
 	
 	private void checkCompat() {

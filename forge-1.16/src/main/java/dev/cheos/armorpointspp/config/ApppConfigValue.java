@@ -88,13 +88,6 @@ public abstract class ApppConfigValue<T, U> {
 		}
 		
 		@Override
-		public void define(ForgeConfigSpec.Builder builder) {
-			builder.comment(this.comments);
-			this.confValue = builder.define(this.name, this.def);
-			this.value = Lazy.of(this.confValue::get);
-		}
-		
-		@Override
 		public T get() { return Enum.valueOf(this.type, this.value.get()); }
 		
 		public static <T extends Enum<T>> EnumValue<T> of(EnumOption<T> opt) {

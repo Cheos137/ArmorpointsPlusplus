@@ -33,14 +33,20 @@ public interface IConfig { // use forges config update system... somehow
 		TEXT_CONFIG("textconfig");
 		
 		private final List<String> path;
+		private final String pathJoined;
 		private final Set<Option<?>> options = new HashSet<>();
 		
 		Category(String path) {
 			this.path = ImmutableList.copyOf(Arrays.asList(path.split("\\.")));
+			this.pathJoined = path;
 		}
 		
 		public List<String> getPath() {
 			return this.path;
+		}
+		
+		public String getPathJoined() {
+			return this.pathJoined;
 		}
 		
 		public Set<Option<?>> getOptions() {
