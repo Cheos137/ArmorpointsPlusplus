@@ -2,7 +2,7 @@ package dev.cheos.armorpointspp.core.texture;
 
 import dev.cheos.armorpointspp.core.RenderContext;
 
-public class StandardTextureSheet implements ITextureSheet { // TODO magic shield overlay TODO add option for toughness bar to be on right side
+public class StandardTextureSheet implements ITextureSheet {
 	private final String location;
 	
 	public StandardTextureSheet(String location) {
@@ -82,6 +82,11 @@ public class StandardTextureSheet implements ITextureSheet { // TODO magic shiel
 			// v should be  9px which i deemed to be the best option, even when scaled
 			ctx.poseStack.popPose();
 		} else blit(ctx, x, y, (half ? 36 : 27) + 18 * ctx.math.clamp(spriteLevel, 0, 12), 9);
+	}
+
+	@Override
+	public void drawMagicShield(RenderContext ctx, int x, int y, int spriteLevel) {
+		blit(ctx, x, y, 72 + 36 - 9 * (spriteLevel % 5), 117);
 	}
 	
 	@Override

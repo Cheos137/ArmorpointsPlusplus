@@ -8,7 +8,7 @@ import dev.cheos.armorpointspp.config.ApppConfigValue.*;
 import dev.cheos.armorpointspp.core.adapter.IConfig;
 import net.minecraftforge.common.config.Configuration;
 
-public class ApppConfig implements IConfig {
+public class ApppConfig implements IConfig { // TODO: config gui?
 	private static ApppConfig INSTANCE;
 	private static final Version VERSION = Version.v1_12;
 	private static final Map<String, BoolValue>    boolConfigs   = new HashMap<>();
@@ -27,6 +27,7 @@ public class ApppConfig implements IConfig {
 		 floatConfigs.values().forEach(v -> v.define(this.config));
 		stringConfigs.values().forEach(v -> v.define(this.config));
 		  enumConfigs.values().forEach(v -> v.define(this.config));
+		this.config.save();
 	}
 	
 	public static void init(File file) {
@@ -69,6 +70,7 @@ public class ApppConfig implements IConfig {
 	
 	@Override
 	public void invalidateAll() {
+		INSTANCE.config.load();
 		  boolConfigs.values().forEach(ApppConfigValue::invalidate);
 		   hexConfigs.values().forEach(ApppConfigValue::invalidate);
 		 floatConfigs.values().forEach(ApppConfigValue::invalidate);

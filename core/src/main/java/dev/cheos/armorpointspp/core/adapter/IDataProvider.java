@@ -14,7 +14,6 @@ public interface IDataProvider {
 	IEnchantmentProvider enchantments();
 	boolean hidden();
 	boolean isAttributeFixLoaded();
-	boolean isPotionCoreLoaded();
 	boolean isFullyFrozen();
 	boolean isHardcore();
 	boolean isEffectActive(IMobEffect effect);
@@ -22,10 +21,10 @@ public interface IDataProvider {
 	IMobEffectInstance getActiveEffect(IMobEffect effect);
 	IPotionCore potionCore();
 	Iterable<IItemStack> armorSlots();
-	default int resistance() { return isPotionCoreLoaded() ? potionCore().resistance() : getActiveEffect(effects().resistance()).amplifier(); }
 	
+	// these should return 0 by definition if potioncore is not supported
 	public interface IPotionCore {
-		int magicShield();
-		int resistance();
+		double magicShield();
+		double resistance();
 	}
 }

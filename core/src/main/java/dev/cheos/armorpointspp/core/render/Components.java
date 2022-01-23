@@ -12,6 +12,7 @@ public class Components {
 	public static final        ArmorTextComponent ARMOR_TEXT     = new        ArmorTextComponent();
 	public static final       HealthTextComponent HEALTH_TEXT    = new       HealthTextComponent();
 	public static final    ToughnessTextComponent TOUGHNESS_TEXT = new    ToughnessTextComponent();
+	public static final      MagicShieldComponent MAGIC_SHIELD   = new      MagicShieldComponent();
 	
 	public static final            DebugComponent DEBUG          = new            DebugComponent();
 	public static final        DebugTextComponent DEBUG_TEXT     = new        DebugTextComponent();

@@ -10,12 +10,13 @@ import dev.cheos.armorpointspp.core.RenderContext;
 import dev.cheos.armorpointspp.core.adapter.IConfig.StringOption;
 
 public interface ITextureSheet {
-	void drawOverlay  (RenderContext ctx, int x, int y,                  boolean half,                 boolean hardcore, OverlaySprite sprite); //
-	void drawHeartBG  (RenderContext ctx, int x, int y,                                boolean bright);                                        //
-	void drawAbsorb   (RenderContext ctx, int x, int y, int amount,                    boolean bright);                                       // 0 -> nothing
-	void drawArmor    (RenderContext ctx, int x, int y, int spriteLevel, boolean half);                                                      // 0 -> "empty" background
-	void drawHeart    (RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean bright, boolean hardcore, HeartStyle style); // 0 -> nothing
-	void drawToughness(RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean icon);
+	void drawOverlay    (RenderContext ctx, int x, int y,                  boolean half,                 boolean hardcore, OverlaySprite sprite); //
+	void drawHeartBG    (RenderContext ctx, int x, int y,                                boolean bright);                                        //
+	void drawAbsorb     (RenderContext ctx, int x, int y, int amount,                    boolean bright);                                       // 0 -> nothing
+	void drawArmor      (RenderContext ctx, int x, int y, int spriteLevel, boolean half);                                                      // 0 -> "empty" background
+	void drawHeart      (RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean bright, boolean hardcore, HeartStyle style); // 0 -> nothing
+	void drawToughness  (RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean icon);                                      //
+	void drawMagicShield(RenderContext ctx, int x, int y, int spriteLevel);                                                                 // 0 -> lowest level
 	
 	String texLocation();
 	

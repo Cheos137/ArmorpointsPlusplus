@@ -1,6 +1,5 @@
 package dev.cheos.armorpointspp.impl;
 
-import dev.cheos.armorpointspp.compat.PotionCore;
 import dev.cheos.armorpointspp.core.adapter.*;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -80,11 +79,6 @@ public class DataProviderImpl implements IDataProvider {
 	}
 	
 	@Override
-	public boolean isPotionCoreLoaded() {
-		return false; // Unsupported in 1.17
-	}
-	
-	@Override
 	public boolean isFullyFrozen() {
 		return this.minecraft.player.isFullyFrozen();
 	}
@@ -111,7 +105,7 @@ public class DataProviderImpl implements IDataProvider {
 	
 	@Override
 	public IPotionCore potionCore() {
-		return PotionCore.INSTANCE;
+		return PotionCoreImpl.INSTANCE;
 	}
 	
 	@Override

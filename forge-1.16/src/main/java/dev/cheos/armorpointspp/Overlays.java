@@ -70,6 +70,10 @@ public class Overlays {
 		Components.TOUGHNESS_OVER.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
 	}
 	
+	static void magicShield(ForgeIngameGui gui, MatrixStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		Components.MAGIC_SHIELD.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
+	}
+	
 	static void armorText(ForgeIngameGui gui, MatrixStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		Components.ARMOR_TEXT.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
 	}

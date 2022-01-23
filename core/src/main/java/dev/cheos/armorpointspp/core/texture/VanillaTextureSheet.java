@@ -41,6 +41,11 @@ public final class VanillaTextureSheet implements ITextureSheet {
 	public void drawToughness(RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean icon) {
 		throw new UnsupportedOperationException("Appp toughness not available with vanilla texture");
 	}
+
+	@Override
+	public void drawMagicShield(RenderContext ctx, int x, int y, int spriteLevel) {
+		throw new UnsupportedOperationException("Appp magic resistance overlay (potioncore) not available with vanilla texture");
+	}
 	
 	@Override
 	public String texLocation() {

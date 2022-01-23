@@ -28,7 +28,6 @@ public class Overlays {
 				gui.renderHealth(screenWidth, screenHeight);
 		} else if (Components.HEALTH.render(ctx(baseX(screenWidth), lastHealthY)))
 			GuiIngameForge.left_height += 10;
-		
 	}
 	
 	static void absorption(GuiIngameForge gui, float partialTicks, int screenWidth, int screenHeight) {
@@ -67,6 +66,10 @@ public class Overlays {
 	
 	static void armorToughnessOv(GuiIngameForge gui, float partialTicks, int screenWidth, int screenHeight) {
 		Components.TOUGHNESS_OVER.render(ctx(baseX(screenWidth), lastArmorY));
+	}
+	
+	static void magicShield(GuiIngameForge gui, float partialTicks, int screenWidth, int screenHeight) {
+		Components.MAGIC_SHIELD.render(ctx(baseX(screenWidth), lastArmorY));
 	}
 	
 	static void armorText(GuiIngameForge gui, float partialTicks, int screenWidth, int screenHeight) {

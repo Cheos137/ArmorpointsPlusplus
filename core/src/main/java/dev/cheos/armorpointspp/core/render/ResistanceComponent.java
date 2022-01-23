@@ -19,6 +19,9 @@ public class ResistanceComponent implements IRenderComponent {
 		
 		if (ctx.data.isEffectActive(ctx.data.effects().resistance()))
 			resistance = 1 + ctx.data.getActiveEffect(ctx.data.effects().resistance()).amplifier();
+		resistance += (ctx.data.potionCore().resistance() - 1) * 5; // potioncore: 0 if unsupported, 1 := no resistance, 2 := 100% resistance, <1 := weakening
+		resistance = Math.min(resistance, 5);                      // resistance maxes at 5
+		
 		if (resistance <= 0) return popReturn(ctx, false);
 		ITextureSheet tex = tex(ctx).bind(ctx);
 		

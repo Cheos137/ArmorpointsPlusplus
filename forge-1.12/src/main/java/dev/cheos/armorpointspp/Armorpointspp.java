@@ -15,7 +15,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = Armorpointspp.MODID,
 	 name = "Armorpoints++",
-//	 version = "3.0.0",
 	 clientSideOnly = true,
 	 acceptableRemoteVersions = "*",
 	 acceptedMinecraftVersions = "[1.12,1.12.2]",
@@ -24,12 +23,14 @@ public class Armorpointspp {
 	public static final String MODID = "armorpointspp";
 	private static final Logger LOGGER = LogManager.getLogger("Armorpoints++");
 	public static boolean MANTLE;
+	public static boolean POTIONCORE;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		MANTLE = Loader.isModLoaded("mantle");
 		ApppConfig.init(event.getSuggestedConfigurationFile());
 		checkCompat();
+		MANTLE = Loader.isModLoaded("mantle");
+		POTIONCORE = Loader.isModLoaded("potioncore");
 	}
 	
 	@EventHandler
@@ -40,7 +41,7 @@ public class Armorpointspp {
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		if (MANTLE && ApppConfig.instance().bool(BooleanOption.MANTLE_COMPAT))
+		if (MANTLE&& ApppConfig.instance().bool(BooleanOption.MANTLE_COMPAT))
 			MantleCompat.hackMantle();
 	}
 	

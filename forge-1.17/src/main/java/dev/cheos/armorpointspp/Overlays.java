@@ -40,9 +40,10 @@ public class Overlays {
 								  ABSORPTION         = OverlayRegistry.registerOverlayAbove(PLAYER_HEALTH,        "Appp Absorption",         Overlays::absorption),
 								  ARMOR_LEVEL        = OverlayRegistry.registerOverlayAbove(ABSORPTION,           "Armor Level",             Overlays::armorLevel),
 								  ARMOR_TOUGHNESS    = OverlayRegistry.registerOverlayAbove(MOUNT_HEALTH_ELEMENT, "Appp Armor Toughness",    Overlays::armorToughness),
-								  RESISTANCE         = OverlayRegistry.registerOverlayAbove(ARMOR_LEVEL,          "Appp Resistance",         Overlays::resistance),
+								  MAGIC_SHIELD       = OverlayRegistry.registerOverlayAbove(ARMOR_LEVEL,          "Appp Magic Shield",       Overlays::magicShield),
+								  ARMOR_TOUGHNESS_OV = OverlayRegistry.registerOverlayAbove(MAGIC_SHIELD,         "Appp Armor Toughness OV", Overlays::armorToughnessOv),
+								  RESISTANCE         = OverlayRegistry.registerOverlayAbove(ARMOR_TOUGHNESS_OV,   "Appp Resistance",         Overlays::resistance),
 								  PROTECTION         = OverlayRegistry.registerOverlayAbove(RESISTANCE,           "Appp Protection",         Overlays::protection),
-								  ARMOR_TOUGHNESS_OV = OverlayRegistry.registerOverlayAbove(PROTECTION,           "Appp Armor Toughness OV", Overlays::armorToughnessOv),
 								  ARMOR_TEXT         = OverlayRegistry.registerOverlayAbove(HUD_TEXT_ELEMENT,     "Appp Armor Text",         Overlays::armorText),
 								  HEALTH_TEXT        = OverlayRegistry.registerOverlayAbove(HUD_TEXT_ELEMENT,     "Appp Health Text",        Overlays::healthText),
 								  TOUGHNESS_TEXT     = OverlayRegistry.registerOverlayAbove(HUD_TEXT_ELEMENT,     "Appp Toughness Text",     Overlays::toughnessText),
@@ -112,6 +113,10 @@ public class Overlays {
 	
 	private static void armorToughnessOv(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		Components.TOUGHNESS_OVER.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
+	}
+	
+	private static void magicShield(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		Components.MAGIC_SHIELD.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
 	}
 	
 	private static void armorText(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {

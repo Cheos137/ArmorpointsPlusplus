@@ -151,7 +151,7 @@ public interface IConfig { // use forges config update system... somehow
 		HEALTH_ENABLE               ("enableHealthBar"            , true , Category.GENERAL      , " Enable custom health bar"                            , " Available: true, false [default: %s]"),
 		HEALTH_TEXT_ENABLE          ("showHealthValue"            , true , Category.GENERAL      , " Show health value text next to health bar"           , " Available: true, false [default: %s]"),
 		HEALTH_TEXT_CONFIG_ENABLE   ("enableHealthValueConfig"    , false, Category.TEXT_CONFIG  , " Enables custom health value configuration"           , " Available: true, false [default: %s]"),
-		MANTLE_COMPAT               ("mantle"                     , true , Category.COMPAT       , " Fixes mantle compatibility"                          , " Available: true, false [default: %s]"),
+		MANTLE_COMPAT               ("mantle"                     , true , Category.COMPAT       , Version.V1_12, " Fixes mantle compatibility"           , " Available: true, false [default: %s]"),
 		POTIONCORE_COMPAT           ("potioncore"                 , true , Category.COMPAT       , Version.V1_12, " Adds support for potioncore's effects and attributes", " Available: true, false [default: %s]"),
 		PROTECTION_ENABLE           ("showProtection"             , true , Category.GENERAL      , " Show protection as overlay over armor"               , " Available: true, false [default: %s]"),
 		RESISTANCE_ENABLE           ("showResistance"             , true , Category.GENERAL      , " Show resistance as border around armor"              , " Available: true, false [default: %s]"),
