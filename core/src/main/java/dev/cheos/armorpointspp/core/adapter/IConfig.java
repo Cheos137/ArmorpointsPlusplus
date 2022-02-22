@@ -32,8 +32,14 @@ public interface IConfig { // use forges config update system... somehow
 		TEXT_COLOR("textcolors"),
 		TEXT_CONFIG("textconfig");
 		
+		static {
+			COMPAT.subCategories.add(COMPAT_REP);
+			GENERAL.subCategories.add(GENERAL_DEBUG);
+		}
+		
 		private final List<String> path;
 		private final String pathJoined;
+		private final Set<Category> subCategories = new HashSet<>();
 		private final Set<Option<?>> options = new HashSet<>();
 		
 		Category(String path) {
@@ -52,20 +58,29 @@ public interface IConfig { // use forges config update system... somehow
 		public Set<Option<?>> getOptions() {
 			return ImmutableSet.copyOf(this.options);
 		}
+		
+		public boolean hasOptions(Version version) {
+			return !this.options.stream().noneMatch(o -> o.isAvailableIn(version));
+		}
+		
+		public Set<Category> getSubCategories() {
+			return ImmutableSet.copyOf(this.subCategories);
+		}
 	}
 	
 	public static enum Version {
 		v1_12,
 		v1_16,
 		v1_17,
-		v1_18;
+		v1_18,
+		v1_18fabric;
 		
 		public static final ImmutableList<Version> ALL   = ImmutableList.copyOf(Version.values());
 		public static final ImmutableList<Version> NONE  = ImmutableList.of();
 		public static final ImmutableList<Version> V1_12 = ImmutableList.of(v1_12);
 		public static final ImmutableList<Version> V1_16 = ImmutableList.of(v1_16);
 		public static final ImmutableList<Version> V1_17 = ImmutableList.of(v1_17);
-		public static final ImmutableList<Version> V1_18 = ImmutableList.of(v1_18);
+		public static final ImmutableList<Version> V1_18 = ImmutableList.of(v1_18, v1_18fabric);
 	}
 	
 	public static interface Option<T> {

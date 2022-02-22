@@ -13,7 +13,7 @@ import net.minecraftforge.fml.config.ModConfig;
 
 public class ApppConfig implements IConfig {
 	private static ApppConfig INSTANCE;
-	private static final Version VERSION = Version.v1_17;
+	private static final Version VERSION = Version.v1_18;
 	private static final Map<String, BoolValue>    boolConfigs   = new HashMap<>();
 	private static final Map<String, HexValue>     hexConfigs    = new HashMap<>();
 	private static final Map<String, FloatValue>   floatConfigs  = new HashMap<>();
@@ -60,6 +60,7 @@ public class ApppConfig implements IConfig {
 		return enumConfigs.containsKey(key.key()) ? (T) enumConfigs.get(key.key()).get() : key.def();
 	}
 	
+	@Override
 	public void invalidateAll() {
 		  boolConfigs.values().forEach(ApppConfigValue::invalidate);
 		   hexConfigs.values().forEach(ApppConfigValue::invalidate);

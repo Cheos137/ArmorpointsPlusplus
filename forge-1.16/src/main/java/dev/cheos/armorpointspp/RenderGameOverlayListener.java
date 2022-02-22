@@ -48,10 +48,10 @@ public class RenderGameOverlayListener {
 					break;
 				Overlays.armorLevel      (gui, poseStack, partialTicks, screenWidth, screenHeight);
 				Overlays.magicShield     (gui, poseStack, partialTicks, screenWidth, screenHeight);
-				Overlays.armorToughness  (gui, poseStack, partialTicks, screenWidth, screenHeight);
-				Overlays.armorToughnessOv(gui, poseStack, partialTicks, screenWidth, screenHeight);
 				Overlays.resistance      (gui, poseStack, partialTicks, screenWidth, screenHeight);
 				Overlays.protection      (gui, poseStack, partialTicks, screenWidth, screenHeight);
+				Overlays.armorToughness  (gui, poseStack, partialTicks, screenWidth, screenHeight);
+				Overlays.armorToughnessOv(gui, poseStack, partialTicks, screenWidth, screenHeight);
 				post(poseStack, event, ARMOR);
 				break;
 			case HEALTH:

@@ -1,0 +1,70 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.fabricmc.net/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.fabricmc', name: 'fabric-loom', version: '0.11.+', changing: true
+    }
+}
+apply plugin: 'fabric-loom'
+
+version = '1.18.1-' + modVersion
+group = modGroup
+archivesBaseName = modName + '-fabric'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+sourceSets.main.java { srcDir project(':core').sourceSets.main.java }
+sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
+
+repositories {
+	maven { url "https://maven.modmuss50.me/" }
+}
+
+dependencies {
+    minecraft 'com.mojang:minecraft:1.18.1'
+//    mappings 'net.fabricmc:yarn:1.18.1+build.22:v2'
+	mappings loom.officialMojangMappings()
+    implementation project(':core')
+    modImplementation 'net.fabricmc:fabric-loader:0.13.3'
+    modCompileOnly "net.fabricmc.fabric-api:fabric-api:0.46.4+1.18"
+    implementation "me.zeroeightsix:fiber:0.23.0-SNAPSHOT"
+    include "me.zeroeightsix:fiber:0.23.0-SNAPSHOT"
+}
+
+processResources {
+    inputs.property 'version', modVersion
+
+    filesMatching('fabric.mod.json') {
+        expand 'version': modVersion
+    }
+}
+
+java {
+    withSourcesJar()
+}
+
+loom {
+	accessWidenerPath = file("src/main/resources/armorpointspp.accesswidener")
+
+    runs {
+		client {
+			// The environment (or side) to run, usually client or server.
+			environment = "client"
+			// The full name of the run configuration, i.e. 'Minecraft Client'. By default this is determined from the base name.
+			configName = "runApppClient-fabric-1.18"
+			// The default main class of the run configuration. This will be overridden if using a mod loader with a fabric_installer.json file.
+			defaultMainClass = ""
+			// The run directory for this configuration, relative to the root project directory.
+			runDir = "run"
+			// The sourceset to run, commonly set to sourceSets.test
+			source = sourceSets.main
+			// When true a run configuration file will be generated for IDE's. By default only set to true for the root project.
+			ideConfigGenerated = true
+
+			// Configure run config with the default client options.
+			client()
+		}
+	}
+}
