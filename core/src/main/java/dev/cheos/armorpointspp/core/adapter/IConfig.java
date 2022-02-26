@@ -224,7 +224,7 @@ public interface IConfig { // use forges config update system... somehow
 	}
 	
 	public static enum IntegerOption implements BoundedOption<Integer> {
-		TEXT_COLOR_FULL_RESISTANCE("resistanceFull", 0x4c0000, Category.TEXT_COLOR, " Color when resistance > 5"                     , " Available: 0x000000 ~ 0xffffff [default: %s]"),
+		TEXT_COLOR_FULL_RESISTANCE("resistanceFull", 0x8a0f0f, Category.TEXT_COLOR, " Color when resistance > 5"                     , " Available: 0x000000 ~ 0xffffff [default: %s]"),
 		TEXT_COLOR_ARMOR_0        ("armor0"        , 0x3d3d3d, Category.TEXT_COLOR, " Color when armor = 0"                          , " Available: 0x000000 ~ 0xffffff [default: %s]"),
 		TEXT_COLOR_ARMOR_LT25     ("armorLT25"     , 0x44ff11, Category.TEXT_COLOR, " Color when armor < 25"                         , " Available: 0x000000 ~ 0xffffff [default: %s]"),
 		TEXT_COLOR_ARMOR_EQ25     ("armorEQ25"     , 0xff8811, Category.TEXT_COLOR, " Color when armor = 25"                         , " Available: 0x000000 ~ 0xffffff [default: %s]"),
@@ -301,11 +301,11 @@ public interface IConfig { // use forges config update system... somehow
 		HEALTH_TEXT_Y   ("healthValueY"   , 0F   , 32768, Category.TEXT_CONFIG   , " if enabled, custom Y position of the health value text"   , " Available: %s ~ %s [default: %s]"),
 		TOUGHNESS_TEXT_X("toughnessValueX", 0F   , 32768, Category.TEXT_CONFIG   , " if enabled, custom X position of the toughness value text", " Available: %s ~ %s [default: %s]"),
 		TOUGHNESS_TEXT_Y("toughnessValueY", 0F   , 32768, Category.TEXT_CONFIG   , " if enabled, custom Y position of the toughness value text", " Available: %s ~ %s [default: %s]"),
-		MAGIC_RES_VALUE ("magicResist"    , 2F   ,    20, Category.COMPAT_REP    , Version.V1_12, " Number of icons to show a magic resistance of 1"          , " Available: %s ~ %s [default: %s]"),
+		MAGIC_RES_VALUE ("magicResist"    , 2F   ,    20, Category.COMPAT_REP    , Version.V1_12, " Number of icons to show a magic resistance of 1", " Available: %s ~ %s [default: %s]"),
 		PROTECTION_VALUE("protection"     , 0.5F ,    10, Category.REPRESENTATIVE, " Number of icons to show a protection of 1"                , " Available: %s ~ %s [default: %s]"),
-		RESISTANCE_VALUE("resistance"     , 0.25F,    10, Category.REPRESENTATIVE, " Number of icons to show a resistance of 1"                , " Available: %s ~ %s [default: %s]"),
+		RESISTANCE_VALUE("resistance"     , 2F   ,    10, Category.REPRESENTATIVE, " Number of icons to show a resistance of 1"                , " Available: %s ~ %s [default: %s]"),
 		@Deprecated // effectively disabled
-		TOUGHNESS_VALUE ("toughness"      , 2F   ,    10, Category.REPRESENTATIVE, Version.NONE, " Number of icons to show a armor toughness of 1"           , " Available: %s ~ %s [default: %s]");
+		TOUGHNESS_VALUE ("toughness"      , 2F   ,    10, Category.REPRESENTATIVE, Version.NONE, " Number of icons to show a armor toughness of 1", " Available: %s ~ %s [default: %s]");
 		
 		final String key;
 		final float def, min, max;

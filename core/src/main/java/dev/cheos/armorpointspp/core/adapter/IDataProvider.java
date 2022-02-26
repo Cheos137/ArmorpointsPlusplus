@@ -14,6 +14,7 @@ public interface IDataProvider {
 	IEnchantmentProvider enchantments();
 	boolean hidden();
 	boolean isAttributeFixLoaded();
+	boolean isPotionCoreLoaded();
 	boolean isFullyFrozen();
 	boolean isHardcore();
 	boolean isEffectActive(IMobEffect effect);

@@ -29,7 +29,7 @@ public class ProtectionComponent implements IRenderComponent {
 		protection = ctx.math.clamp(protection, 0, 10);
 		if (protection <= 0) return popReturn(ctx, false);
 		
-		for (int i = 0; i < 10 && i < protection; i++)
+		for (int i = 0; i < 10 && i < protection; i++) // actually, this double check for limit = 10 is not necessary... still feels better with it
 			tex.drawOverlay(ctx, ctx.x + 8 * i, ctx.y, false, false, OverlaySprite.PROTECTION);
 		return popReturn(ctx, true);
 	}

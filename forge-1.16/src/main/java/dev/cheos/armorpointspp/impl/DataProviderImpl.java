@@ -79,6 +79,11 @@ public class DataProviderImpl implements IDataProvider {
 	}
 	
 	@Override
+	public boolean isPotionCoreLoaded() {
+		return false; // unsupported in 1.16
+	}
+	
+	@Override
 	public boolean isFullyFrozen() {
 		return false; // freezing is only available in 1.17+
 	}

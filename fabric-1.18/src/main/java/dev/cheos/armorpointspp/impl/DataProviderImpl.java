@@ -78,6 +78,11 @@ public class DataProviderImpl implements IDataProvider {
 	}
 	
 	@Override
+	public boolean isPotionCoreLoaded() {
+		return false; // unsupported in 1.18
+	}
+	
+	@Override
 	public boolean isFullyFrozen() {
 		return this.minecraft.player.isFullyFrozen();
 	}

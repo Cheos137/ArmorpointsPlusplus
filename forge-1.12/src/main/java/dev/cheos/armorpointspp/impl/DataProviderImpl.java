@@ -1,6 +1,9 @@
 package dev.cheos.armorpointspp.impl;
 
+import dev.cheos.armorpointspp.Armorpointspp;
+import dev.cheos.armorpointspp.config.ApppConfig;
 import dev.cheos.armorpointspp.core.adapter.*;
+import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,6 +14,7 @@ import net.minecraftforge.fml.common.Loader;
 public class DataProviderImpl implements IDataProvider {
 	private final Minecraft minecraft  = Minecraft.getMinecraft();
 	private final boolean attributefix = Loader.isModLoaded("attributefix");
+	private final boolean potioncore   = Armorpointspp.POTIONCORE && ApppConfig.instance().bool(BooleanOption.POTIONCORE_COMPAT);
 	
 	@Override
 	public int armor() {
@@ -75,6 +79,11 @@ public class DataProviderImpl implements IDataProvider {
 	@Override
 	public boolean isAttributeFixLoaded() {
 		return this.attributefix;
+	}
+	
+	@Override
+	public boolean isPotionCoreLoaded() {
+		return this.potioncore;
 	}
 	
 	@Override
