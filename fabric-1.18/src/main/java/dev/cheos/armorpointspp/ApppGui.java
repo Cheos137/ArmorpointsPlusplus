@@ -3,6 +3,7 @@ package dev.cheos.armorpointspp;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import dev.cheos.armorpointspp.compat.AppleskinSafeAccess;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -64,8 +65,8 @@ public class ApppGui extends Gui {
 	}
 	
 	public void renderHealth(PoseStack poseStack) {
-		setup(true, false, GUI_ICONS_LOCATION);
 		this.minecraft.getProfiler().push("health");
+		setup(true, false, GUI_ICONS_LOCATION);
 		
 		Player player = getCameraPlayer();
 		if (player == null) return;
@@ -103,8 +104,8 @@ public class ApppGui extends Gui {
 	}
 	
 	public void renderAir(PoseStack poseStack) {
-		setup(true, false, GUI_ICONS_LOCATION);
 		this.minecraft.getProfiler().push("air");
+		setup(true, false, GUI_ICONS_LOCATION);
 		
 		Player player = getCameraPlayer();
 		if (player == null) return;
@@ -124,8 +125,10 @@ public class ApppGui extends Gui {
 	}
 	
 	public void renderFood(PoseStack poseStack) {
-		setup(true, false, GUI_ICONS_LOCATION);
 		this.minecraft.getProfiler().push("food");
+		if (Armorpointspp.isAppleskinLoaded())
+			AppleskinSafeAccess.handlerOnPreRender(poseStack);
+		setup(true, false, GUI_ICONS_LOCATION);
 		
 		Player player = getCameraPlayer();
 		if (player == null) return;
@@ -157,6 +160,9 @@ public class ApppGui extends Gui {
 			else if (idx == level)
 				blit(poseStack, x, y, icon + 45, 27, 9, 9);
 		}
+		
+		if (Armorpointspp.isAppleskinLoaded())
+			AppleskinSafeAccess.handlerOnRender(poseStack);
 		minecraft.getProfiler().pop();
 	}
 	
@@ -164,7 +170,7 @@ public class ApppGui extends Gui {
 	// renderVehicleHealth - vanilla - should not render anything
 	@Override protected void renderVehicleHealth(PoseStack poseStack) { }
 	
-	// renderMountHealth - is now the actual render method - called from somewhere else
+	// renderMountHealth - is now the actual render method - gets called from somewhere else
 	public void renderMountHealth(PoseStack poseStack) {
 		LivingEntity mount = getPlayerVehicleWithHealth();
 		if (mount == null) return;

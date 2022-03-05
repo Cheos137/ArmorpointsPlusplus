@@ -1,4 +1,4 @@
-package dev.cheos.armorpointspp;
+package dev.cheos.armorpointspp.compat;
 
 import java.util.function.BiConsumer;
 
