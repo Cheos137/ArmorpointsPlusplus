@@ -294,18 +294,17 @@ public interface IConfig { // use forges config update system... somehow
 	}
 	
 	public static enum FloatOption implements BoundedOption<Float> {
-		ABSORPTION_VALUE("absorption"     , 0.25F,   200, Category.REPRESENTATIVE, " Number of pixels to show an absorption of 1"              , " Available: %s ~ %s [default: %s]"),
-		ARMOR_TEXT_X    ("armorValueX"    , 0F   , 32768, Category.TEXT_CONFIG   , " if enabled, custom X position of the armor value text"    , " Available: %s ~ %s [default: %s]"),
-		ARMOR_TEXT_Y    ("armorValueY"    , 0F   , 32768, Category.TEXT_CONFIG   , " if enabled, custom Y position of the armor value text"    , " Available: %s ~ %s [default: %s]"),
-		HEALTH_TEXT_X   ("healthValueX"   , 0F   , 32768, Category.TEXT_CONFIG   , " if enabled, custom X position of the health value text"   , " Available: %s ~ %s [default: %s]"),
-		HEALTH_TEXT_Y   ("healthValueY"   , 0F   , 32768, Category.TEXT_CONFIG   , " if enabled, custom Y position of the health value text"   , " Available: %s ~ %s [default: %s]"),
-		TOUGHNESS_TEXT_X("toughnessValueX", 0F   , 32768, Category.TEXT_CONFIG   , " if enabled, custom X position of the toughness value text", " Available: %s ~ %s [default: %s]"),
-		TOUGHNESS_TEXT_Y("toughnessValueY", 0F   , 32768, Category.TEXT_CONFIG   , " if enabled, custom Y position of the toughness value text", " Available: %s ~ %s [default: %s]"),
+		ABSORPTION_VALUE("absorption"     , 0.25F,   200, Category.REPRESENTATIVE, " Number of pixels to show an absorption of 1"                   , " Available: %s ~ %s [default: %s]"),
+		ARMOR_TEXT_X    ("armorValueX"    , 0F   , 32768, Category.TEXT_CONFIG   , " if enabled, custom X position of the armor value text"         , " Available: %s ~ %s [default: %s]"),
+		ARMOR_TEXT_Y    ("armorValueY"    , 0F   , 32768, Category.TEXT_CONFIG   , " if enabled, custom Y position of the armor value text"         , " Available: %s ~ %s [default: %s]"),
+		HEALTH_TEXT_X   ("healthValueX"   , 0F   , 32768, Category.TEXT_CONFIG   , " if enabled, custom X position of the health value text"        , " Available: %s ~ %s [default: %s]"),
+		HEALTH_TEXT_Y   ("healthValueY"   , 0F   , 32768, Category.TEXT_CONFIG   , " if enabled, custom Y position of the health value text"        , " Available: %s ~ %s [default: %s]"),
+		TOUGHNESS_TEXT_X("toughnessValueX", 0F   , 32768, Category.TEXT_CONFIG   , " if enabled, custom X position of the toughness value text"     , " Available: %s ~ %s [default: %s]"),
+		TOUGHNESS_TEXT_Y("toughnessValueY", 0F   , 32768, Category.TEXT_CONFIG   , " if enabled, custom Y position of the toughness value text"     , " Available: %s ~ %s [default: %s]"),
 		MAGIC_RES_VALUE ("magicResist"    , 2F   ,    20, Category.COMPAT_REP    , Version.V1_12, " Number of icons to show a magic resistance of 1", " Available: %s ~ %s [default: %s]"),
-		PROTECTION_VALUE("protection"     , 0.5F ,    10, Category.REPRESENTATIVE, " Number of icons to show a protection of 1"                , " Available: %s ~ %s [default: %s]"),
-		RESISTANCE_VALUE("resistance"     , 2F   ,    10, Category.REPRESENTATIVE, " Number of icons to show a resistance of 1"                , " Available: %s ~ %s [default: %s]"),
-		@Deprecated // effectively disabled
-		TOUGHNESS_VALUE ("toughness"      , 2F   ,    10, Category.REPRESENTATIVE, Version.NONE, " Number of icons to show a armor toughness of 1", " Available: %s ~ %s [default: %s]");
+		PROTECTION_VALUE("protection"     , 0.5F ,    10, Category.REPRESENTATIVE, " Number of icons to show a protection of 1"                     , " Available: %s ~ %s [default: %s]"),
+		RESISTANCE_VALUE("resistance"     , 2F   ,    10, Category.REPRESENTATIVE, " Number of icons to show a resistance of 1"                     , " Available: %s ~ %s [default: %s]"),
+		TOUGHNESS_VALUE ("toughness"      , 1F   ,    10, Category.REPRESENTATIVE, " Number of icons to show a armor toughness of 1"                , " Available: %s ~ %s [default: %s]", " Note: Currently this ONLY affects toughness overlays and NOT the standalone toughness bar");
 		
 		final String key;
 		final float def, min, max;
