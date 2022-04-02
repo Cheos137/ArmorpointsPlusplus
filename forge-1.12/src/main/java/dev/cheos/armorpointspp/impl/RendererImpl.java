@@ -68,7 +68,7 @@ public class RendererImpl implements IRenderer {
 		} else GlStateManager.disableBlend();
 		if (depthTest)
 			GlStateManager.enableDepth();
-		else GlStateManager.disableDepth();
+//		else GlStateManager.disableDepth();
 		if (texture != null) {
 			GlStateManager.enableTexture2D();
 			this.minecraft.getTextureManager().bindTexture(texture);
