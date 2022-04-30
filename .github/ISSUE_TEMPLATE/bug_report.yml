@@ -24,21 +24,26 @@ body:
       label: Version
       description: Which version of the mod did the bug occur on?
       options:
-        - BETA 3.0.0 for Minecraft Fabric 1.18.1
-        - BETA 3.0.0 for Minecraft Forge 1.18.1
-        - BETA 3.0.0 for Minecraft Forge 1.17.1
-        - BETA 3.0.0 for Minecraft Forge 1.16.5
-        - BETA 3.0.0 for Minecraft Forge 1.12.2
-        - 2.1.3 for Minecraft Forge 1.18.x
-        - 2.1.3 for Minecraft Forge 1.17.1
-        - 2.0.1 for Minecraft Forge 1.12.x
-        - 2.0.0 for Minecraft Forge 1.16.x
+        - 3.0.1 for Minecraft Fabric 1.18.2
+        - 3.0.1 for Minecraft Forge 1.18.2
+        - 3.0.1 for Minecraft Forge 1.16.5
+        - 3.0.1 for Minecraft Forge 1.12.2
+        - 3.0.0 for Minecraft Fabric 1.18.2 [unsupported]
+        - 3.0.0 for Minecraft Forge 1.18.2 [unsupported]
+        - 3.0.0 for Minecraft Forge 1.17.1 [unsupported]
+        - 3.0.0 for Minecraft Forge 1.16.5 [unsupported]
+        - 3.0.0 for Minecraft Forge 1.12.2 [unsupported]
+        - 2.1.3 for Minecraft Forge 1.18.x [unsupported]
+        - 2.1.3 for Minecraft Forge 1.17.1 [unsupported]
+        - 2.0.1 for Minecraft Forge 1.12.x [unsupported]
+        - 2.0.0 for Minecraft Forge 1.16.x [unsupported]
         - 2.1.2 for Minecraft Forge 1.17.1 [unsupported]
         - 2.1.1 for Minecraft Forge 1.17.1 [unsupported]
         - 2.1.0 for Minecraft Forge 1.17.1 [unsupported]
         - 2.0.0 for Minecraft Forge 1.12.x [unsupported]
         - 2.0.0 for Minecraft Forge 1.8 [unsupported]
         - 1.x.x for Minecraft 1.x.x [unsupported]
+        - Multiple (specify below)
         - Other (this list is not up to date - again...)
     validations:
       required: true
@@ -46,8 +51,8 @@ body:
     id: version2
     attributes:
       label: Version
-      description: Specify the version ONLY if "Other" was selected above.
-      placeholder: forge-1.17.1-2.1.3
+      description: Specify the version ONLY if "Other" or "Multiple" was selected above.
+      placeholder: forge-1.18.2-3.0.1
   - type: textarea
     id: reproduction
     attributes:
