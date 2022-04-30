@@ -1,15 +1,15 @@
 package dev.cheos.armorpointspp.core.render;
 
 import dev.cheos.armorpointspp.core.*;
-import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
-import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
-import dev.cheos.armorpointspp.core.adapter.IConfig.FloatOption;
-import dev.cheos.armorpointspp.core.adapter.IConfig.IntegerOption;
+import dev.cheos.armorpointspp.core.adapter.IConfig.*;
 
 public class ToughnessTextComponent implements IRenderComponent {
 	@Override
 	public boolean render(RenderContext ctx) {
-		if (!ctx.shouldRenderToughness() || !ctx.config.bool(BooleanOption.TOUGHNESS_ENABLE) || !ctx.config.bool(BooleanOption.TOUGHNESS_BAR))
+		if (!ctx.shouldRenderToughness()
+				|| !ctx.config.bool(BooleanOption.TOUGHNESS_ENABLE)
+				|| !ctx.config.bool(BooleanOption.TOUGHNESS_BAR)
+				|| !ctx.config.bool(BooleanOption.TOUGHNESS_TEXT_ENABLE))
 			return false;
 		
 		ctx.profiler.push("toughnessText");
