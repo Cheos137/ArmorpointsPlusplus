@@ -9,9 +9,7 @@ import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.*;
 
 @Mod(modid = Armorpointspp.MODID,
 	 name = "Armorpoints++",
@@ -21,7 +19,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 	 dependencies = "after:mantle")
 public class Armorpointspp {
 	public static final String MODID = "armorpointspp";
-	private static final Logger LOGGER = LogManager.getLogger("Armorpoints++");
+	public static final Logger LOGGER = LogManager.getLogger("Armorpoints++");
 	public static boolean MANTLE;
 	public static boolean POTIONCORE;
 	
