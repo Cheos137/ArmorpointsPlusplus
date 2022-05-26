@@ -3,20 +3,18 @@ package dev.cheos.armorpointspp;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import dev.cheos.armorpointspp.config.ApppConfig;
-import dev.cheos.armorpointspp.core.RenderContext;
-import dev.cheos.armorpointspp.core.Side;
+import dev.cheos.armorpointspp.core.*;
+import dev.cheos.armorpointspp.core.adapter.*;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
-import dev.cheos.armorpointspp.core.adapter.IDataProvider;
-import dev.cheos.armorpointspp.core.adapter.IMath;
-import dev.cheos.armorpointspp.core.adapter.IProfiler;
-import dev.cheos.armorpointspp.core.adapter.IRenderer;
 import dev.cheos.armorpointspp.core.render.Components;
 import dev.cheos.armorpointspp.impl.*;
+import dev.cheos.armorpointspp.render.VanillaHealthComponent;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 
 public class Overlays {
+	private static final IRenderComponent VANILLA_HEALTH = new VanillaHealthComponent();
 	private static final IDataProvider DATA_PROVIDER = new DataProviderImpl();
 	private static final IRenderer RENDERER          = new RendererImpl();
 	private static final IProfiler PROFILER          = new ProfilerImpl();
@@ -27,7 +25,7 @@ public class Overlays {
 		lastHealthY = baseY(gui, screenHeight);
 		if (!ApppConfig.instance().bool(BooleanOption.HEALTH_ENABLE)) {
 			if (!minecraft.options.hideGui && DATA_PROVIDER.shouldDrawSurvivalElements())
-				gui.renderHealth(screenWidth, screenHeight, poseStack);
+				VANILLA_HEALTH.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
 		} else if (Components.HEALTH.render(ctx(poseStack, baseX(screenWidth), lastHealthY)))
 			ForgeIngameGui.left_height += 10;
 	}

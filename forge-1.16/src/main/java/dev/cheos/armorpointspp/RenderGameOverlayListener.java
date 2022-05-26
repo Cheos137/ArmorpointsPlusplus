@@ -26,7 +26,7 @@ public class RenderGameOverlayListener {
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
-	public static void handle(RenderGameOverlayEvent event) { // TODO vanilla heart renderer component for not reposting from inside component
+	public static void handle(RenderGameOverlayEvent event) {
 		if (event instanceof ApppRenderGameOverlayEvent) return;
 		if (reposting) return;
 		if (working) return;

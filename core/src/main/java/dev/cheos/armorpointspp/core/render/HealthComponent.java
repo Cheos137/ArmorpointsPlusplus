@@ -32,7 +32,7 @@ public class HealthComponent implements IRenderComponent {
 		
 		boolean blink = !frozen && this.healthBlinkTime > this.lastGuiTicks && (this.healthBlinkTime - this.lastGuiTicks) / 3L % 2L == 1L;
 		int regen = ctx.data.isEffectActive(ctx.data.effects().regeneration())
-				? this.lastGuiTicks % 25 // in vanilla: % (maxHealth + 5), here: more than 20 + 5 does not make sense as bars are stacked
+				? this.lastGuiTicks % 25
 				: -1;
 		HeartStyle style = ctx.data.isEffectActive(ctx.data.effects().poison())
 				? HeartStyle.POISON
