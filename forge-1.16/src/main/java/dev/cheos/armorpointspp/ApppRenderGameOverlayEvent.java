@@ -12,12 +12,8 @@ import dev.cheos.armorpointspp.core.ReflectionHelper;
 import net.minecraft.client.gui.ClientBossInfo;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.ASMEventHandler;
-import net.minecraftforge.eventbus.EventBus;
-import net.minecraftforge.eventbus.ListenerList;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.EventListenerHelper;
-import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.*;
+import net.minecraftforge.eventbus.api.*;
 
 public interface ApppRenderGameOverlayEvent {
 	static final Map<Class<?>, ListenerList> listeners = aquireListeners();
@@ -48,6 +44,15 @@ public interface ApppRenderGameOverlayEvent {
 		}
 	}
 	
+	static void init() { // force listener list init of all events
+		RenderGameOverlayEvent parent = new RenderGameOverlayEvent(null, 0, null);
+		new      Pre(null, parent, null);
+		new     Post(null, parent, null);
+		new BossInfo(null, parent, null, null, 0, 0, 0);
+		new     Text(null, parent, null, null);
+		new     Chat(null, parent, 0, 0);
+	}
+	
 	
 	default void aquireListenerList() {
 		if (!(this instanceof Event))
@@ -67,7 +72,7 @@ public interface ApppRenderGameOverlayEvent {
 		EventListenerHelper.getListenerList(getClass()); // force the listener list to update throughout forge
 		writeLock.lock();
 		readLock.lock();
-		listeners.putIfAbsent(parent, new ListenerList(parentList));
+		listeners.put(parent, new ListenerList(parentList));
 		readLock.unlock();
 		writeLock.unlock();
 		ListenerList listenerList = EventListenerHelper.getListenerList(parent);
@@ -75,7 +80,8 @@ public interface ApppRenderGameOverlayEvent {
 		
 		if (listenerList.getListeners(busID).length == 0)
 			try {
-				listenerList.register(busID, EventPriority.HIGHEST, new ASMEventHandler(RenderGameOverlayListener.class, RenderGameOverlayListener.class.getDeclaredMethod("handle", RenderGameOverlayEvent.class), false));
+				for (EventPriority prio : EventPriority.values())
+					listenerList.register(busID, prio, new ASMEventHandler(RenderGameOverlayListener.class, RenderGameOverlayListener.class.getDeclaredMethod("handle", RenderGameOverlayEvent.class), false));
 			} catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
 				throw new IllegalStateException("Error re-registering appp event handler", e);
 			}

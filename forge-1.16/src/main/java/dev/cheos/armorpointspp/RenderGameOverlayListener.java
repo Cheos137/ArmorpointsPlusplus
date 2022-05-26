@@ -4,25 +4,33 @@ import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
+import dev.cheos.armorpointspp.core.ReflectionHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.*;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.EventBus;
 import net.minecraftforge.eventbus.api.*;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @EventBusSubscriber(modid = Armorpointspp.MODID, value = Dist.CLIENT)
 public class RenderGameOverlayListener {
 	private static final Minecraft minecraft = Minecraft.getInstance();
-	private static boolean reposting, working;
+	private static boolean reposting, working, init;
+	
+	private static void init() {
+		init = true;
+		ApppRenderGameOverlayEvent.init();
+	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
-	public static void handle(RenderGameOverlayEvent event) {
+	public static void handle(RenderGameOverlayEvent event) { // TODO vanilla heart renderer component for not reposting from inside component
 		if (event instanceof ApppRenderGameOverlayEvent) return;
 		if (reposting) return;
 		if (working) return;
+		if (!init) init();
 		
 		if (event.getType() != ARMOR && event.getType() != HEALTH) { // we only want to handle armor and health ourselves
 			if (!(event.isCancelable() && event.isCanceled())) // do not repost if our event somehow got cancelled - SHOULD not happen, though
@@ -31,6 +39,8 @@ public class RenderGameOverlayListener {
 			if (event.getType() != TEXT || (event.isCancelable() && event.isCanceled()))
 				return;                                        // return if we are cancelled and not a text event, we want to render but not handle text events
 		}
+		
+		if (event.getPhase() != EventPriority.NORMAL) return;
 		
 		working = true;
 		ForgeIngameGui gui = (ForgeIngameGui) minecraft.gui;
@@ -84,16 +94,24 @@ public class RenderGameOverlayListener {
 	
 	private static boolean repost(RenderGameOverlayEvent event) {
 		if (event instanceof Chat)
-			return post(new ApppRenderGameOverlayEvent.Chat(event.getMatrixStack(), event, ((Chat) event).getPosX(), ((Chat) event).getPosY()));
+			return post(new ApppRenderGameOverlayEvent.Chat(event.getMatrixStack(), event, ((Chat) event).getPosX(), ((Chat) event).getPosY()), event.getPhase());
 		else if (event instanceof Text)
-			return post(new ApppRenderGameOverlayEvent.Text(event.getMatrixStack(), event, ((Text) event).getLeft(), ((Text) event).getRight()));
+			return post(new ApppRenderGameOverlayEvent.Text(event.getMatrixStack(), event, ((Text) event).getLeft(), ((Text) event).getRight()), event.getPhase());
 		else if (event instanceof BossInfo)
-			return post(new ApppRenderGameOverlayEvent.BossInfo(event.getMatrixStack(), event, ((BossInfo) event).getType(), ((BossInfo) event).getBossInfo(), ((BossInfo) event).getX(), ((BossInfo) event).getY(), ((BossInfo) event).getIncrement()));
+			return post(new ApppRenderGameOverlayEvent.BossInfo(event.getMatrixStack(), event, event.getType(), ((BossInfo) event).getBossInfo(), ((BossInfo) event).getX(), ((BossInfo) event).getY(), ((BossInfo) event).getIncrement()), event.getPhase());
 		else if (event instanceof Pre)
-			return pre(event.getMatrixStack(), event, event.getType());
+			return post(new ApppRenderGameOverlayEvent.Pre(event.getMatrixStack(), event, event.getType()), event.getPhase());
 		else if (event instanceof Post)
-			post(event.getMatrixStack(), event, event.getType());
+			post(new ApppRenderGameOverlayEvent.Post(event.getMatrixStack(), event, event.getType()), event.getPhase());
 		return false;
+	}
+	
+	private static boolean pre(MatrixStack poseStack, RenderGameOverlayEvent parent, ElementType type) {
+		return post(new ApppRenderGameOverlayEvent.Pre(poseStack, parent, type));
+	}
+	
+	private static void post(MatrixStack poseStack, RenderGameOverlayEvent parent, ElementType type) {
+		post(new ApppRenderGameOverlayEvent.Post(poseStack, parent, type));
 	}
 	
 	private static boolean post(Event event) {
@@ -103,11 +121,41 @@ public class RenderGameOverlayListener {
 		return cancelled;
 	}
 	
-	private static boolean pre(MatrixStack poseStack, RenderGameOverlayEvent parent, ElementType type) {
-		return post(new ApppRenderGameOverlayEvent.Pre(poseStack, parent, type));
-	}
-	
-	private static void post(MatrixStack poseStack, RenderGameOverlayEvent parent, ElementType type) {
-		post(new ApppRenderGameOverlayEvent.Post(poseStack, parent, type));
+	private static boolean post(Event event, EventPriority prio) {
+		reposting = true;
+		try {
+			EventBus bus = (EventBus) MinecraftForge.EVENT_BUS;
+			
+			if (ReflectionHelper.<EventBus, Boolean>getPrivateValueDirect(EventBus.class, "shutdown", bus)) return false;
+			if (ReflectionHelper.<EventBus, Boolean>getPrivateValueDirect(EventBus.class, "checkTypesOnDispatch")) {
+				Class<?> baseType = ReflectionHelper.getPrivateValueDirect(EventBus.class, "baseType", bus);
+				if (!baseType.isInstance(event))
+					throw new IllegalArgumentException("Cannot post event of type " + event.getClass().getSimpleName() + " to this event. Must match type: " + baseType.getSimpleName());
+			}
+			
+			IEventListener[] listeners = event.getListenerList().getListeners(ReflectionHelper.getPrivateValueDirect(EventBus.class, "busID", bus));
+			int index = 0;
+			try {
+				EventPriority current = null;
+				for (; index < listeners.length; index++) {
+					if (listeners[index] instanceof EventPriority) {
+						current = (EventPriority) listeners[index];
+						if (!ReflectionHelper.<EventBus, Boolean>getPrivateValueDirect(EventBus.class, "trackPhases", bus))
+							continue;
+					}
+					if (current == prio)
+						listeners[index].invoke(event);
+				}
+			} catch (Throwable t) {
+				ReflectionHelper.<EventBus, IEventExceptionHandler>getPrivateValueDirect(EventBus.class, "exceptionHandler", bus).handleException(bus, event, listeners, index, t);
+				throw t;
+			}
+		} catch (Throwable t) {
+			Armorpointspp.LOGGER.warn("Exception reposting event " + event.getClass().getName() + " with priority " + prio.name(), t);
+			throw new RuntimeException(t); // simply rethrowing does not work due to checked exceptions inside try block
+		} finally {
+			reposting = false;
+		}
+		return event.isCancelable() && event.isCanceled();
 	}
 }

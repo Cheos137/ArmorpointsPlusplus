@@ -2,6 +2,7 @@ package dev.cheos.armorpointspp;
 
 import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.*;
 
+import dev.cheos.armorpointspp.core.ReflectionHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -14,13 +15,19 @@ import net.minecraftforge.fml.relauncher.Side;
 @EventBusSubscriber(modid = Armorpointspp.MODID, value = Side.CLIENT)
 public class RenderGameOverlayListener {
 	private static final Minecraft minecraft = Minecraft.getMinecraft();
-	private static boolean reposting, working;
+	private static boolean reposting, working, init;
+	
+	private static void init() {
+		init = true;
+		ApppRenderGameOverlayEvent.init();
+	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
 	public static void handle(RenderGameOverlayEvent event) {
 		if (event instanceof ApppRenderGameOverlayEvent) return;
 		if (reposting) return;
 		if (working) return;
+		if (!init) init();
 		
 		if (event.getType() != ARMOR && event.getType() != HEALTH) { // we only want to handle armor and health ourselves
 			if (!(event.isCancelable() && event.isCanceled())) // do not repost if our event somehow got cancelled - SHOULD not happen, though
@@ -81,16 +88,24 @@ public class RenderGameOverlayListener {
 	
 	private static boolean repost(RenderGameOverlayEvent event) {
 		if (event instanceof Chat)
-			return post(new ApppRenderGameOverlayEvent.Chat(event, ((Chat) event).getPosX(), ((Chat) event).getPosY()));
+			return post(new ApppRenderGameOverlayEvent.Chat(event, ((Chat) event).getPosX(), ((Chat) event).getPosY()), event.getPhase());
 		else if (event instanceof Text)
-			return post(new ApppRenderGameOverlayEvent.Text(event, ((Text) event).getLeft(), ((Text) event).getRight()));
+			return post(new ApppRenderGameOverlayEvent.Text(event, ((Text) event).getLeft(), ((Text) event).getRight()), event.getPhase());
 		else if (event instanceof BossInfo)
-			return post(new ApppRenderGameOverlayEvent.BossInfo(event, ((BossInfo) event).getType(), ((BossInfo) event).getBossInfo(), ((BossInfo) event).getX(), ((BossInfo) event).getY(), ((BossInfo) event).getIncrement()));
+			return post(new ApppRenderGameOverlayEvent.BossInfo(event, event.getType(), ((BossInfo) event).getBossInfo(), ((BossInfo) event).getX(), ((BossInfo) event).getY(), ((BossInfo) event).getIncrement()), event.getPhase());
 		else if (event instanceof Pre)
-			return pre(event, event.getType());
+			return post(new ApppRenderGameOverlayEvent.Pre(event, event.getType()), event.getPhase());
 		else if (event instanceof Post)
-			post(event, event.getType());
+			post(new ApppRenderGameOverlayEvent.Post(event, event.getType()), event.getPhase());
 		return false;
+	}
+	
+	private static boolean pre(RenderGameOverlayEvent parent, ElementType type) {
+		return post(new ApppRenderGameOverlayEvent.Pre(parent, type));
+	}
+	
+	private static void post(RenderGameOverlayEvent parent, ElementType type) {
+		post(new ApppRenderGameOverlayEvent.Post(parent, type));
 	}
 	
 	private static boolean post(Event event) {
@@ -100,11 +115,33 @@ public class RenderGameOverlayListener {
 		return cancelled;
 	}
 	
-	private static boolean pre(RenderGameOverlayEvent parent, ElementType type) {
-		return post(new ApppRenderGameOverlayEvent.Pre(parent, type));
-	}
-	
-	private static void post(RenderGameOverlayEvent parent, ElementType type) {
-		post(new ApppRenderGameOverlayEvent.Post(parent, type));
+	private static boolean post(Event event, EventPriority prio) {
+		reposting = true;
+		try {
+			EventBus bus = MinecraftForge.EVENT_BUS;
+			
+			if (ReflectionHelper.<EventBus, Boolean>getPrivateValueDirect(EventBus.class, "shutdown", bus)) return false;
+			
+			IEventListener[] listeners = event.getListenerList().getListeners(ReflectionHelper.getPrivateValueDirect(EventBus.class, "busID", bus));
+			int index = 0;
+			try {
+				EventPriority current = null;
+				for (; index < listeners.length; index++) {
+					if (listeners[index] instanceof EventPriority)
+						current = (EventPriority) listeners[index];
+					if (current == prio)
+						listeners[index].invoke(event);
+				}
+			} catch (Throwable t) {
+				ReflectionHelper.<EventBus, IEventExceptionHandler>getPrivateValueDirect(EventBus.class, "exceptionHandler", bus).handleException(bus, event, listeners, index, t);
+				throw t;
+			}
+		} catch (Throwable t) {
+			Armorpointspp.LOGGER.warn("Exception reposting event " + event.getClass().getName() + " with priority " + prio.name(), t);
+			throw new RuntimeException(t); // simply rethrowing does not work due to checked exceptions inside try block
+		} finally {
+			reposting = false;
+		}
+		return event.isCancelable() && event.isCanceled();
 	}
 }

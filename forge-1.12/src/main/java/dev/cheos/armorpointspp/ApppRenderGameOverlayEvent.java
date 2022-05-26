@@ -39,20 +39,30 @@ public interface ApppRenderGameOverlayEvent {
 		}
 	}
 	
+	static void init() { // force listener list init of all events
+		RenderGameOverlayEvent parent = new RenderGameOverlayEvent(0, null);
+		new      Pre(parent, null);
+		new     Post(parent, null);
+		new BossInfo(parent, null, null, 0, 0, 0);
+		new     Text(parent, null, null);
+		new     Chat(parent, 0, 0);
+	}
+	
 	default void aquireListenerList() {
 		if (!(this instanceof Event))
 			throw new IllegalStateException("Only events can implement ApppRenderGameOverlayEvent! (implemented by: " + getClass().getName() + ")");
 		
 		Class<?> parent = getClass().getSuperclass();
-		ListenerList originalList = getListenerList(parent);
 		ListenerList parentList   = getListenerList(parent.getSuperclass());
+		ListenerList originalList = getListenerList(parent);
 		setListenerList(parent, new ListenerList(parentList));
 		ListenerList listenerList = getListenerList(parent);
 		setListenerList(getClass(), originalList == null ? new ListenerList(listenerList) : originalList);
 		
 		if (listenerList.getListeners(busID).length == 0)
 			try {
-				listenerList.register(busID, EventPriority.HIGHEST, new ASMEventHandler(RenderGameOverlayListener.class, RenderGameOverlayListener.class.getDeclaredMethod("handle", RenderGameOverlayEvent.class), Loader.instance().activeModContainer(), false));
+				for (EventPriority prio : EventPriority.values())
+					listenerList.register(busID, prio, new ASMEventHandler(RenderGameOverlayListener.class, RenderGameOverlayListener.class.getDeclaredMethod("handle", RenderGameOverlayEvent.class), Loader.instance().activeModContainer(), false));
 			} catch (Throwable t) {
 				throw new IllegalStateException("Error re-registering appp event handler", t);
 			}

@@ -74,6 +74,17 @@ public class ReflectionHelper {
 		return (V) field.get(of);
 	}
 	
+	public static <T, V> V getPrivateValueDirect(Class<T> clazz, String name) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		return getPrivateValueDirect(clazz, name, null);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T, V> V getPrivateValueDirect(Class<T> clazz, String name, T of) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		Field field = clazz.getDeclaredField(name);
+		field.setAccessible(true);
+		return (V) field.get(of);
+	}
+	
 	public static Field findField(Class<?> clazz, String name) throws NoSuchFieldException, SecurityException {
 		NoSuchFieldException ex = null;
 		Field field = null;
