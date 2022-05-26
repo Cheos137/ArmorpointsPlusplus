@@ -1,8 +1,6 @@
 package dev.cheos.armorpointspp;
 
-import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.ARMOR;
-import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.HEALTH;
-import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.TEXT;
+import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.*;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
@@ -12,19 +10,19 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.*;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.*;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @EventBusSubscriber(modid = Armorpointspp.MODID, value = Dist.CLIENT)
 public class RenderGameOverlayListener {
 	private static final Minecraft minecraft = Minecraft.getInstance();
-	private static final ForgeIngameGui gui  = (ForgeIngameGui) minecraft.gui;
+	private static boolean reposting, working;
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
 	public static void handle(RenderGameOverlayEvent event) {
 		if (event instanceof ApppRenderGameOverlayEvent) return;
+		if (reposting) return;
+		if (working) return;
 		
 		if (event.getType() != ARMOR && event.getType() != HEALTH) { // we only want to handle armor and health ourselves
 			if (!(event.isCancelable() && event.isCanceled())) // do not repost if our event somehow got cancelled - SHOULD not happen, though
@@ -34,6 +32,8 @@ public class RenderGameOverlayListener {
 				return;                                        // return if we are cancelled and not a text event, we want to render but not handle text events
 		}
 		
+		working = true;
+		ForgeIngameGui gui = (ForgeIngameGui) minecraft.gui;
 		MatrixStack poseStack = event.getMatrixStack();
 		float partialTicks    = event.getPartialTicks();
 		int screenWidth       = event.getWindow().getGuiScaledWidth();
@@ -41,8 +41,8 @@ public class RenderGameOverlayListener {
 		
 		switch (event.getType()) {
 			case ARMOR:
-				if (!(event instanceof Pre)) // extra check for this because mantle thinks it's great and stuff
-					break;
+//				if (!(event instanceof Pre)) // extra check for this because mantle thinks it's great and stuff
+//					break;
 				event.setCanceled(true); // prevent forge from rendering vanilla stuff
 				if (pre(poseStack, event, ARMOR))
 					break;
@@ -55,8 +55,8 @@ public class RenderGameOverlayListener {
 				post(poseStack, event, ARMOR);
 				break;
 			case HEALTH:
-				if (!(event instanceof Pre)) // extra check for this because mantle thinks it's great and stuff
-					break;
+//				if (!(event instanceof Pre)) // extra check for this because mantle thinks it's great and stuff
+//					break;
 				event.setCanceled(true); // prevent forge from rendering vanilla stuff
 				if (pre(poseStack, event, HEALTH)) {
 					if (Armorpointspp.MANTLE) // specific fix, JUST for mantle... why are you like this, mantle?
@@ -68,16 +68,18 @@ public class RenderGameOverlayListener {
 				post(poseStack, event, HEALTH);
 				break;
 			case TEXT:
-				if (event instanceof Post)
-					break;
+//				if (event instanceof Post)
+//					break;
 				Overlays.armorText (gui, poseStack, partialTicks, screenWidth, screenHeight);
 				Overlays.healthText(gui, poseStack, partialTicks, screenWidth, screenHeight);
 				Overlays.debug     (gui, poseStack, partialTicks, screenWidth, screenHeight);
 				break;
 			default: // we can only reach this switch with ARMOR, HEALTH and TEXT, everything else indicates something going wrong
+				working = false;
 				throw new RuntimeException("Something went wrong - reached code that should not be reachable with event type " + event.getType());
 			}
 		Overlays.cleanup();
+		working = false;
 	}
 	
 	private static boolean repost(RenderGameOverlayEvent event) {
@@ -95,7 +97,10 @@ public class RenderGameOverlayListener {
 	}
 	
 	private static boolean post(Event event) {
-		return MinecraftForge.EVENT_BUS.post(event);
+		reposting = true;
+		boolean cancelled = MinecraftForge.EVENT_BUS.post(event);
+		reposting = false;
+		return cancelled;
 	}
 	
 	private static boolean pre(MatrixStack poseStack, RenderGameOverlayEvent parent, ElementType type) {
