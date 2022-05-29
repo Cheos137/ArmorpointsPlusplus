@@ -1,5 +1,7 @@
 package dev.cheos.armorpointspp;
 
+import java.util.function.Consumer;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,6 +9,9 @@ import org.apache.logging.log4j.Logger;
 import dev.cheos.armorpointspp.config.ApppConfig;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggedInEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.*;
 import net.minecraftforge.fml.common.Mod;
@@ -29,6 +34,13 @@ public class Armorpointspp {
 						() -> FMLNetworkConstants.IGNORESERVERONLY,
 						(a, b) -> true));
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::client);
+		
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+			Consumer<RenderGameOverlayEvent> listener = RenderGameOverlayListener::handle;
+			for (EventPriority prio : EventPriority.values())
+				MinecraftForge.EVENT_BUS.addListener(prio, true, RenderGameOverlayEvent.class, listener);
+		});
+		
 		ApppConfig.init();
 		checkCompat();
 		MANTLE = ModList.get().isLoaded("mantle");

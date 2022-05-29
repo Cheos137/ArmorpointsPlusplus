@@ -6,16 +6,14 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 
 import dev.cheos.armorpointspp.core.ReflectionHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.*;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.EventBus;
 import net.minecraftforge.eventbus.api.*;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
-@EventBusSubscriber(modid = Armorpointspp.MODID, value = Dist.CLIENT)
+//@EventBusSubscriber(modid = Armorpointspp.MODID, value = Dist.CLIENT) // handled in main class
 public class RenderGameOverlayListener {
 	private static final Minecraft minecraft = Minecraft.getInstance();
 	private static boolean reposting, working, init;
@@ -25,7 +23,7 @@ public class RenderGameOverlayListener {
 		ApppRenderGameOverlayEvent.init();
 	}
 	
-	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
+//	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true) // handled in main class
 	public static void handle(RenderGameOverlayEvent event) {
 		if (event instanceof ApppRenderGameOverlayEvent) return;
 		if (reposting) return;
@@ -126,7 +124,8 @@ public class RenderGameOverlayListener {
 		try {
 			EventBus bus = (EventBus) MinecraftForge.EVENT_BUS;
 			
-			if (ReflectionHelper.<EventBus, Boolean>getPrivateValueDirect(EventBus.class, "shutdown", bus)) return false;
+			if (ReflectionHelper.<EventBus, Boolean>getPrivateValueDirect(EventBus.class, "shutdown", bus))
+				return false;
 			if (ReflectionHelper.<EventBus, Boolean>getPrivateValueDirect(EventBus.class, "checkTypesOnDispatch")) {
 				Class<?> baseType = ReflectionHelper.getPrivateValueDirect(EventBus.class, "baseType", bus);
 				if (!baseType.isInstance(event))

@@ -1,8 +1,8 @@
 package dev.cheos.armorpointspp;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 
@@ -12,13 +12,16 @@ import dev.cheos.armorpointspp.core.ReflectionHelper;
 import net.minecraft.client.gui.ClientBossInfo;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.*;
-import net.minecraftforge.eventbus.api.*;
+import net.minecraftforge.eventbus.EventBus;
+import net.minecraftforge.eventbus.ListenerList;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.EventListenerHelper;
 
 public interface ApppRenderGameOverlayEvent {
-	static final Map<Class<?>, ListenerList> listeners = aquireListeners();
-	static final ReadWriteLock lock = aquireLock();
-	static final int busID = aquireFEBusID();
+	Map<Class<?>, ListenerList> listeners = aquireListeners();
+	ReadWriteLock lock = aquireLock();
+	int busID = aquireFEBusID();
+	AtomicBoolean masterListPatched = new AtomicBoolean();
 	
 	static Map<Class<?>, ListenerList> aquireListeners() {
 		try {
@@ -60,10 +63,11 @@ public interface ApppRenderGameOverlayEvent {
 		
 		final Lock readLock = lock.readLock();
 		final Lock writeLock = lock.writeLock();
-
-		Class<?> parent = getClass().getSuperclass();
-		ListenerList parentList = EventListenerHelper.getListenerList(parent.getSuperclass());
 		
+		Class<?> master = RenderGameOverlayEvent.class;
+		Class<?> parent = getClass().getSuperclass();
+		
+		ListenerList masterList = EventListenerHelper.getListenerList(master);
 		writeLock.lock();
 		readLock.lock();
 		ListenerList originalList = listeners.remove(parent);
@@ -72,19 +76,19 @@ public interface ApppRenderGameOverlayEvent {
 		EventListenerHelper.getListenerList(getClass()); // force the listener list to update throughout forge
 		writeLock.lock();
 		readLock.lock();
-		listeners.put(parent, new ListenerList(parentList));
+		listeners.put(parent, new ListenerList(masterList));
 		readLock.unlock();
 		writeLock.unlock();
 		ListenerList listenerList = EventListenerHelper.getListenerList(parent);
 		setListenerList(originalList == null ? new ListenerList(listenerList) : originalList);
 		
-		if (listenerList.getListeners(busID).length == 0)
-			try {
-				for (EventPriority prio : EventPriority.values())
-					listenerList.register(busID, prio, new ASMEventHandler(RenderGameOverlayListener.class, RenderGameOverlayListener.class.getDeclaredMethod("handle", RenderGameOverlayEvent.class), false));
-			} catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
-				throw new IllegalStateException("Error re-registering appp event handler", e);
-			}
+//		if (listenerList.getListeners(busID).length == 0) // handled in main class
+//			try {
+//				for (EventPriority prio : EventPriority.values())
+//					listenerList.register(busID, prio, new ASMEventHandler(RenderGameOverlayListener.class, RenderGameOverlayListener.class.getDeclaredMethod("handle", RenderGameOverlayEvent.class), false));
+//			} catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
+//				throw new IllegalStateException("Error re-registering appp event handler", e);
+//			}
 	}
 	
 	void setListenerList(ListenerList llist);

@@ -1,7 +1,6 @@
 package dev.cheos.armorpointspp;
 
-import static net.minecraftforge.client.gui.ForgeIngameGui.BOSS_HEALTH_ELEMENT;
-import static net.minecraftforge.client.gui.ForgeIngameGui.HUD_TEXT_ELEMENT;
+import static net.minecraftforge.client.gui.ForgeIngameGui.*;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -10,21 +9,14 @@ import java.util.Map;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import dev.cheos.armorpointspp.config.ApppConfig;
-import dev.cheos.armorpointspp.core.ReflectionHelper;
-import dev.cheos.armorpointspp.core.RenderContext;
-import dev.cheos.armorpointspp.core.Side;
+import dev.cheos.armorpointspp.core.*;
+import dev.cheos.armorpointspp.core.adapter.*;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
-import dev.cheos.armorpointspp.core.adapter.IDataProvider;
-import dev.cheos.armorpointspp.core.adapter.IMath;
-import dev.cheos.armorpointspp.core.adapter.IProfiler;
-import dev.cheos.armorpointspp.core.adapter.IRenderer;
 import dev.cheos.armorpointspp.core.render.Components;
 import dev.cheos.armorpointspp.impl.*;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.gui.IIngameOverlay;
-import net.minecraftforge.client.gui.OverlayRegistry;
+import net.minecraftforge.client.gui.*;
 import net.minecraftforge.client.gui.OverlayRegistry.OverlayEntry;
 
 //the cool thing about this update is that i can just go in and edit vanilla stuff without worrying about breaking something - it'll never be my fault again
@@ -57,11 +49,11 @@ public class Overlays {
 		unregister(ForgeIngameGui.PLAYER_HEALTH_ELEMENT);
 		unregister(ForgeIngameGui.ARMOR_LEVEL_ELEMENT);
 		// try to override them
-		try {
+		try { // TODO mixin for this
 			Field health = ReflectionHelper.unfinalize(ReflectionHelper.findField(ForgeIngameGui.class, "PLAYER_HEALTH_ELEMENT"));
 			health.set(null, PLAYER_HEALTH);
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) { }
-		try {
+		try { // TODO mixin for this
 			Field armor = ReflectionHelper.unfinalize(ReflectionHelper.findField(ForgeIngameGui.class, "ARMOR_LEVEL_ELEMENT"));
 			armor.set(null, ARMOR_LEVEL);
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) { }

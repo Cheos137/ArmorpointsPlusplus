@@ -34,15 +34,46 @@ minecraft {
                 }
             }
         }
+
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            taskName 'runApppServer-1.16'
+
+            mods {
+                armorpointspp {
+                    source sourceSets.main
+                }
+            }
+        }
     }
 }
 
 sourceSets.main.java { srcDir project(':core').sourceSets.main.java }
 sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
+repositories {
+    flatDir {
+        dir 'libs'
+    }
+
+    maven {
+        url 'https://www.cursemaven.com'
+        content {
+            includeGroup 'curse.maven'
+        }
+    }
+}
+
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.35'
     implementation project(':core')
+
+    // TESTING
+    // implementation fg.deobf('curse.maven:tough-as-nails-246391:3430873') // ToughAsNails 1.16.5-4.1.0.9
+    // implementation 'curse.maven:tough-as-nails-246391:3430874' // deobf ToughAsNails 1.16.5-4.1.0.9
+    // implementation 'libs:ToughAsNails:1.16.5-4.1.0.9:deobf'
 }
 
 jar.finalizedBy('reobfJar')
