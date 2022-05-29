@@ -24,10 +24,13 @@ body:
       label: Version
       description: Which version of the mod did the bug occur on?
       options:
+        - 3.0.3 for Minecraft Forge 1.12.2
+        - 3.0.2 for Minecraft Forge 1.16.5
+        - 3.0.2 for Minecraft Forge 1.12.2 [unsupported]
         - 3.0.1 for Minecraft Fabric 1.18.2
         - 3.0.1 for Minecraft Forge 1.18.2
-        - 3.0.1 for Minecraft Forge 1.16.5
-        - 3.0.1 for Minecraft Forge 1.12.2
+        - 3.0.1 for Minecraft Forge 1.16.5 [unsupported]
+        - 3.0.1 for Minecraft Forge 1.12.2 [unsupported]
         - 3.0.0 for Minecraft Fabric 1.18.2 [unsupported]
         - 3.0.0 for Minecraft Forge 1.18.2 [unsupported]
         - 3.0.0 for Minecraft Forge 1.17.1 [unsupported]
