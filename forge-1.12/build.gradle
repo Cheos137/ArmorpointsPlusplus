@@ -34,6 +34,19 @@ minecraft {
                 }
             }
         }
+
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            taskName 'runApppServer-1.12'
+
+            mods {
+                armorpointspp {
+                    source sourceSets.main
+                }
+            }
+        }
     }
 }
 
@@ -44,12 +57,24 @@ repositories {
     flatDir {
         dir 'libs'
     }
+
+    maven {
+        url 'https://www.cursemaven.com'
+        content {
+            includeGroup 'curse.maven'
+        }
+    }
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
     implementation project(':core')
-    implementation fg.deobf('emptysample:PotionCore:1.9_for_1.12.2')
+
+    // SOFTDEPENDS
+    implementation fg.deobf('curse.maven:potion-core-242872:2905184') // PotionCore 1.12.2-1.9.0
+
+    // TESTING
+    // implementation fg.deobf('curse.maven:tough-as-nails-246391:2710969') // ToughAsNails 1.12.2-3.1.0.141
 }
 
 processResources {

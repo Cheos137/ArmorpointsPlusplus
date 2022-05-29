@@ -6,14 +6,13 @@ import dev.cheos.armorpointspp.core.ReflectionHelper;
 import net.minecraft.client.gui.BossInfoClient;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.*;
 
 // reflecting into asm generated code is scary...
 // won't touch anything in here anymore... until it is broken...
 // when that happens, though, i can (hopefully) maybe drop support for 1.12?
 public interface ApppRenderGameOverlayEvent {
-	static final int busID = aquireFEBusID();
+	int busID = aquireFEBusID();
 	
 	static int aquireFEBusID() {
 		try {
@@ -53,19 +52,19 @@ public interface ApppRenderGameOverlayEvent {
 			throw new IllegalStateException("Only events can implement ApppRenderGameOverlayEvent! (implemented by: " + getClass().getName() + ")");
 		
 		Class<?> parent = getClass().getSuperclass();
-		ListenerList parentList   = getListenerList(parent.getSuperclass());
+		ListenerList masterList   = getListenerList(RenderGameOverlayEvent.class);
 		ListenerList originalList = getListenerList(parent);
-		setListenerList(parent, new ListenerList(parentList));
+		setListenerList(parent, new ListenerList(masterList));
 		ListenerList listenerList = getListenerList(parent);
 		setListenerList(getClass(), originalList == null ? new ListenerList(listenerList) : originalList);
 		
-		if (listenerList.getListeners(busID).length == 0)
-			try {
-				for (EventPriority prio : EventPriority.values())
-					listenerList.register(busID, prio, new ASMEventHandler(RenderGameOverlayListener.class, RenderGameOverlayListener.class.getDeclaredMethod("handle", RenderGameOverlayEvent.class), Loader.instance().activeModContainer(), false));
-			} catch (Throwable t) {
-				throw new IllegalStateException("Error re-registering appp event handler", t);
-			}
+//		if (listenerList.getListeners(busID).length == 0) // handled in main class
+//			try {
+//				for (EventPriority prio : EventPriority.values())
+//					listenerList.register(busID, prio, new ASMEventHandler(RenderGameOverlayListener.class, RenderGameOverlayListener.class.getDeclaredMethod("handle", RenderGameOverlayEvent.class), Loader.instance().activeModContainer(), false));
+//			} catch (Throwable t) {
+//				throw new IllegalStateException("Error re-registering appp event handler", t);
+//			}
 	}
 	
 	

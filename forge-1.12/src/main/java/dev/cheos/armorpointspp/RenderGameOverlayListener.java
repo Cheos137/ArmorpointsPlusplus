@@ -23,6 +23,16 @@ public class RenderGameOverlayListener {
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
+	public static void handleH(RenderGameOverlayEvent event) { handle(event); }
+	@SubscribeEvent(priority = EventPriority.HIGH, receiveCanceled = true)
+	public static void handleh(RenderGameOverlayEvent event) { handle(event); }
+	@SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
+	public static void handlen(RenderGameOverlayEvent event) { handle(event); }
+	@SubscribeEvent(priority = EventPriority.LOW, receiveCanceled = true)
+	public static void handlel(RenderGameOverlayEvent event) { handle(event); }
+	@SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
+	public static void handleL(RenderGameOverlayEvent event) { handle(event); }
+	
 	public static void handle(RenderGameOverlayEvent event) {
 		if (event instanceof ApppRenderGameOverlayEvent) return;
 		if (reposting) return;
@@ -36,6 +46,8 @@ public class RenderGameOverlayListener {
 			if (event.getType() != TEXT || (event.isCancelable() && event.isCanceled()))
 				return;                                        // return if we are cancelled and not a text event, we want to render but not handle text events
 		}
+		
+		if (event.getPhase() != EventPriority.NORMAL) return;
 		
 		working = true;
 		GuiIngameForge gui  = (GuiIngameForge) minecraft.ingameGUI;
@@ -120,7 +132,8 @@ public class RenderGameOverlayListener {
 		try {
 			EventBus bus = MinecraftForge.EVENT_BUS;
 			
-			if (ReflectionHelper.<EventBus, Boolean>getPrivateValueDirect(EventBus.class, "shutdown", bus)) return false;
+			if (ReflectionHelper.<EventBus, Boolean>getPrivateValueDirect(EventBus.class, "shutdown", bus))
+				return false;
 			
 			IEventListener[] listeners = event.getListenerList().getListeners(ReflectionHelper.getPrivateValueDirect(EventBus.class, "busID", bus));
 			int index = 0;
