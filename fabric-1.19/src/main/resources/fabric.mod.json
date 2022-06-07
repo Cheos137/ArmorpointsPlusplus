@@ -1,0 +1,40 @@
+{
+    "schemaVersion": 1,
+    "id": "armorpointspp",
+    "version": "${version}",
+  
+    "name": "Armorpoints++",
+    "description": "Please go to the curseforge page for a description",
+    "authors": [
+      "Cheos"
+    ],
+    "contact": {
+      "homepage": "https://www.curseforge.com/minecraft/mc-mods/armorpoints",
+      "sources": "https://github.com/Cheos137/ArmorpointsPlusplus"
+    },
+  
+    "license": "MIT",
+    "icon": "assets/modid/icon.png",
+    "accessWidener": "armorpointspp.accesswidener",
+  
+    "environment": "*",
+    "entrypoints": {
+      "client": [
+        "dev.cheos.armorpointspp.Armorpointspp::client"
+      ]
+    },
+    "mixins": [
+      "armorpointspp.mixins.json"
+    ],
+  
+    "depends": {
+      "fabricloader": ">=0.14.6",
+      "minecraft": "1.19.x",
+      "java": ">=17"
+    },
+    "suggests": {
+      "fabric": "*",
+      "fabric-networking-api-v1": "*",
+      "fabric-rendering-v1": "*"
+    }
+  }
