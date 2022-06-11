@@ -18,7 +18,7 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            taskName 'runApppClient-1.18'
+            taskName 'runApppClient-1.19'
 
             mods {
                 armorpointspp {
@@ -33,7 +33,7 @@ sourceSets.main.java { srcDir project(':core').sourceSets.main.java }
 sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19-41.0.5'
+    minecraft 'net.minecraftforge:forge:1.19-41.0.17'
     implementation project(':core')
 }
 
