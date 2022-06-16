@@ -1,6 +1,6 @@
 name: General Question
 description: Anything not fitting any other templates goes here
-labels: ["type: general"]
+labels: ["general"]
 body:
 - type: textarea
   id: description
