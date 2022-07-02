@@ -1,6 +1,6 @@
 name: Compatibility Request
 description: |
-  Suggest an idea for this project
+  Suggest an idea for this project\n
   [ Note: This only applies to fabric builds. As forge builds should be universally compatible, please create a bug report instead, then. ]
 title: "[Compatibility Request]: "
 labels: ["compatibility", "fabric"]
