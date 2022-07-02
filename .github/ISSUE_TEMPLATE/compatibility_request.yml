@@ -1,0 +1,43 @@
+name: Compatibility Request
+description: |
+  Suggest an idea for this project
+  Note: This only applies to fabric builds. As forge builds _should_ be universally compatible, please create a bug report instead, then.
+title: "[Compatibility Request]: "
+labels: ["compatibility", "fabric"]
+body:
+  - type: checkboxes
+    id: unique
+    attributes:
+      label: Is there an existing issue for this?
+      description: Please search to see if an issue already exists for the feature you want to request.
+      options:
+      - label: I have searched the existing issues
+        required: true
+  - type: input
+    id: modname
+    attributes:
+      label: Mod name/version/id
+      description: The mod name + version + modid of the mod you want to see compatibility added.
+      placeholder: Armorpoints++ / fabric-1.19-3.0.5 / armorpointspp
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: Link
+      description: A link to the curseforge/modrinth/github page of the mod.
+      placeholder: https://github.com/Cheos137/ArmorpointsPlusplus
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Are there any alternatives you would like to see if compatibility for your requested mod will not be added? If so describe.
+      placeholder: |
+        Have you considered any alternatives or compromises?
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context or screenshots regarding the compatibility issue here.

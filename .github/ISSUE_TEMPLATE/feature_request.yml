@@ -36,7 +36,7 @@ body:
     id: alternatives
     attributes:
       label: Alternatives
-      description: Are there any alternatives you would like to see if the main feature will be implemented? If so describe.
+      description: Are there any alternatives you would like to see if the main feature will not be implemented? If so describe.
       placeholder: |
         Have you considered any alternatives or compromises?
   - type: textarea
