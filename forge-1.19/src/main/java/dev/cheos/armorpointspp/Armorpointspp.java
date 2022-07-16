@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import dev.cheos.armorpointspp.config.ApppConfig;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggedInEvent;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -26,7 +26,6 @@ public class Armorpointspp {
 	}
 	
 	private void client(FMLClientSetupEvent event) {
-		Overlays.init();
 		LOGGER.info("oh hi there... :)");
 		LOGGER.info("I heared you wanted some fancy health/armor bars?");
 	}
@@ -66,7 +65,7 @@ public class Armorpointspp {
 	}
 	
 	@SubscribeEvent
-	public static void onLogin(LoggedInEvent event) { // seems to run on main thread -> no sync problems here
+	public static void onLogin(ClientPlayerNetworkEvent.LoggingIn event) { // seems to run on main thread -> no sync problems here
 		ApppConfig.instance().invalidateAll();
 	}
 }

@@ -2,9 +2,7 @@ package dev.cheos.armorpointspp.core.texture;
 
 import java.util.List;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.*;
 
 import dev.cheos.armorpointspp.core.RenderContext;
 import dev.cheos.armorpointspp.core.adapter.IConfig.StringOption;
@@ -34,7 +32,7 @@ public interface ITextureSheet {
 	static final BiMap<String, ITextureSheet> sheets = HashBiMap.create();
 	static final ITextureSheet vanillaSheet = register("vanilla", new VanillaTextureSheet());
 	static final ITextureSheet defaultSheet = register("default", new StandardTextureSheet("icons"));
-	static final List<ITextureSheet> builtins = ImmutableList.of(defaultSheet); // only to be used for config option, does not contain vanilla sheet
+	static final List<ITextureSheet> builtins = ImmutableList.of(defaultSheet, vanillaSheet); // only to be used for config option, does not contain vanilla sheet
 	// TODO add other builtin texture sheets
 	public static ITextureSheet vanillaSheet() { return vanillaSheet; }
 	public static ITextureSheet defaultSheet() { return defaultSheet; }

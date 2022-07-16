@@ -1,25 +1,32 @@
 package dev.cheos.armorpointspp;
 
-import static net.minecraftforge.client.gui.ForgeIngameGui.*;
-
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import dev.cheos.armorpointspp.config.ApppConfig;
-import dev.cheos.armorpointspp.core.*;
+import dev.cheos.armorpointspp.core.RenderContext;
+import dev.cheos.armorpointspp.core.Side;
 import dev.cheos.armorpointspp.core.adapter.*;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
 import dev.cheos.armorpointspp.core.render.Components;
 import dev.cheos.armorpointspp.impl.*;
+import dev.cheos.armorpointspp.mixin.IRegisterGuiOverlaysEventMixin;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.client.gui.*;
-import net.minecraftforge.client.gui.OverlayRegistry.OverlayEntry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
-//the cool thing about this update is that i can just go in and edit vanilla stuff without worrying about breaking something - it'll never be my fault again
+@EventBusSubscriber(modid = Armorpointspp.MODID, value = Dist.CLIENT, bus = Bus.MOD)
 public class Overlays {
 	private static final IDataProvider DATA_PROVIDER = new DataProviderImpl();
 	private static final IRenderer RENDERER          = new RendererImpl();
@@ -27,103 +34,103 @@ public class Overlays {
 	private static final Minecraft minecraft         = Minecraft.getInstance();
 	private static int lastArmorY = 0, lastHealthY = 0, lastToughnessY = 0;
 	
-	public static final IIngameOverlay MOUNT_HEALTH_ELEMENT = ForgeIngameGui.MOUNT_HEALTH_ELEMENT,
-								  PLAYER_HEALTH      = OverlayRegistry.registerOverlayAbove(BOSS_HEALTH_ELEMENT,  "Player Health",           Overlays::playerHealth),
-								  ABSORPTION         = OverlayRegistry.registerOverlayAbove(PLAYER_HEALTH,        "Appp Absorption",         Overlays::absorption),
-								  ARMOR_LEVEL        = OverlayRegistry.registerOverlayAbove(ABSORPTION,           "Armor Level",             Overlays::armorLevel),
-								  MAGIC_SHIELD       = OverlayRegistry.registerOverlayAbove(ARMOR_LEVEL,          "Appp Magic Shield",       Overlays::magicShield),
-								  RESISTANCE         = OverlayRegistry.registerOverlayAbove(MAGIC_SHIELD,         "Appp Resistance",         Overlays::resistance),
-								  PROTECTION         = OverlayRegistry.registerOverlayAbove(RESISTANCE,           "Appp Protection",         Overlays::protection),
-								  ARMOR_TOUGHNESS    = OverlayRegistry.registerOverlayAbove(MOUNT_HEALTH_ELEMENT, "Appp Armor Toughness",    Overlays::armorToughness),
-								  ARMOR_TOUGHNESS_OV = OverlayRegistry.registerOverlayAbove(PROTECTION,           "Appp Armor Toughness OV", Overlays::armorToughnessOv),
-								  ARMOR_TEXT         = OverlayRegistry.registerOverlayAbove(HUD_TEXT_ELEMENT,     "Appp Armor Text",         Overlays::armorText),
-								  HEALTH_TEXT        = OverlayRegistry.registerOverlayAbove(HUD_TEXT_ELEMENT,     "Appp Health Text",        Overlays::healthText),
-								  TOUGHNESS_TEXT     = OverlayRegistry.registerOverlayAbove(HUD_TEXT_ELEMENT,     "Appp Toughness Text",     Overlays::toughnessText),
-								  DEBUG              = OverlayRegistry.registerOverlayTop(                        "Appp Debug",              Overlays::debug);
+	public static final ResourceLocation MOUNT_HEALTH       = new ResourceLocation("minecraft"        , "mount_health"),
+										 PLAYER_HEALTH      = new ResourceLocation("minecraft"        , "player_health"),
+										 ABSORPTION         = new ResourceLocation(Armorpointspp.MODID, "absorption"),
+										 ARMOR_LEVEL        = new ResourceLocation("minecraft"        , "armor_level"),
+										 MAGIC_SHIELD       = new ResourceLocation(Armorpointspp.MODID, "pc_magic_shield"),
+										 PROTECTION         = new ResourceLocation(Armorpointspp.MODID, "protection"),
+										 RESISTANCE         = new ResourceLocation(Armorpointspp.MODID, "resistance"),
+										 ARMOR_TOUGHNESS    = new ResourceLocation(Armorpointspp.MODID, "toughness"),
+										 ARMOR_TOUGHNESS_OV = new ResourceLocation(Armorpointspp.MODID, "toughness_ov"),
+										 ARMOR_TEXT         = new ResourceLocation(Armorpointspp.MODID, "armor_text"),
+										 HEALTH_TEXT        = new ResourceLocation(Armorpointspp.MODID, "health_text"),
+										 TOUGHNESS_TEXT     = new ResourceLocation(Armorpointspp.MODID, "toughness_text"),
+										 ITEM_NAME          = new ResourceLocation("minecraft"        , "item_name");
 	
-	public static void init() {
-		// disable forge / vanilla overlays
-		OverlayRegistry.enableOverlay(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, false);
-		OverlayRegistry.enableOverlay(ForgeIngameGui.ARMOR_LEVEL_ELEMENT, false);
-		// try to unregister them
-		unregister(ForgeIngameGui.PLAYER_HEALTH_ELEMENT);
-		unregister(ForgeIngameGui.ARMOR_LEVEL_ELEMENT);
-		// try to override them
-		try { // TODO mixin for this
-			Field health = ReflectionHelper.unfinalize(ReflectionHelper.findField(ForgeIngameGui.class, "PLAYER_HEALTH_ELEMENT"));
-			health.set(null, PLAYER_HEALTH);
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) { }
-		try { // TODO mixin for this
-			Field armor = ReflectionHelper.unfinalize(ReflectionHelper.findField(ForgeIngameGui.class, "ARMOR_LEVEL_ELEMENT"));
-			armor.set(null, ARMOR_LEVEL);
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) { }
-		// hopefully, they're completely replaced now
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public static void register(RegisterGuiOverlaysEvent event) {
+		MissedFunctionality missedFunctionality = new MissedFunctionality(event);
+		
+		missedFunctionality.unregister(ARMOR_LEVEL);
+		missedFunctionality.registerOverriding(PLAYER_HEALTH              , Overlays::playerHealth);
+		event.registerAbove(PLAYER_HEALTH, ABSORPTION           .getPath(), Overlays::absorption);
+		missedFunctionality.registerArbitraryAbove(ABSORPTION, ARMOR_LEVEL, Overlays::armorLevel);
+		event.registerAbove(ARMOR_LEVEL  , MAGIC_SHIELD         .getPath(), Overlays::magicShield);
+		event.registerAbove(MAGIC_SHIELD , RESISTANCE           .getPath(), Overlays::resistance);
+		event.registerAbove(RESISTANCE   , PROTECTION           .getPath(), Overlays::protection);
+		event.registerAbove(MOUNT_HEALTH , ARMOR_TOUGHNESS      .getPath(), Overlays::armorToughness);
+		event.registerAbove(PROTECTION   , ARMOR_TOUGHNESS_OV   .getPath(), Overlays::armorToughnessOv);
+		event.registerAbove(ITEM_NAME    , ARMOR_TEXT           .getPath(), Overlays::armorText);
+		event.registerAbove(ITEM_NAME    , HEALTH_TEXT          .getPath(), Overlays::healthText);
+		event.registerAbove(ITEM_NAME    , TOUGHNESS_TEXT       .getPath(), Overlays::toughnessText);
+		event.registerAboveAll("debug"                                    , Overlays::debug);
 	}
 	
-	private static void playerHealth(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+	private static void playerHealth(ForgeGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		lastHealthY = baseY(gui, screenHeight);
 		if (!ApppConfig.instance().bool(BooleanOption.HEALTH_ENABLE)) {
 			if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
 				gui.renderHealth(screenWidth, screenHeight, poseStack);
 		} else if (Components.HEALTH.render(ctx(poseStack, baseX(screenWidth), lastHealthY)))
-			gui.left_height += 10;
+			gui.leftHeight += 10;
 	}
 	
-	private static void absorption(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+	private static void absorption(ForgeGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		Components.ABSOPRTION.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
 	}
 	
-	private static void armorLevel(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+	private static void armorLevel(ForgeGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		RenderContext ctx = ctx(poseStack, baseX(screenWidth), lastArmorY = baseY(gui, screenHeight));
 		boolean flag = false;
 		if (!ApppConfig.instance().bool(BooleanOption.ARMOR_ENABLE))
 			flag = Components.VANILLA_ARMOR.render(ctx);
 		else flag = Components.ARMOR.render(ctx);
-		if (flag) gui.left_height += 10;
+		if (flag) gui.leftHeight += 10;
 	}
 	
-	private static void armorToughness(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+	private static void armorToughness(ForgeGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		Side side = ApppConfig.instance().enm(EnumOption.TOUGHNESS_SIDE);
 		if (Components.TOUGHNESS.render(ctx(poseStack, baseX(screenWidth, side), lastToughnessY = baseY(gui, screenHeight, side))))
 			switch (side) {
 				case LEFT:
-					gui.left_height += 10;
+					gui.leftHeight += 10;
 					break;
 				case RIGHT:
-					gui.right_height += 10;
+					gui.rightHeight += 10;
 					break;
 			}
 	}
 	
-	private static void resistance(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+	private static void resistance(ForgeGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		Components.RESISTANCE.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
 	}
 	
-	private static void protection(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+	private static void protection(ForgeGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		Components.PROTECTION.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
 	}
 	
-	private static void armorToughnessOv(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+	private static void armorToughnessOv(ForgeGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		Components.TOUGHNESS_OVER.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
 	}
 	
-	private static void magicShield(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+	private static void magicShield(ForgeGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		Components.MAGIC_SHIELD.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
 	}
 	
-	private static void armorText(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+	private static void armorText(ForgeGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		Components.ARMOR_TEXT.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
 	}
 	
-	private static void healthText(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+	private static void healthText(ForgeGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		Components.HEALTH_TEXT.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
 	}
 	
-	private static void toughnessText(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+	private static void toughnessText(ForgeGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		Components.TOUGHNESS_TEXT.render(ctx(poseStack, baseX(screenWidth, ApppConfig.instance().enm(EnumOption.TOUGHNESS_SIDE)), lastToughnessY));
 	}
 	
-	private static void debug(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+	private static void debug(ForgeGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		RenderContext ctx = ctx(poseStack, baseX(screenWidth), lastArmorY);
 		Components.DEBUG.render(ctx);
 		Components.DEBUG_TEXT.render(ctx);
@@ -150,23 +157,48 @@ public class Overlays {
 		return width / 2 + switch (side) { case LEFT -> -91; case RIGHT -> 10; };
 	}
 	
-	private static int baseY(ForgeIngameGui gui, int height) {
+	private static int baseY(ForgeGui gui, int height) {
 		return baseY(gui, height, Side.LEFT);
 	}
 	
-	private static int baseY(ForgeIngameGui gui, int height, Side side) {
-		return height - switch (side) { case LEFT -> gui.left_height; case RIGHT -> gui.right_height; };
+	private static int baseY(ForgeGui gui, int height, Side side) {
+		return height - switch (side) { case LEFT -> gui.leftHeight; case RIGHT -> gui.rightHeight; };
 	}
 	
-	private static void unregister(IIngameOverlay overlay) {
-		try {
-			Map<IIngameOverlay, OverlayEntry> entries = ReflectionHelper.getPrivateValue(OverlayRegistry.class, "overlays");
-			List<OverlayEntry> overlaysOrdered = ReflectionHelper.getPrivateValue(OverlayRegistry.class, "overlaysOrdered");
-			OverlayEntry entry = entries.remove(overlay);
-			if (entry != null)
-				overlaysOrdered.remove(entry);
-		} catch (Exception e) {
-			Armorpointspp.LOGGER.error("Unable to unregister ingame overlay:", e);
+	
+	public static final class MissedFunctionality {
+		private final IRegisterGuiOverlaysEventMixin event;
+		private final Map<ResourceLocation, IGuiOverlay> overlays;
+		private final List<ResourceLocation> orderedOverlays;
+		
+		public MissedFunctionality(RegisterGuiOverlaysEvent event) {
+			this.event = (IRegisterGuiOverlaysEventMixin) event;
+			this.overlays = this.event.getOverlays();
+			this.orderedOverlays = this.event.getOrderedOverlays();
 		}
+		
+		public void registerOverriding(ResourceLocation id, IGuiOverlay overlay) {
+			Preconditions.checkArgument(this.overlays.containsKey(id), "Overlay not registered: " + id);
+			this.event.getOverlays().put(id, overlay);
+		}
+		
+		public void unregister(ResourceLocation id) {
+			Preconditions.checkArgument(this.overlays.containsKey(id), "Overlay not registered: " + id);
+			this.overlays.remove(id);
+			this.orderedOverlays.remove(id);
+		}
+		
+		public void registerArbitraryAbove(ResourceLocation other, ResourceLocation id, IGuiOverlay overlay) {
+	        Preconditions.checkArgument(!this.overlays.containsKey(id), "Overlay already registered: " + id);
+
+	        int idx = this.overlays.size();
+	        if (other != null) {
+	            idx = this.orderedOverlays.indexOf(other) + 1;
+	            Preconditions.checkState(idx > 0, "Attempted to order against an unregistered overlay. Only order against vanilla's and your own.");
+	        }
+
+	        this.overlays.put(id, overlay);
+	        this.orderedOverlays.add(idx, id);
+	    }
 	}
 }

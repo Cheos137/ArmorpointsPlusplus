@@ -13,13 +13,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraftforge.common.util.Lazy;
 
 public class RendererImpl implements IRenderer {
 	// fallback / default texture sheet location
 	private static final ResourceLocation ICONS = new ResourceLocation(Armorpointspp.MODID, "textures/gui/" + ITextureSheet.defaultSheet().texLocation() + ".png");
 	private final Minecraft minecraft = Minecraft.getInstance();
-	private final ForgeIngameGui gui = (ForgeIngameGui) this.minecraft.gui;
+	private final Lazy<ForgeGui> gui = Lazy.of(() -> (ForgeGui) this.minecraft.gui);
 	
 	@Override
 	public void blit(IPoseStack pStack, int x, int y, float u, float v, int width, int height, int texWidth, int texHeight) {
@@ -38,7 +39,7 @@ public class RendererImpl implements IRenderer {
 	
 	@Override
 	public void setupAppp() {
-		this.gui.setupOverlayRenderState(true, false, ICONS);
+		this.gui.get().setupOverlayRenderState(true, false, ICONS);
 	}
 	
 	@Override
@@ -49,12 +50,12 @@ public class RendererImpl implements IRenderer {
 					+ texSheet.texLocation()
 					+ ".png")
 				: new ResourceLocation(texSheet.texLocation());
-		this.gui.setupOverlayRenderState(true, false, this.minecraft.getResourceManager().getResource(location).isPresent() ? location : ICONS);
+		this.gui.get().setupOverlayRenderState(true, false, this.minecraft.getResourceManager().getResource(location).isPresent() ? location : ICONS);
 	}
 	
 	@Override
 	public void setupVanilla() {
-		this.gui.setupOverlayRenderState(true, false);
+		this.gui.get().setupOverlayRenderState(true, false);
 	}
 	
 	@Override
