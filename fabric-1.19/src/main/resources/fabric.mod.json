@@ -17,7 +17,7 @@
     "icon": "assets/modid/icon.png",
     "accessWidener": "armorpointspp.accesswidener",
   
-    "environment": "*",
+    "environment": "client",
     "entrypoints": {
       "client": [
         "dev.cheos.armorpointspp.Armorpointspp::client"
