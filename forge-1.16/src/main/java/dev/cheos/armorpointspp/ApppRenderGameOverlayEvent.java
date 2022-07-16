@@ -1,8 +1,6 @@
 package dev.cheos.armorpointspp;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 
@@ -21,7 +19,6 @@ public interface ApppRenderGameOverlayEvent {
 	Map<Class<?>, ListenerList> listeners = aquireListeners();
 	ReadWriteLock lock = aquireLock();
 	int busID = aquireFEBusID();
-	AtomicBoolean masterListPatched = new AtomicBoolean();
 	
 	static Map<Class<?>, ListenerList> aquireListeners() {
 		try {
@@ -81,6 +78,10 @@ public interface ApppRenderGameOverlayEvent {
 		writeLock.unlock();
 		ListenerList listenerList = EventListenerHelper.getListenerList(parent);
 		setListenerList(originalList == null ? new ListenerList(listenerList) : originalList);
+		
+		Armorpointspp.LOGGER.debug("hijacked listener list for RenderGameOverlayEvent." + getClass().getSimpleName()
+				+ "\n  new      list: " + Arrays.asList(listenerList.getListeners(busID))
+				+ "\n  hijacked list: " + (originalList == null ? "null" : Arrays.asList(originalList)));
 		
 //		if (listenerList.getListeners(busID).length == 0) // handled in main class
 //			try {

@@ -24,6 +24,7 @@ public class RenderGameOverlayListener {
 	}
 	
 //	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true) // handled in main class
+	@SubscribeEvent(receiveCanceled = true)
 	public static void handle(RenderGameOverlayEvent event) {
 		if (event instanceof ApppRenderGameOverlayEvent) return;
 		if (reposting) return;
