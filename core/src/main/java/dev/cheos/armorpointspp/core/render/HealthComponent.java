@@ -56,7 +56,8 @@ public class HealthComponent implements IRenderComponent {
 		this.lastHealth = health;
 		this.random.setSeed(this.lastGuiTicks * 312871L);
 		
-		for (int i = 9; i >= 0; i--) {
+		int max = ctx.config.bool(BooleanOption.HEALTH_BG_ALWAYS_SHOW_10) ? 9 : (int) Math.min(10, (ctx.data.maxHealth() + 1) * 0.5F) - 1;
+		for (int i = max; i >= 0; i--) {
 			int heartX = ctx.x + i * 8;
 			int heartY = ctx.y;
 			int heartValue = i * 2 + heartStack * 20 + 1;

@@ -7,10 +7,8 @@ import java.util.*;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
-import dev.cheos.armorpointspp.core.FrostbiteStyle;
+import dev.cheos.armorpointspp.core.*;
 import dev.cheos.armorpointspp.core.RenderableText.Alignment;
-import dev.cheos.armorpointspp.core.Side;
-import dev.cheos.armorpointspp.core.Suffix;
 import dev.cheos.armorpointspp.core.texture.ITextureSheet;
 
 public interface IConfig { // use forges config update system... somehow
@@ -156,26 +154,27 @@ public interface IConfig { // use forges config update system... somehow
 	}
 	
 	public static enum BooleanOption implements Option<Boolean> {
-		ABSORPTION_ENABLE           ("showAbsorption"             , true , Category.GENERAL      , " Show absorption as border around health"             , " Available: true, false [default: %s]"),
-		ARMOR_ENABLE                ("enableArmorBar"             , true , Category.GENERAL      , " Enable custom armor bar"                             , " Available: true, false [default: %s]"),
-		ARMOR_TEXT_ENABLE           ("showArmorValue"             , true , Category.GENERAL      , " Show armor value text next to armor bar"             , " Available: true, false [default: %s]"),
-		ARMOR_TEXT_CONFIG_ENABLE    ("enableArmorValueConfig"     , false, Category.TEXT_CONFIG  , " Enables custom armor value configuration"            , " Available: true, false [default: %s]"),
-		ARMOR_SHOW_ON_0             ("showArmorWhenZero"          , false, Category.GENERAL      , " Show armor bar when armor is zero"                   , " Available: true, false [default: %s]"),
-		DEBUG                       ("debug"                      , false, Category.GENERAL_DEBUG, " You don't want this to be on. Believe me"            , " Available: true, false [default: %s]"),
-		FROSTBITE_TEXT_ENABLE       ("showFrostbitePercentage"    , true , Category.GENERAL      , " Show frostbite percentage next to health bar"        , " Available: true, false [default: %s]"),
-		HEALTH_ENABLE               ("enableHealthBar"            , true , Category.GENERAL      , " Enable custom health bar"                            , " Available: true, false [default: %s]"),
-		HEALTH_TEXT_ENABLE          ("showHealthValue"            , true , Category.GENERAL      , " Show health value text next to health bar"           , " Available: true, false [default: %s]"),
-		HEALTH_TEXT_CONFIG_ENABLE   ("enableHealthValueConfig"    , false, Category.TEXT_CONFIG  , " Enables custom health value configuration"           , " Available: true, false [default: %s]"),
-		MANTLE_COMPAT               ("mantle"                     , true , Category.COMPAT       , Version.V1_12, " Fixes mantle compatibility"           , " Available: true, false [default: %s]"),
+		ABSORPTION_ENABLE           ("showAbsorption"             , true , Category.GENERAL      , " Show absorption as border around health"                            , " Available: true, false [default: %s]"),
+		ARMOR_ENABLE                ("enableArmorBar"             , true , Category.GENERAL      , " Enable custom armor bar"                                            , " Available: true, false [default: %s]"),
+		ARMOR_TEXT_ENABLE           ("showArmorValue"             , true , Category.GENERAL      , " Show armor value text next to armor bar"                            , " Available: true, false [default: %s]"),
+		ARMOR_TEXT_CONFIG_ENABLE    ("enableArmorValueConfig"     , false, Category.TEXT_CONFIG  , " Enables custom armor value configuration"                           , " Available: true, false [default: %s]"),
+		ARMOR_SHOW_ON_0             ("showArmorWhenZero"          , false, Category.GENERAL      , " Show armor bar when armor is zero"                                  , " Available: true, false [default: %s]"),
+		DEBUG                       ("debug"                      , false, Category.GENERAL_DEBUG, " You don't want this to be on. Believe me"                           , " Available: true, false [default: %s]"),
+		FROSTBITE_TEXT_ENABLE       ("showFrostbitePercentage"    , true , Category.GENERAL      , " Show frostbite percentage next to health bar"                       , " Available: true, false [default: %s]"),
+		HEALTH_ENABLE               ("enableHealthBar"            , true , Category.GENERAL      , " Enable custom health bar"                                           , " Available: true, false [default: %s]"),
+		HEALTH_TEXT_ENABLE          ("showHealthValue"            , true , Category.GENERAL      , " Show health value text next to health bar"                          , " Available: true, false [default: %s]"),
+		HEALTH_TEXT_CONFIG_ENABLE   ("enableHealthValueConfig"    , false, Category.TEXT_CONFIG  , " Enables custom health value configuration"                          , " Available: true, false [default: %s]"),
+		HEALTH_BG_ALWAYS_SHOW_10    ("alwaysShow10HeartBGs"       , false, Category.GENERAL      , " Always render 10 heart backgrounds, even if max health is lower"    , " Available: true, false [default: %s]"),
+		MANTLE_COMPAT               ("mantle"                     , true , Category.COMPAT       , Version.V1_12, " Fixes mantle compatibility"                          , " Available: true, false [default: %s]"),
 		POTIONCORE_COMPAT           ("potioncore"                 , true , Category.COMPAT       , Version.V1_12, " Adds support for potioncore's effects and attributes", " Available: true, false [default: %s]"),
-		PROTECTION_ENABLE           ("showProtection"             , true , Category.GENERAL      , " Show protection as overlay over armor"               , " Available: true, false [default: %s]"),
-		RESISTANCE_ENABLE           ("showResistance"             , true , Category.GENERAL      , " Show resistance as border around armor"              , " Available: true, false [default: %s]"),
-		TEXT_SHADOW                 ("textShadow"                 , true , Category.GENERAL      , " Draw shadows for all rendered texts"                 , " Available: true, false [default: %s]"),
-		TOUGHNESS_BAR               ("useToughnessBar"            , false, Category.GENERAL      , " Show toughness as it's own bar"                      , " Available: true, false [default: %s]"),
-		TOUGHNESS_ENABLE            ("enableToughness"            , true , Category.GENERAL      , " Show toughness as overlay over armor or it's own bar", " Available: true, false [default: %s]"),
-		TOUGHNESS_SHOW_ON_0         ("showToughnessWhenZero"      , false, Category.GENERAL      , " Show toughness bar when toughness is zero"           , " Available: true, false [default: %s]"),
-		TOUGHNESS_TEXT_ENABLE       ("showToughnessValue"         , true , Category.GENERAL      , " Show toughness value text next to toughness bar"     , " Available: true, false [default: %s]"),
-		TOUGHNESS_TEXT_CONFIG_ENABLE("enableToughnessValueConfig" , false, Category.TEXT_CONFIG  , " Enables custom toughness value configuration"        , " Available: true, false [default: %s]");
+		PROTECTION_ENABLE           ("showProtection"             , true , Category.GENERAL      , " Show protection as overlay over armor"                              , " Available: true, false [default: %s]"),
+		RESISTANCE_ENABLE           ("showResistance"             , true , Category.GENERAL      , " Show resistance as border around armor"                             , " Available: true, false [default: %s]"),
+		TEXT_SHADOW                 ("textShadow"                 , true , Category.GENERAL      , " Draw shadows for all rendered texts"                                , " Available: true, false [default: %s]"),
+		TOUGHNESS_BAR               ("useToughnessBar"            , false, Category.GENERAL      , " Show toughness as it's own bar"                                     , " Available: true, false [default: %s]"),
+		TOUGHNESS_ENABLE            ("enableToughness"            , true , Category.GENERAL      , " Show toughness as overlay over armor or it's own bar"               , " Available: true, false [default: %s]"),
+		TOUGHNESS_SHOW_ON_0         ("showToughnessWhenZero"      , false, Category.GENERAL      , " Show toughness bar when toughness is zero"                          , " Available: true, false [default: %s]"),
+		TOUGHNESS_TEXT_ENABLE       ("showToughnessValue"         , true , Category.GENERAL      , " Show toughness value text next to toughness bar"                    , " Available: true, false [default: %s]"),
+		TOUGHNESS_TEXT_CONFIG_ENABLE("enableToughnessValueConfig" , false, Category.TEXT_CONFIG  , " Enables custom toughness value configuration"                       , " Available: true, false [default: %s]");
 		
 		final String key;
 		final boolean def;
