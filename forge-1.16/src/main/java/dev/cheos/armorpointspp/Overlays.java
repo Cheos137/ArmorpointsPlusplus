@@ -21,6 +21,10 @@ public class Overlays {
 	private static final Minecraft minecraft         = Minecraft.getInstance();
 	private static int lastArmorY = 0, lastHealthY = 0, lastToughnessY = 0;
 	
+	static void updateHealthY(ForgeIngameGui gui, int screenHeight) { lastHealthY = baseY(gui, screenHeight); }
+	static void updateArmorY(ForgeIngameGui gui, int screenHeight) { lastArmorY = baseY(gui, screenHeight); }
+	static void updateToughnessY(ForgeIngameGui gui, int screenHeight) { lastToughnessY = baseY(gui, screenHeight, ApppConfig.instance().enm(EnumOption.TOUGHNESS_SIDE)); }
+	
 	static void playerHealth(ForgeIngameGui gui, MatrixStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		lastHealthY = baseY(gui, screenHeight);
 		if (!ApppConfig.instance().bool(BooleanOption.HEALTH_ENABLE)) {

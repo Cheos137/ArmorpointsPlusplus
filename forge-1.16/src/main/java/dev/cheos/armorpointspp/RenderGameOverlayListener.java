@@ -53,8 +53,11 @@ public class RenderGameOverlayListener {
 //				if (!(event instanceof Pre)) // extra check for this because mantle thinks it's great and stuff
 //					break;
 				event.setCanceled(true); // prevent forge from rendering vanilla stuff
-				if (pre(poseStack, event, ARMOR))
+				if (pre(poseStack, event, ARMOR)) {
+					Overlays.updateArmorY(gui, screenHeight);
+					Overlays.updateToughnessY(gui, screenHeight);
 					break;
+				}
 				Overlays.armorLevel      (gui, poseStack, partialTicks, screenWidth, screenHeight);
 				Overlays.magicShield     (gui, poseStack, partialTicks, screenWidth, screenHeight);
 				Overlays.resistance      (gui, poseStack, partialTicks, screenWidth, screenHeight);
@@ -68,6 +71,7 @@ public class RenderGameOverlayListener {
 //					break;
 				event.setCanceled(true); // prevent forge from rendering vanilla stuff
 				if (pre(poseStack, event, HEALTH)) {
+					Overlays.updateHealthY(gui, screenHeight);
 					if (Armorpointspp.MANTLE) // specific fix, JUST for mantle... why are you like this, mantle?
 						post(poseStack, event, HEALTH);
 					break;
