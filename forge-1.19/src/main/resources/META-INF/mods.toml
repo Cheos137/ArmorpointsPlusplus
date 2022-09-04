@@ -1,17 +1,19 @@
 modLoader="javafml"
 loaderVersion="[41,)"
 license="All rights reserved"
+issueTrackerURL="https://github.com/Cheos137/ArmorpointsPlusplus/issues/new/choose"
 
 [[mods]]
     modId="armorpointspp"
     version="${file.jarVersion}"
     displayName="ArmorPoints++"
+    displayURL="https://modrinth.com/mod/armorpoints"
+    logoFile="icon.png"
     credits="Cheos"
     authors="Cheos"
     displayTest="IGNORE_ALL_VERSION"
     description='''
-    Umm... please check out the curseforge page :)
-    https://www.curseforge.com/minecraft/mc-mods/armorpoints
+    A light-weight mod overhauling vanilla ui components
     '''
 
 [[dependencies.armorpointspp]]

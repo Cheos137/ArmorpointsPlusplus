@@ -1,14 +1,12 @@
 package dev.cheos.armorpointspp.config;
 
 import java.math.BigDecimal;
+import java.util.function.Consumer;
 
 import dev.cheos.armorpointspp.Lazy;
 import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
 import io.github.fablabsmc.fablabs.api.fiber.v1.builder.ConfigTreeBuilder;
-import io.github.fablabsmc.fablabs.api.fiber.v1.schema.type.BooleanSerializableType;
-import io.github.fablabsmc.fablabs.api.fiber.v1.schema.type.DecimalSerializableType;
-import io.github.fablabsmc.fablabs.api.fiber.v1.schema.type.SerializableType;
-import io.github.fablabsmc.fablabs.api.fiber.v1.schema.type.StringSerializableType;
+import io.github.fablabsmc.fablabs.api.fiber.v1.schema.type.*;
 import io.github.fablabsmc.fablabs.api.fiber.v1.schema.type.derived.ConfigType;
 import io.github.fablabsmc.fablabs.api.fiber.v1.schema.type.derived.ConfigTypes;
 import net.minecraft.util.Mth;
@@ -18,6 +16,7 @@ public abstract class ApppConfigValue<T, U, X> {
 	protected final String[] comments;
 	protected final T def;
 	protected Lazy<X> value;
+	protected Consumer<X> setter;
 	
 	protected ApppConfigValue(String name, T def, String... comments) {
 		this.name = name;
@@ -30,10 +29,13 @@ public abstract class ApppConfigValue<T, U, X> {
 			   .withComment(String.join("\n", this.comments))
 			   .finishValue(leaf -> {
 				   this.value = Lazy.of(leaf::getValue);
-				   leaf.addChangeListener((old, upd) -> value.invalidate());
+				   this.setter = val -> leaf.setValue(val);
+				   leaf.addChangeListener((old, upd) -> this.value.invalidate());
 			   });
 	}
 	
+	@SuppressWarnings("unchecked")
+	public void set(U val) { this.setter.accept((X) val); }
 	@SuppressWarnings("unchecked")
 	public U get() { return (U) this.value.get(); }
 	protected abstract ConfigType<T, X, ? extends SerializableType<X>> configType();
@@ -42,8 +44,10 @@ public abstract class ApppConfigValue<T, U, X> {
 	public static class HexValue extends ApppConfigValue<String, Integer, String> {
 		public HexValue(String name, Integer def, String... comments) { super(name, hex(def, 6), comments); }
 		
-		@Override
-		public Integer get() { return fromHex(this.value.get()); }
+		public void set(String val) { this.setter.accept(val); }
+		@Override public void set(Integer val) { this.setter.accept(hex(val, 6)); }
+		@Override public Integer get() { return fromHex(this.value.get()); }
+		public String getHex() { return this.value.get(); }
 		private static String hex(int i, int minlen) { return String.format("0x%0" + minlen + "x", i); }
 		private static int fromHex(String hex) { return Integer.parseInt(hex.substring(2), 16); }
 		
@@ -66,7 +70,7 @@ public abstract class ApppConfigValue<T, U, X> {
 	
 	
 	public static class FloatValue extends ApppConfigValue<Double, Float, BigDecimal> {
-		private final float min, max;
+		public final float min, max;
 		
 		public FloatValue(String name, float def, String... comments) { this(name, def, Float.MAX_VALUE, comments); }
 		public FloatValue(String name, float def, float max, String... comments) { this(name, def, 0, max, comments); }
@@ -83,17 +87,20 @@ public abstract class ApppConfigValue<T, U, X> {
 			   .withComment(String.join("\n", this.comments))
 			   .finishValue(leaf -> {
 				   this.value = Lazy.of(leaf::getValue);
+				   this.setter = val -> leaf.setValue(val);
 				   leaf.addChangeListener((old, upd) -> value.invalidate());
 			   });
 		}
 		
+		public void set(String val) { this.setter.accept(BigDecimal.valueOf(Float.parseFloat(val))); }
+		@Override public void set(Float val) { this.setter.accept(BigDecimal.valueOf(val)); }
 		@Override public Float get() { return Mth.clamp(this.value.get().floatValue(), this.min, this.max); }
 		@Override protected ConfigType<Double, BigDecimal, DecimalSerializableType> configType() { return ConfigTypes.DOUBLE; }
 	}
 	
 	
 	public static class EnumValue<T extends Enum<T>> extends ApppConfigValue<String, T, String> {
-		private final Class<T> type;
+		public final Class<T> type;
 		
 		@SuppressWarnings("unchecked")
 		public EnumValue(String name, T def, String[] comments) {
@@ -101,6 +108,8 @@ public abstract class ApppConfigValue<T, U, X> {
 			this.type = (Class<T>) def.getClass();
 		}
 		
+		public void set(String val) { this.setter.accept(val); }
+		@Override public void set(T val) { this.setter.accept(val.name()); }
 		@Override public T get() { return Enum.valueOf(this.type, this.value.get()); }
 		@Override protected ConfigType<String, String, StringSerializableType> configType() { return ConfigTypes.STRING; }
 		

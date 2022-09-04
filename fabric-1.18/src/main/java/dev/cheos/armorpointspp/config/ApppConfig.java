@@ -1,13 +1,7 @@
 package dev.cheos.armorpointspp.config;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 
 import dev.cheos.armorpointspp.config.ApppConfigValue.*;
 import dev.cheos.armorpointspp.core.adapter.IConfig;
@@ -15,15 +9,14 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.builder.ConfigTreeBuilder;
 import io.github.fablabsmc.fablabs.api.fiber.v1.exception.ValueDeserializationException;
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.FiberSerialization;
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.JanksonValueSerializer;
-import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigBranch;
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class ApppConfig implements IConfig {
 	private static ApppConfig INSTANCE;
-	private static ConfigBranch branch;
+	private static ConfigTree tree;
 	private static final File configFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "armorpointspp.json");
-	private static final Version VERSION = Version.v1_18;
+	public static final Version VERSION = Version.v1_18;
 	private static final Map<String, BoolValue>    boolConfigs   = new HashMap<>();
 	private static final Map<String, HexValue>     hexConfigs    = new HashMap<>();
 	private static final Map<String, FloatValue>   floatConfigs  = new HashMap<>();
@@ -46,7 +39,7 @@ public class ApppConfig implements IConfig {
 	public static void load() {
 		if (configFile.isFile())
 			try {
-				FiberSerialization.deserialize(branch, new FileInputStream(configFile), new JanksonValueSerializer(false));
+				FiberSerialization.deserialize(tree, new FileInputStream(configFile), new JanksonValueSerializer(false));
 			} catch (ValueDeserializationException | IOException e) {
 				e.printStackTrace();
 			}
@@ -60,7 +53,7 @@ public class ApppConfig implements IConfig {
 			}
 			if (configFile.isDirectory())
 				throw new IllegalStateException("config file must not be a directory: " + configFile.getAbsolutePath());
-			FiberSerialization.serialize(branch, new FileOutputStream(configFile), new JanksonValueSerializer(false));
+			FiberSerialization.serialize(tree, new FileOutputStream(configFile), new JanksonValueSerializer(false));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -69,6 +62,7 @@ public class ApppConfig implements IConfig {
 	
 	
 	public static IConfig instance() {
+		if (INSTANCE == null) init();
 		return INSTANCE;
 	}
 	
@@ -130,8 +124,8 @@ public class ApppConfig implements IConfig {
 		
 		public ConfigBuilder(ConfigTreeBuilder builder) { // note to self: this requires parent categories to have lower ordinals to work
 			for (Category category : Category.values())
-					configure(builder, category, 0);
-			branch = builder.build();
+				configure(builder, category, 0);
+			tree = builder.build();
 		}
 		
 		private void configure(ConfigTreeBuilder builder, Category category, int currentDepth) {
@@ -150,7 +144,7 @@ public class ApppConfig implements IConfig {
 		}
 	}
 	
-	private static ApppConfigValue<?, ?, ?> findValue(Option<?> option) {
+	public static ApppConfigValue<?, ?, ?> findValue(Option<?> option) {
 		if (option instanceof BooleanOption)
 			return boolConfigs  .get(option.key());
 		if (option instanceof IntegerOption)
