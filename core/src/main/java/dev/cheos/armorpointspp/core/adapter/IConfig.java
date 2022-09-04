@@ -71,7 +71,9 @@ public interface IConfig { // use forges config update system... somehow
 		v1_16,
 		v1_17,
 		v1_18,
-		v1_18fabric;
+		v1_19,
+		v1_18fabric,
+		v1_19fabric;
 		
 		public static final ImmutableList<Version> ALL   = ImmutableList.copyOf(Version.values());
 		public static final ImmutableList<Version> NONE  = ImmutableList.of();
@@ -79,6 +81,7 @@ public interface IConfig { // use forges config update system... somehow
 		public static final ImmutableList<Version> V1_16 = ImmutableList.of(v1_16);
 		public static final ImmutableList<Version> V1_17 = ImmutableList.of(v1_17);
 		public static final ImmutableList<Version> V1_18 = ImmutableList.of(v1_18, v1_18fabric);
+		public static final ImmutableList<Version> V1_19 = ImmutableList.of(v1_19, v1_19fabric);
 	}
 	
 	public static interface Option<T> {

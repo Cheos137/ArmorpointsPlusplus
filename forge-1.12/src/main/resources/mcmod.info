@@ -1,16 +1,16 @@
 [
-{
-  "modid": "armorpointspp",
-  "name": "ArmorPoints++",
-  "description": "Umm... please check out the curseforge page :)\nhttps://www.curseforge.com/minecraft/mc-mods/armorpoints",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "",
-  "updateUrl": "",
-  "authorList": ["Cheos"],
-  "credits": "Cheos",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
-}
+  {
+    "modid": "armorpointspp",
+    "name": "ArmorPoints++",
+    "description": "A light-weight mod overhauling vanilla ui components",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://modrinth.com/mod/armorpoints",
+    "updateUrl": "",
+    "authorList": ["Cheos"],
+    "credits": "Cheos",
+    "logoFile": "assets/armorpointspp/icon.png",
+    "screenshots": [],
+    "dependencies": []
+  }
 ]

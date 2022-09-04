@@ -31,6 +31,7 @@ public class ApppConfig implements IConfig {
 	}
 	
 	public static IConfig instance() {
+		if (INSTANCE == null) init();
 		return INSTANCE;
 	}
 	

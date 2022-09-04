@@ -13,22 +13,25 @@ sourceSets.main.java { srcDir project(':core').sourceSets.main.java }
 sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
 repositories {
-	maven { url "https://maven.modmuss50.me/" }   // config lib
-	maven { url "https://maven.ryanliptak.com/" } // appleskin
-	maven { url "https://maven.shedaniel.me/" }   // cloth - needed for appleskin runtime
+	maven { url 'https://maven.modmuss50.me/' }   // config lib
+	maven { url 'https://maven.ryanliptak.com/' } // appleskin
+	maven { url 'https://maven.shedaniel.me/' }   // cloth - needed for appleskin runtime
+	maven { url 'https://maven.terraformersmc.com/releases/' } // modmenu
 }
 
 dependencies {
     minecraft 'com.mojang:minecraft:1.18.2'
-//    mappings 'net.fabricmc:yarn:1.18.1+build.22:v2'
 	mappings loom.officialMojangMappings()
     implementation project(':core')
     modImplementation 'net.fabricmc:fabric-loader:0.14.6'
-    modCompileOnly "net.fabricmc.fabric-api:fabric-api:0.55.1+1.18.2"
-    implementation "me.zeroeightsix:fiber:0.23.0-SNAPSHOT"
-    include "me.zeroeightsix:fiber:0.23.0-SNAPSHOT"
-	modCompileOnly("squeek.appleskin:appleskin-fabric:mc1.18.2-2.4.0") { transitive = false }
-	modRuntimeOnly("squeek.appleskin:appleskin-fabric:mc1.18.2-2.4.0") {
+    modCompileOnly 'net.fabricmc.fabric-api:fabric-api:0.55.1+1.18.2'
+    implementation 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'
+    include 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'
+
+	modImplementation 'com.terraformersmc:modmenu:3.2.3'
+
+	modCompileOnly('squeek.appleskin:appleskin-fabric:mc1.18.2-2.4.0') { transitive = false }
+	modRuntimeOnly('squeek.appleskin:appleskin-fabric:mc1.18.2-2.4.0') {
 		exclude module: 'fabric-api'
 		exclude module: 'modmenu'
 	}
@@ -47,18 +50,18 @@ java {
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/armorpointspp.accesswidener")
+	accessWidenerPath = file('src/main/resources/armorpointspp.accesswidener')
 
     runs {
 		client {
 			// The environment (or side) to run, usually client or server.
-			environment = "client"
+			environment = 'client'
 			// The full name of the run configuration, i.e. 'Minecraft Client'. By default this is determined from the base name.
-			configName = "runApppClient-fabric-1.18"
+			configName = 'runApppClient-fabric-1.18'
 			// The default main class of the run configuration. This will be overridden if using a mod loader with a fabric_installer.json file.
-			defaultMainClass = ""
+			defaultMainClass = ''
 			// The run directory for this configuration, relative to the root project directory.
-			runDir = "run"
+			runDir = 'run'
 			// The sourceset to run, commonly set to sourceSets.test
 			source = sourceSets.main
 			// When true a run configuration file will be generated for IDE's. By default only set to true for the root project.
@@ -73,13 +76,13 @@ loom {
 jar {
     manifest {
         attributes([
-            "Specification-Title": "armorpointspp",
-            "Specification-Vendor": "Cheos",
-            "Specification-Version": "1", // We are version 1 of ourselves
-            "Implementation-Title": project.name,
-            "Implementation-Version": project.jar.archiveVersion,
-            "Implementation-Vendor" : "Cheos",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            'Specification-Title': 'armorpointspp',
+            'Specification-Vendor': 'Cheos',
+            'Specification-Version': '1', // We are version 1 of ourselves
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.jar.archiveVersion,
+            'Implementation-Vendor' : 'Cheos',
+            'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 }

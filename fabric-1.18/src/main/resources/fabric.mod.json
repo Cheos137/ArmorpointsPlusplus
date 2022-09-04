@@ -4,24 +4,24 @@
     "version": "${version}",
   
     "name": "Armorpoints++",
-    "description": "Please go to the curseforge page for a description",
+    "description": "A light-weight mod overhauling vanilla ui components",
     "authors": [
       "Cheos"
     ],
     "contact": {
-      "homepage": "https://www.curseforge.com/minecraft/mc-mods/armorpoints",
-      "sources": "https://github.com/Cheos137/ArmorpointsPlusplus"
+      "homepage": "https://modrinth.com/mod/armorpoints",
+      "issues": "https://github.com/Cheos137/ArmorpointsPlusplus/issues/new/choose",
+      "sources": "https://github.com/Cheos137/ArmorpointsPlusplus.git"
     },
   
     "license": "MIT",
-    "icon": "assets/modid/icon.png",
+    "icon": "assets/armorpointspp/icon.png",
     "accessWidener": "armorpointspp.accesswidener",
   
-    "environment": "*",
+    "environment": "client",
     "entrypoints": {
-      "client": [
-        "dev.cheos.armorpointspp.Armorpointspp::client"
-      ]
+      "client": [ "dev.cheos.armorpointspp.Armorpointspp::client" ],
+      "modmenu": [ "dev.cheos.armorpointspp.compat.Modmenu" ]
     },
     "mixins": [
       "armorpointspp.mixins.json"
@@ -36,5 +36,13 @@
       "fabric": "*",
       "fabric-networking-api-v1": "*",
       "fabric-rendering-v1": "*"
+    },
+
+    "custom": {
+      "modmenu": {
+        "links": {
+          "modmenu.discord": "https://discord.gg/rBmVqjrazz"
+        }
+      }
     }
   }
