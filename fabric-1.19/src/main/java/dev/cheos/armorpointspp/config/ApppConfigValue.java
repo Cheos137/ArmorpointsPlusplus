@@ -46,10 +46,14 @@ public abstract class ApppConfigValue<T, U, X> {
 		
 		public void set(String val) { this.setter.accept(val); }
 		@Override public void set(Integer val) { this.setter.accept(hex(val, 6)); }
-		@Override public Integer get() { return fromHex(this.value.get()); }
+		@Override public Integer get() { try { return fromHex(this.value.get()); } catch (Exception e) { return fromHex(this.def); } }
 		public String getHex() { return this.value.get(); }
 		private static String hex(int i, int minlen) { return String.format("0x%0" + minlen + "x", i); }
-		private static int fromHex(String hex) { return Integer.parseInt(hex.substring(2), 16); }
+		private static int fromHex(String hex) { return hex.startsWith("0x")
+				? Integer.parseInt(hex.substring(2), 16)
+				: hex.startsWith("#")
+						? Integer.parseInt(hex.substring(1), 16)
+						: Integer.parseInt(hex, 16); }
 		
 		@Override protected ConfigType<String, String, StringSerializableType> configType() { return ConfigTypes.STRING; }
 	}
@@ -92,7 +96,7 @@ public abstract class ApppConfigValue<T, U, X> {
 			   });
 		}
 		
-		public void set(String val) { this.setter.accept(BigDecimal.valueOf(Float.parseFloat(val))); }
+		public void set(String val) { try { this.setter.accept(BigDecimal.valueOf(Float.parseFloat(val))); } catch (Exception e) { this.setter.accept(BigDecimal.valueOf(this.def)); } }
 		@Override public void set(Float val) { this.setter.accept(BigDecimal.valueOf(val)); }
 		@Override public Float get() { return Mth.clamp(this.value.get().floatValue(), this.min, this.max); }
 		@Override protected ConfigType<Double, BigDecimal, DecimalSerializableType> configType() { return ConfigTypes.DOUBLE; }
