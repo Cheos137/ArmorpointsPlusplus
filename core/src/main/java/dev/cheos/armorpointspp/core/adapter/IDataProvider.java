@@ -2,7 +2,9 @@ package dev.cheos.armorpointspp.core.adapter;
 
 public interface IDataProvider {
 	int armor();
+	int maxArmor();
 	int toughness();
+	int maxToughness();
 	int guiTicks();
 	int invulnTime();
 	long millis();
@@ -13,7 +15,6 @@ public interface IDataProvider {
 	IEffectProvider effects();
 	IEnchantmentProvider enchantments();
 	boolean hidden();
-	boolean isAttributeFixLoaded();
 	boolean isPotionCoreLoaded();
 	boolean isFullyFrozen();
 	boolean isHardcore();

@@ -16,7 +16,7 @@ public class ArmorComponent implements IRenderComponent {
 		ctx.profiler.push("armor");
 		ITextureSheet tex = tex(ctx).bind(ctx);
 		int armor = Math.min(ctx.data.armor(), 240);
-		if (armor == 137 || (!ctx.data.isAttributeFixLoaded() && armor == 30)) {
+		if (!ctx.config.bool(BooleanOption.DISABLE_EASTEREGGS) && armor == Math.min(137, ctx.data.maxArmor())) {
 			renderRainbowArmor(ctx, ctx.x, ctx.y);
 			return popReturn(ctx, true);
 		}

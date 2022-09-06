@@ -2,15 +2,9 @@ package dev.cheos.armorpointspp.core.render;
 
 import java.awt.Color;
 
-import dev.cheos.armorpointspp.core.IRenderComponent;
-import dev.cheos.armorpointspp.core.RenderContext;
-import dev.cheos.armorpointspp.core.RenderableText;
+import dev.cheos.armorpointspp.core.*;
 import dev.cheos.armorpointspp.core.RenderableText.Alignment;
-import dev.cheos.armorpointspp.core.Suffix;
-import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
-import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
-import dev.cheos.armorpointspp.core.adapter.IConfig.FloatOption;
-import dev.cheos.armorpointspp.core.adapter.IConfig.IntegerOption;
+import dev.cheos.armorpointspp.core.adapter.IConfig.*;
 
 public class ArmorTextComponent implements IRenderComponent {
 	@Override
@@ -34,7 +28,7 @@ public class ArmorTextComponent implements IRenderComponent {
 		significand += (type == Suffix.Type.SCI ? "E" + power : Suffix.byPow(power).getSuffix(type));    // add suffix
 		
 		int color;
-		if (armor == 137 || (!ctx.data.isAttributeFixLoaded() && armor == 30))
+		if (!ctx.config.bool(BooleanOption.DISABLE_EASTEREGGS) && armor == Math.min(137, ctx.data.maxArmor()))
 			color = Color.HSBtoRGB((((ctx.data.millis() + 80) / 40) % 360) / 360F, 1, 1);
 		else if (resistance >= 4) color = ctx.config.hex(IntegerOption.TEXT_COLOR_FULL_RESISTANCE);
 		else if (armor == 0) color = ctx.config.hex(IntegerOption.TEXT_COLOR_ARMOR_0);

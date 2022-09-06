@@ -6,11 +6,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.player.Player;
 
 public class DataProviderImpl implements IDataProvider {
 	private final Minecraft minecraft  = Minecraft.getInstance();
-	private final boolean attributefix = false; // we live in fabric land - no attributefix // FabricLoader.getInstance().isModLoaded("attributefix");
 	
 	@Override
 	public int armor() {
@@ -18,8 +18,18 @@ public class DataProviderImpl implements IDataProvider {
 	}
 	
 	@Override
+	public int maxArmor() {
+		return Attributes.ARMOR instanceof RangedAttribute ra ? Mth.floor(ra.getMaxValue()) : 30;
+	}
+	
+	@Override
 	public int toughness() {
 		return Mth.floor(this.minecraft.player.getAttributeValue(Attributes.ARMOR_TOUGHNESS));
+	}
+	
+	@Override
+	public int maxToughness() {
+		return Attributes.ARMOR_TOUGHNESS instanceof RangedAttribute ra ? Mth.floor(ra.getMaxValue()) : 20;
 	}
 	
 	@Override
@@ -70,11 +80,6 @@ public class DataProviderImpl implements IDataProvider {
 	@Override
 	public boolean hidden() {
 		return this.minecraft.options.hideGui;
-	}
-	
-	@Override
-	public boolean isAttributeFixLoaded() {
-		return this.attributefix;
 	}
 	
 	@Override

@@ -6,14 +6,13 @@ import dev.cheos.armorpointspp.core.adapter.*;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.common.Loader;
 
 public class DataProviderImpl implements IDataProvider {
 	private final Minecraft minecraft  = Minecraft.getMinecraft();
-	private final boolean attributefix = Loader.isModLoaded("attributefix");
 	private final boolean potioncore   = Armorpointspp.POTIONCORE && ApppConfig.instance().bool(BooleanOption.POTIONCORE_COMPAT);
 	
 	@Override
@@ -22,8 +21,18 @@ public class DataProviderImpl implements IDataProvider {
 	}
 	
 	@Override
+	public int maxArmor() {
+		return SharedMonsterAttributes.ARMOR instanceof RangedAttribute ? MathHelper.floor(((RangedAttribute) SharedMonsterAttributes.ARMOR).maximumValue) : 30;
+	}
+	
+	@Override
 	public int toughness() {
 		return MathHelper.floor(this.minecraft.player.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
+	}
+	
+	@Override
+	public int maxToughness() {
+		return SharedMonsterAttributes.ARMOR_TOUGHNESS instanceof RangedAttribute ? MathHelper.floor(((RangedAttribute) SharedMonsterAttributes.ARMOR_TOUGHNESS).maximumValue) : 20;
 	}
 	
 	@Override
@@ -74,11 +83,6 @@ public class DataProviderImpl implements IDataProvider {
 	@Override
 	public boolean hidden() {
 		return this.minecraft.gameSettings.hideGUI;
-	}
-	
-	@Override
-	public boolean isAttributeFixLoaded() {
-		return this.attributefix;
 	}
 	
 	@Override

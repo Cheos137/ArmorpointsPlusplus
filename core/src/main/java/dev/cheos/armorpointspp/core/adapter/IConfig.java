@@ -163,6 +163,7 @@ public interface IConfig { // use forges config update system... somehow
 		ARMOR_TEXT_CONFIG_ENABLE    ("enableArmorValueConfig"     , false, Category.TEXT_CONFIG  , " Enables custom armor value configuration"                           , " Available: true, false [default: %s]"),
 		ARMOR_SHOW_ON_0             ("showArmorWhenZero"          , false, Category.GENERAL      , " Show armor bar when armor is zero"                                  , " Available: true, false [default: %s]"),
 		DEBUG                       ("debug"                      , false, Category.GENERAL_DEBUG, " You don't want this to be on. Believe me"                           , " Available: true, false [default: %s]"),
+		DISABLE_EASTEREGGS          ("disableEastereggs"          , false, Category.GENERAL      , " Disables all easter eggs, which is sad but some want it"            , " Available: true, false [default: %s]"),
 		FROSTBITE_TEXT_ENABLE       ("showFrostbitePercentage"    , true , Category.GENERAL      , " Show frostbite percentage next to health bar"                       , " Available: true, false [default: %s]"),
 		HEALTH_ENABLE               ("enableHealthBar"            , true , Category.GENERAL      , " Enable custom health bar"                                           , " Available: true, false [default: %s]"),
 		HEALTH_TEXT_ENABLE          ("showHealthValue"            , true , Category.GENERAL      , " Show health value text next to health bar"                          , " Available: true, false [default: %s]"),

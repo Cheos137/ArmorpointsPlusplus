@@ -3,15 +3,14 @@ package dev.cheos.armorpointspp.impl;
 import dev.cheos.armorpointspp.core.adapter.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.ModList;
 
 public class DataProviderImpl implements IDataProvider {
 	private final Minecraft minecraft  = Minecraft.getInstance();
-	private final boolean attributefix = ModList.get().isLoaded("attributefix");
 	
 	@Override
 	public int armor() {
@@ -19,8 +18,18 @@ public class DataProviderImpl implements IDataProvider {
 	}
 	
 	@Override
+	public int maxArmor() {
+		return Attributes.ARMOR instanceof RangedAttribute ? MathHelper.floor(((RangedAttribute) Attributes.ARMOR).maxValue) : 30;
+	}
+	
+	@Override
 	public int toughness() {
 		return MathHelper.floor(this.minecraft.player.getAttributeValue(Attributes.ARMOR_TOUGHNESS));
+	}
+	
+	@Override
+	public int maxToughness() {
+		return Attributes.ARMOR_TOUGHNESS instanceof RangedAttribute ? MathHelper.floor(((RangedAttribute) Attributes.ARMOR_TOUGHNESS).maxValue) : 20;
 	}
 	
 	@Override
@@ -71,11 +80,6 @@ public class DataProviderImpl implements IDataProvider {
 	@Override
 	public boolean hidden() {
 		return this.minecraft.options.hideGui;
-	}
-	
-	@Override
-	public boolean isAttributeFixLoaded() {
-		return this.attributefix;
 	}
 	
 	@Override
