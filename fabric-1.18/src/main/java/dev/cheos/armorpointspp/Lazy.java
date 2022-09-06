@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 public class Lazy<T> implements Supplier<T> {
 	private Supplier<T> supplier;
     private T instance;
-    private boolean set;
     
     private Lazy(Supplier<T> supplier) {
     	if (supplier == null) throw new NullPointerException("supplier is null");
@@ -14,15 +13,13 @@ public class Lazy<T> implements Supplier<T> {
     
     @Override
 	public final T get() {
-        if (!set) {
-            instance = supplier.get();
-            set = true;
-        }
-        return instance;
+        if (this.instance == null)
+            this.instance = supplier.get();
+        return this.instance;
     }
     
     public void invalidate() {
-    	set = false;
+    	this.instance = null;
     }
 	
 	public static <T> Lazy<T> of(Supplier<T> supplier) {
