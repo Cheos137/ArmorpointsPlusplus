@@ -10,6 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.*;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkConstants;
@@ -27,6 +28,7 @@ public class Armorpointspp {
 						() -> NetworkConstants.IGNORESERVERONLY,
 						(remote, isServer) -> true));
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::client);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::reload);
 		ApppConfig.init();
 		checkCompat();
 	}
@@ -35,6 +37,11 @@ public class Armorpointspp {
 		Overlays.init();
 		LOGGER.info("oh hi there... :)");
 		LOGGER.info("I heared you wanted some fancy health/armor bars?");
+	}
+	
+	private void reload(ModConfigEvent.Reloading event) {
+		LOGGER.debug("reloading config");
+		ApppConfig.instance().invalidateAll();
 	}
 	
 	private void checkCompat() {
