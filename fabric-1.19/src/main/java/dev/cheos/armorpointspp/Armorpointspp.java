@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import dev.cheos.armorpointspp.compat.FabricAPISafeAccess;
 import dev.cheos.armorpointspp.config.ApppConfig;
+import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientHandshakePacketListenerImpl;
@@ -32,7 +33,7 @@ public class Armorpointspp {
 		// stuff not relevant for functionality
 		LOGGER.info("oh hi there... :)");
 		LOGGER.info("I heared you wanted some fancy health/armor bars?");
-		checkCompat();
+		if (!ApppConfig.instance().bool(BooleanOption.HIDE_COMPAT_WARNINGS)) checkCompat();
 	}
 	
 	private void checkCompat() {

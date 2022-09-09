@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dev.cheos.armorpointspp.config.ApppConfig;
+import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggedInEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -44,7 +45,7 @@ public class Armorpointspp {
 		});
 		
 		ApppConfig.init();
-		checkCompat();
+		if (!ApppConfig.instance().bool(BooleanOption.HIDE_COMPAT_WARNINGS)) checkCompat();
 		MANTLE = ModList.get().isLoaded("mantle");
 	}
 	

@@ -26,7 +26,7 @@ public class Armorpointspp {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		ApppConfig.init(event.getSuggestedConfigurationFile());
-		checkCompat();
+		if (!ApppConfig.instance().bool(BooleanOption.HIDE_COMPAT_WARNINGS)) checkCompat();
 		MANTLE = Loader.isModLoaded("mantle");
 		POTIONCORE = Loader.isModLoaded("potioncore");
 	}
@@ -39,7 +39,7 @@ public class Armorpointspp {
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		if (MANTLE&& ApppConfig.instance().bool(BooleanOption.MANTLE_COMPAT))
+		if (MANTLE && ApppConfig.instance().bool(BooleanOption.MANTLE_COMPAT))
 			MantleCompat.hackMantle();
 	}
 	

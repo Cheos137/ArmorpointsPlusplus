@@ -169,6 +169,7 @@ public interface IConfig { // use forges config update system... somehow
 		HEALTH_TEXT_ENABLE          ("showHealthValue"            , true , Category.GENERAL      , " Show health value text next to health bar"                          , " Available: true, false [default: %s]"),
 		HEALTH_TEXT_CONFIG_ENABLE   ("enableHealthValueConfig"    , false, Category.TEXT_CONFIG  , " Enables custom health value configuration"                          , " Available: true, false [default: %s]"),
 		HEALTH_BG_ALWAYS_SHOW_10    ("alwaysShow10HeartBGs"       , false, Category.GENERAL      , " Always render 10 heart backgrounds, even if max health is lower"    , " Available: true, false [default: %s]"),
+		HIDE_COMPAT_WARNINGS        ("hideCompatWarnings"         , false, Category.COMPAT       , " Hides all compatibility warnings... I don't recommend switching this on except for pack authors", " Available: true, false [default: %s]"),
 		MANTLE_COMPAT               ("mantle"                     , true , Category.COMPAT       , Version.V1_12, " Fixes mantle compatibility"                          , " Available: true, false [default: %s]"),
 		POTIONCORE_COMPAT           ("potioncore"                 , true , Category.COMPAT       , Version.V1_12, " Adds support for potioncore's effects and attributes", " Available: true, false [default: %s]"),
 		PROTECTION_ENABLE           ("showProtection"             , true , Category.GENERAL      , " Show protection as overlay over armor"                              , " Available: true, false [default: %s]"),

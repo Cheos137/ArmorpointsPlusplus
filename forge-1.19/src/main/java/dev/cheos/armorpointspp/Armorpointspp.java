@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dev.cheos.armorpointspp.config.ApppConfig;
+import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -24,7 +25,7 @@ public class Armorpointspp {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::client);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::reload);
 		ApppConfig.init();
-		checkCompat();
+		if (!ApppConfig.instance().bool(BooleanOption.HIDE_COMPAT_WARNINGS)) checkCompat();
 	}
 	
 	private void client(FMLClientSetupEvent event) {
