@@ -4,7 +4,7 @@ plugins {
     id 'eclipse'
 }
 
-version = '1.19.1-' + modVersion
+version = '1.19.2-' + modVersion
 group = modGroup
 archivesBaseName =  modName + '-forge'
 
@@ -12,7 +12,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'official', version: '1.19.1'
+    mappings channel: 'official', version: '1.19.2'
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
@@ -35,9 +35,26 @@ minecraft {
 sourceSets.main.java { srcDir project(':core').sourceSets.main.java }
 sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
+repositories {
+    flatDir {
+        dir 'libs'
+    }
+
+    maven {
+        url 'https://www.cursemaven.com'
+        content {
+            includeGroup 'curse.maven'
+        }
+    }
+}
+
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.1-42.0.0'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.1.43'
     implementation project(':core')
+
+    // TESTING
+    // implementation fg.deobf('libs:levelhearts:1.19.2-2.4.0')
+    // implementation fg.deobf('curse.maven:levelhearts-273640:3931722') // levelhearts 1.19.2-2.4.0
 }
 
 jar {
