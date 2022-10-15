@@ -189,16 +189,16 @@ public class Overlays {
 		}
 		
 		public void registerArbitraryAbove(ResourceLocation other, ResourceLocation id, IGuiOverlay overlay) {
-	        Preconditions.checkArgument(!this.overlays.containsKey(id), "Overlay already registered: " + id);
-
-	        int idx = this.overlays.size();
-	        if (other != null) {
-	            idx = this.orderedOverlays.indexOf(other) + 1;
-	            Preconditions.checkState(idx > 0, "Attempted to order against an unregistered overlay. Only order against vanilla's and your own.");
-	        }
-
-	        this.overlays.put(id, overlay);
-	        this.orderedOverlays.add(idx, id);
-	    }
+			Preconditions.checkArgument(!this.overlays.containsKey(id), "Overlay already registered: " + id);
+			
+			int idx = this.overlays.size();
+			if (other != null) {
+				idx = this.orderedOverlays.indexOf(other) + 1;
+				Preconditions.checkState(idx > 0, "Attempted to order against an unregistered overlay. Only order against vanilla's and your own.");
+			}
+			
+			this.overlays.put(id, overlay);
+			this.orderedOverlays.add(idx, id);
+		}
 	}
 }
