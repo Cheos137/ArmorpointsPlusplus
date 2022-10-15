@@ -25,12 +25,12 @@ public class Armorpointspp {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::client);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::reload);
 		ApppConfig.init();
-		if (!ApppConfig.instance().bool(BooleanOption.HIDE_COMPAT_WARNINGS)) checkCompat();
 	}
 	
 	private void client(FMLClientSetupEvent event) {
 		LOGGER.info("oh hi there... :)");
 		LOGGER.info("I heared you wanted some fancy health/armor bars?");
+		if (!ApppConfig.instance().bool(BooleanOption.HIDE_COMPAT_WARNINGS)) checkCompat();
 	}
 	
 	private void reload(ModConfigEvent.Reloading event) {

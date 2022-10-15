@@ -45,13 +45,13 @@ public class Armorpointspp {
 		});
 		
 		ApppConfig.init();
-		if (!ApppConfig.instance().bool(BooleanOption.HIDE_COMPAT_WARNINGS)) checkCompat();
 		MANTLE = ModList.get().isLoaded("mantle");
 	}
 	
 	private void client(FMLClientSetupEvent event) {
 		LOGGER.info("oh hi there... :)");
 		LOGGER.info("I heared you wanted some fancy health/armor bars?");
+		if (!ApppConfig.instance().bool(BooleanOption.HIDE_COMPAT_WARNINGS)) checkCompat();
 	}
 	
 	private void reload(ModConfig.Reloading event) {

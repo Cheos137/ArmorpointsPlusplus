@@ -26,7 +26,6 @@ public class Armorpointspp {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		ApppConfig.init(event.getSuggestedConfigurationFile());
-		if (!ApppConfig.instance().bool(BooleanOption.HIDE_COMPAT_WARNINGS)) checkCompat();
 		MANTLE = Loader.isModLoaded("mantle");
 		POTIONCORE = Loader.isModLoaded("potioncore");
 	}
@@ -35,6 +34,7 @@ public class Armorpointspp {
 	public void init(FMLInitializationEvent event) {
 		LOGGER.info("oh hi there... :)");
 		LOGGER.info("I heared you wanted some fancy health/armor bars?");
+		if (!ApppConfig.instance().bool(BooleanOption.HIDE_COMPAT_WARNINGS)) checkCompat();
 	}
 	
 	@EventHandler
