@@ -51,4 +51,8 @@ public final class VanillaTextureSheet implements ITextureSheet {
 	public String texLocation() {
 		return "minecraft:textures/gui/icons.png";
 	}
+	
+	@Override public int getMaxHealthLevel() { return 1; }
+	@Override public int getMaxArmorLevel() { return 1; }
+	@Override public int getMaxToughnessLevel() { return 1; }
 }

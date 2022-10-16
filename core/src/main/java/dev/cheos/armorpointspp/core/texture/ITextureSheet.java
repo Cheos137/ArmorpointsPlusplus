@@ -23,6 +23,10 @@ public interface ITextureSheet {
 	default int texWidth()     { return 256; } // assumed tex width  (scaled if other)
 	default int texHeight()    { return 128; } // assumed tex height (scaled if other)
 	
+	default int getMaxHealthLevel()    { return 10; }
+	default int getMaxArmorLevel()     { return 12; }
+	default int getMaxToughnessLevel() { return 12; }
+	
 	default ITextureSheet bind(RenderContext ctx) { ctx.renderer.setupTexture(this); return this; }
 	default ITextureSheet blit(RenderContext ctx, int x, int y, float u, float v) {
 		ctx.renderer.blit(ctx.poseStack, x, y, u, v, spriteWidth(), spriteHeight(), texWidth(), texHeight()); return this;

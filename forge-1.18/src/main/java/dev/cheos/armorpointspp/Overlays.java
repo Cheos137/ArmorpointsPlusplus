@@ -129,7 +129,7 @@ public class Overlays {
 		Components.DEBUG_TEXT.render(ctx);
 	}
 	
-	private static RenderContext ctx(PoseStack poseStack, int x, int y) {
+	public static RenderContext ctx(PoseStack poseStack, int x, int y) {
 		return new RenderContext(
 				ApppConfig.instance(),
 				DATA_PROVIDER,

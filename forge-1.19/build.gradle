@@ -18,7 +18,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
-            arg "-mixin.config=armorpointspp.mixins.json"
+            arg '-mixin.config=armorpointspp.mixins.json'
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             taskName 'runApppClient-1.19'

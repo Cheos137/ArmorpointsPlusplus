@@ -6,7 +6,7 @@
     "version": "${version}",
     "mcversion": "${mcversion}",
     "url": "https://modrinth.com/mod/armorpoints",
-    "updateUrl": "",
+    "updateUrl": "https://api.modrinth.com/updates/xvAim1vw/forge_updates.json",
     "authorList": ["Cheos"],
     "credits": "Cheos",
     "logoFile": "assets/armorpointspp/icon.png",

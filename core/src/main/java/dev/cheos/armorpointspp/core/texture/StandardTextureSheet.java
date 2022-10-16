@@ -54,13 +54,13 @@ public class StandardTextureSheet implements ITextureSheet {
 	
 	@Override
 	public void drawArmor(RenderContext ctx, int x, int y, int spriteLevel, boolean half) {
-		if (spriteLevel >= 12) half = false;
-		blit(ctx, x, y, (half ? 36 : 27) + 18 * ctx.math.clamp(spriteLevel, 0, 12), 0);
+		if (spriteLevel >= getMaxArmorLevel()) half = false;
+		blit(ctx, x, y, (half ? 36 : 27) + 18 * ctx.math.clamp(spriteLevel, 0, getMaxArmorLevel()), 0);
 	}
 	
 	@Override
 	public void drawHeart(RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean bright, boolean hardcore, HeartStyle style) {
-		if (spriteLevel >= 10) half = false;
+		if (spriteLevel >= getMaxHealthLevel()) half = false;
 		blit(ctx ,
 				x,
 				y,
@@ -68,12 +68,12 @@ public class StandardTextureSheet implements ITextureSheet {
 				+ (half ? 9 : 0)
 				+ (bright ? 18 : 0)
 				+ (style == HeartStyle.POISON ? 36 : style == HeartStyle.WITHER ? 72 : 0),
-				18 + 9 * ctx.math.clamp(spriteLevel, 0, 10));
+				18 + 9 * ctx.math.clamp(spriteLevel, 0, getMaxHealthLevel()));
 	}
 	
 	@Override
 	public void drawToughness(RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean icon) {
-		if (spriteLevel >= 12) half = false;
+		if (spriteLevel >= getMaxToughnessLevel()) half = false;
 		if (icon) {
 			ctx.poseStack.pushPose();
 			ctx.poseStack.scale(0.5F, 0.5F, 1);
@@ -81,7 +81,7 @@ public class StandardTextureSheet implements ITextureSheet {
 			// u should be 45px, but when scaled by 0.5, 45.5px somehow works better (45px includes a weird border from the lefthand sprite) [offset]
 			// v should be  9px which i deemed to be the best option, even when scaled
 			ctx.poseStack.popPose();
-		} else blit(ctx, x, y, (half ? 36 : 27) + 18 * ctx.math.clamp(spriteLevel, 0, 12), 9);
+		} else blit(ctx, x, y, (half ? 36 : 27) + 18 * ctx.math.clamp(spriteLevel, 0, getMaxToughnessLevel()), 9);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 plugins {
     id 'net.minecraftforge.gradle' version '5.+'
+    id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
     id 'eclipse'
 }
 
@@ -18,6 +19,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+            arg '-mixin.config=armorpointspp.mixins.json'
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             taskName 'runApppClient-1.16'
@@ -81,7 +83,8 @@ jar {
             "Implementation-Title": project.name,
             "Implementation-Version": project.jar.archiveVersion,
             "Implementation-Vendor" : "Cheos",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "MixinConfigs": "armorpointspp.mixins.json"
         ])
     }
 }

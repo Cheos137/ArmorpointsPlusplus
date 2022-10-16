@@ -1,14 +1,13 @@
 {
 	"required": true,
 	"package": "dev.cheos.armorpointspp.mixin",
-	"compatibilityLevel": "JAVA_17",
+	"compatibilityLevel": "JAVA_8",
 	"refmap": "mixins.refmap.json",
 	"client": [
-		"IRegisterGuiOverlaysEventMixin",
 		"PlayerTabOverlayMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
 	},
-	"minVersion": "0.8.5"
+	"minVersion": "0.8"
 }

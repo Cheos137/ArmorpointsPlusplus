@@ -11,6 +11,7 @@ public class Components {
 	public static final       AbsorptionComponent ABSOPRTION     = new       AbsorptionComponent();
 	public static final        ArmorTextComponent ARMOR_TEXT     = new        ArmorTextComponent();
 	public static final       HealthTextComponent HEALTH_TEXT    = new       HealthTextComponent();
+	public static final     TablistScoreComponent TABLIST_SCORE  = new     TablistScoreComponent();
 	public static final    ToughnessTextComponent TOUGHNESS_TEXT = new    ToughnessTextComponent();
 	public static final      MagicShieldComponent MAGIC_SHIELD   = new      MagicShieldComponent();
 	

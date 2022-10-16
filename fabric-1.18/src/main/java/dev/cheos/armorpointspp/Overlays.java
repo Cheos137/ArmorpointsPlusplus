@@ -5,12 +5,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import dev.cheos.armorpointspp.config.ApppConfig;
 import dev.cheos.armorpointspp.core.RenderContext;
 import dev.cheos.armorpointspp.core.Side;
+import dev.cheos.armorpointspp.core.adapter.*;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
-import dev.cheos.armorpointspp.core.adapter.IDataProvider;
-import dev.cheos.armorpointspp.core.adapter.IMath;
-import dev.cheos.armorpointspp.core.adapter.IProfiler;
-import dev.cheos.armorpointspp.core.adapter.IRenderer;
 import dev.cheos.armorpointspp.core.render.Components;
 import dev.cheos.armorpointspp.impl.*;
 import net.minecraft.client.Minecraft;
@@ -91,7 +88,7 @@ public class Overlays {
 		Components.DEBUG_TEXT.render(ctx);
 	}
 	
-	private static RenderContext ctx(PoseStack poseStack, int x, int y) {
+	public static RenderContext ctx(PoseStack poseStack, int x, int y) {
 		return new RenderContext(
 				ApppConfig.instance(),
 				DATA_PROVIDER,
