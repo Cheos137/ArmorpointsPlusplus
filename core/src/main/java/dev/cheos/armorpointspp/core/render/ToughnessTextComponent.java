@@ -23,7 +23,7 @@ public class ToughnessTextComponent implements IRenderComponent {
 		if(significand.endsWith(".0")) significand = significand.substring(0, significand.length() - 2); // strip .0
 		significand += (type == Suffix.Type.SCI ? "E" + power : Suffix.byPow(power).getSuffix(type));    // add suffix
 		
-		int color = ctx.config.hex(IntegerOption.TEXT_COLOR_TOUGHNESS);
+		int color = ctx.config.hex(HexOption.TEXT_COLOR_TOUGHNESS);
 		Side side = ctx.config.enm(EnumOption.TOUGHNESS_SIDE);
 		
 		if (ctx.config.bool(BooleanOption.TOUGHNESS_TEXT_CONFIG_ENABLE))

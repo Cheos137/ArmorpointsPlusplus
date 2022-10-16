@@ -3,7 +3,7 @@ package dev.cheos.armorpointspp.core.render;
 import dev.cheos.armorpointspp.core.*;
 import dev.cheos.armorpointspp.core.RenderableText.Alignment;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
-import dev.cheos.armorpointspp.core.adapter.IConfig.IntegerOption;
+import dev.cheos.armorpointspp.core.adapter.IConfig.HexOption;
 
 public class DebugTextComponent implements IRenderComponent {
 	private static RenderableText right  = new RenderableText("this should be left aligned and red with no shadow").withAlignment(Alignment.LEFT  ).withColor(0xff0000).withShadow(false);
@@ -24,10 +24,10 @@ public class DebugTextComponent implements IRenderComponent {
 		ctx.renderer.text(ctx.poseStack, "hp: "   + maxHp , 5,  5, 0xffffff);
 		ctx.renderer.text(ctx.poseStack, "rows: " + hpRows, 5, 15, 0xffffff);
 		
-		ctx.renderer.text(ctx.poseStack, "armor = 0" , ctx.x, ctx.y - 40, ctx.config.hex(IntegerOption.TEXT_COLOR_ARMOR_0   ));
-		ctx.renderer.text(ctx.poseStack, "armor < 25", ctx.x, ctx.y - 30, ctx.config.hex(IntegerOption.TEXT_COLOR_ARMOR_LT25));
-		ctx.renderer.text(ctx.poseStack, "armor = 25", ctx.x, ctx.y - 20, ctx.config.hex(IntegerOption.TEXT_COLOR_ARMOR_EQ25));
-		ctx.renderer.text(ctx.poseStack, "armor > 25", ctx.x, ctx.y - 10, ctx.config.hex(IntegerOption.TEXT_COLOR_ARMOR_GT25));
+		ctx.renderer.text(ctx.poseStack, "armor = 0" , ctx.x, ctx.y - 40, ctx.config.hex(HexOption.TEXT_COLOR_ARMOR_0   ));
+		ctx.renderer.text(ctx.poseStack, "armor < 25", ctx.x, ctx.y - 30, ctx.config.hex(HexOption.TEXT_COLOR_ARMOR_LT25));
+		ctx.renderer.text(ctx.poseStack, "armor = 25", ctx.x, ctx.y - 20, ctx.config.hex(HexOption.TEXT_COLOR_ARMOR_EQ25));
+		ctx.renderer.text(ctx.poseStack, "armor > 25", ctx.x, ctx.y - 10, ctx.config.hex(HexOption.TEXT_COLOR_ARMOR_GT25));
 		
 		right .render(ctx.poseStack, ctx.renderer, ctx.x, ctx.y - 60);
 		center.render(ctx.poseStack, ctx.renderer, ctx.x, ctx.y - 70);

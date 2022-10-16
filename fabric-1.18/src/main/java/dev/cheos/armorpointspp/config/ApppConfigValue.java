@@ -59,6 +59,35 @@ public abstract class ApppConfigValue<T, U, X> {
 	}
 	
 	
+	public static class IntValue extends ApppConfigValue<Integer, Integer, BigDecimal> {
+		private final int min, max;
+		
+		public IntValue(String name, int def, String... comments) { this(name, def, Integer.MAX_VALUE, comments); }
+		public IntValue(String name, int def, int max, String... comments) { this(name, def, 0, max, comments); }
+		public IntValue(String name, int def, int min, int max, String... comments) {
+			super(name, Mth.clamp(def, min, max), comments);
+			this.min = min;
+			this.max = max;
+		}
+		
+		@Override
+		public void define(ConfigTreeBuilder builder) {
+			builder.beginValue(this.name, configType(), this.def)
+				.withComment(String.join("\n", this.comments))
+				.finishValue(leaf -> {
+					this.value = Lazy.of(leaf::getValue);
+					this.setter = val -> leaf.setValue(val);
+					leaf.addChangeListener((old, upd) -> this.value.invalidate());
+				});
+		}
+		
+		public void set(String val) { try { this.setter.accept(BigDecimal.valueOf(Float.parseFloat(val))); } catch (Exception e) { this.setter.accept(BigDecimal.valueOf(this.def)); }}
+		@Override public void set(Integer val) { this.setter.accept(BigDecimal.valueOf(val)); }
+		@Override public Integer get() { return Mth.clamp(this.value.get().intValue(), this.min, this.max); }
+		@Override protected ConfigType<Integer, BigDecimal, DecimalSerializableType> configType() { return ConfigTypes.INTEGER; }
+	}
+	
+	
 	public static class BoolValue extends ApppConfigValue<Boolean, Boolean, Boolean> {
 		public BoolValue(String name, Boolean def, String... comments) { super(name, def, comments); }
 		
@@ -91,11 +120,11 @@ public abstract class ApppConfigValue<T, U, X> {
 			   .finishValue(leaf -> {
 				   this.value = Lazy.of(leaf::getValue);
 				   this.setter = val -> leaf.setValue(val);
-				   leaf.addChangeListener((old, upd) -> value.invalidate());
+				   leaf.addChangeListener((old, upd) -> this.value.invalidate());
 			   });
 		}
 		
-		public void set(String val) { try { this.setter.accept(BigDecimal.valueOf(Float.parseFloat(val))); } catch (Exception e) { this.setter.accept(BigDecimal.valueOf(this.def)); } }
+		public void set(String val) { try { this.setter.accept(BigDecimal.valueOf(Float.parseFloat(val))); } catch (Exception e) { this.setter.accept(BigDecimal.valueOf(this.def)); }}
 		@Override public void set(Float val) { this.setter.accept(BigDecimal.valueOf(val)); }
 		@Override public Float get() { return Mth.clamp(this.value.get().floatValue(), this.min, this.max); }
 		@Override protected ConfigType<Double, BigDecimal, DecimalSerializableType> configType() { return ConfigTypes.DOUBLE; }

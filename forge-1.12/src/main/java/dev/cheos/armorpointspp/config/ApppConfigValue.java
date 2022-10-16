@@ -49,6 +49,28 @@ public abstract class ApppConfigValue<T, U> {
 	}
 	
 	
+	public static class IntValue extends ApppConfigValue<Integer, Integer> {
+		private final int min, max;
+		
+		public IntValue(String name, String category, int def, String... comments) { this(name, category, def, Integer.MAX_VALUE, comments); }
+		public IntValue(String name, String category, int def, int max, String... comments) { this(name, category, def, 0, max, comments); }
+		public IntValue(String name, String category, int def, int min, int max, String... comments) {
+			super(name, category, MathHelper.clamp(def, min, max), comments);
+			this.min = min;
+			this.max = max;
+		}
+		
+		@Override
+		public void define(Configuration config) {
+			this.confValue = config.get(this.category, this.name, this.def, String.join("\n", this.comments), this.min, this.max);
+			this.value = Lazy.of(getter());
+		}
+		
+		@Override
+		protected Supplier<Integer> getter() { return this.confValue::getInt; }
+	}
+	
+	
 	public static class BoolValue extends ApppConfigValue<Boolean, Boolean> {
 		public BoolValue(String name, String category, Boolean def, String... comments) { super(name, category, def, comments); }
 		

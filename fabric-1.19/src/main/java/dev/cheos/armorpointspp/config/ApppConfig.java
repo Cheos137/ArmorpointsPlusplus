@@ -18,6 +18,7 @@ public class ApppConfig implements IConfig {
 	private static final File configFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "armorpointspp.json");
 	public static final Version VERSION = Version.v1_19;
 	private static final Map<String, BoolValue>    boolConfigs   = new HashMap<>();
+	private static final Map<String, IntValue>     intConfigs    = new HashMap<>();
 	private static final Map<String, HexValue>     hexConfigs    = new HashMap<>();
 	private static final Map<String, FloatValue>   floatConfigs  = new HashMap<>();
 	private static final Map<String, StringValue>  stringConfigs = new HashMap<>();
@@ -72,6 +73,11 @@ public class ApppConfig implements IConfig {
 	}
 	
 	@Override
+	public int num(Option<Integer> key) {
+		return intConfigs.containsKey(key.key()) ? intConfigs.get(key.key()).get() : key.def();
+	}
+	
+	@Override
 	public int hex(Option<Integer> key) {
 		return hexConfigs.containsKey(key.key()) ? hexConfigs.get(key.key()).get() : key.def();
 	}
@@ -96,6 +102,7 @@ public class ApppConfig implements IConfig {
 	@Deprecated
 	public void invalidateAll() {
 //		  boolConfigs.values().forEach(ApppConfigValue::invalidate);
+//		   intConfigs.values().forEach(ApppConfigValue::invalidate);
 //		   hexConfigs.values().forEach(ApppConfigValue::invalidate);
 //		 floatConfigs.values().forEach(ApppConfigValue::invalidate);
 //		stringConfigs.values().forEach(ApppConfigValue::invalidate);
@@ -107,6 +114,9 @@ public class ApppConfig implements IConfig {
 			if (opt.isAvailableIn(VERSION))
 				boolConfigs  .put(opt.key(), new BoolValue  (opt.key(), opt.def(), opt.comments()));
 		for (IntegerOption opt : IntegerOption.values())
+			if (opt.isAvailableIn(VERSION))
+				intConfigs   .put(opt.key(), new IntValue   (opt.key(), opt.def(), opt.comments()));
+		for (HexOption opt : HexOption.values())
 			if (opt.isAvailableIn(VERSION))
 				hexConfigs   .put(opt.key(), new HexValue   (opt.key(), opt.def(), opt.comments()));
 		for (FloatOption opt : FloatOption.values())
@@ -148,6 +158,8 @@ public class ApppConfig implements IConfig {
 		if (option instanceof BooleanOption)
 			return boolConfigs  .get(option.key());
 		if (option instanceof IntegerOption)
+			return intConfigs   .get(option.key());
+		if (option instanceof HexOption)
 			return hexConfigs   .get(option.key());
 		if (option instanceof FloatOption)
 			return floatConfigs .get(option.key());

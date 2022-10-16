@@ -30,11 +30,11 @@ public class ArmorTextComponent implements IRenderComponent {
 		int color;
 		if (!ctx.config.bool(BooleanOption.DISABLE_EASTEREGGS) && armor == Math.min(137, ctx.data.maxArmor()))
 			color = Color.HSBtoRGB((((ctx.data.millis() + 80) / 40) % 360) / 360F, 1, 1);
-		else if (resistance >= 4) color = ctx.config.hex(IntegerOption.TEXT_COLOR_FULL_RESISTANCE);
-		else if (armor == 0) color = ctx.config.hex(IntegerOption.TEXT_COLOR_ARMOR_0);
-		else if (armor < 25) color = ctx.config.hex(IntegerOption.TEXT_COLOR_ARMOR_LT25);
-		else if (armor > 25) color = ctx.config.hex(IntegerOption.TEXT_COLOR_ARMOR_GT25);
-		else color = ctx.config.hex(IntegerOption.TEXT_COLOR_ARMOR_EQ25);
+		else if (resistance >= 4) color = ctx.config.hex(HexOption.TEXT_COLOR_FULL_RESISTANCE);
+		else if (armor == 0) color = ctx.config.hex(HexOption.TEXT_COLOR_ARMOR_0);
+		else if (armor < 25) color = ctx.config.hex(HexOption.TEXT_COLOR_ARMOR_LT25);
+		else if (armor > 25) color = ctx.config.hex(HexOption.TEXT_COLOR_ARMOR_GT25);
+		else color = ctx.config.hex(HexOption.TEXT_COLOR_ARMOR_EQ25);
 		
 		if (ctx.config.bool(BooleanOption.ARMOR_TEXT_CONFIG_ENABLE))
 			 new RenderableText(significand)
@@ -69,10 +69,10 @@ public class ArmorTextComponent implements IRenderComponent {
 		if(significand.endsWith(".0")) significand = significand.substring(0, significand.length() - 2); // strip .0
 		significand += (type == Suffix.Type.SCI ? "E" + power : Suffix.byPow(power).getSuffix(type));    // add suffix
 		
-		int color = ctx.config.hex(IntegerOption.TEXT_COLOR_TOUGHNESS);
+		int color = ctx.config.hex(HexOption.TEXT_COLOR_TOUGHNESS);
 		return new RenderableText("+")
 				.pad(1)
-				.withColor(ctx.config.hex(IntegerOption.TEXT_COLOR_SEPARATOR))
+				.withColor(ctx.config.hex(HexOption.TEXT_COLOR_SEPARATOR))
 				.append(new RenderableText(significand).withColor(color));
 		
 	}

@@ -43,6 +43,26 @@ public abstract class ApppConfigValue<T, U> {
 	}
 	
 	
+	public static class IntValue extends ApppConfigValue<Integer, Integer> {
+		private final int min, max;
+		
+		public IntValue(String name, int def, String... comments) { this(name, def, Integer.MAX_VALUE, comments); }
+		public IntValue(String name, int def, int max, String... comments) { this(name, def, 0, max, comments); }
+		public IntValue(String name, int def, int min, int max, String... comments) {
+			super(name, MathHelper.clamp(def, min, max), comments);
+			this.min = min;
+			this.max = max;
+		}
+		
+		@Override
+		public void define(ForgeConfigSpec.Builder builder) {
+			builder.comment(this.comments);
+			this.confValue = builder.defineInRange(this.name, this.def, this.min, this.max);
+			this.value = Lazy.of(this.confValue::get);
+		}
+	}
+	
+	
 	public static class BoolValue extends ApppConfigValue<Boolean, Boolean> {
 		public BoolValue(String name, Boolean def, String... comments) { super(name, def, comments); }
 	}

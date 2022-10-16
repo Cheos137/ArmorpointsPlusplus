@@ -16,6 +16,7 @@ public interface IConfig { // use forges config update system... somehow
 	
 	boolean               bool(Option<Boolean> key);
 	int                   hex (Option<Integer> key);
+	int                   num (Option<Integer> key);
 	float                 dec (Option<Float  > key);
 	String                str (Option<String > key);
 	<T extends Enum<T>> T enm (Option<T      > key);
@@ -82,6 +83,10 @@ public interface IConfig { // use forges config update system... somehow
 		public static final ImmutableList<Version> V1_17 = ImmutableList.of(v1_17);
 		public static final ImmutableList<Version> V1_18 = ImmutableList.of(v1_18, v1_18fabric);
 		public static final ImmutableList<Version> V1_19 = ImmutableList.of(v1_19, v1_19fabric);
+		public static final ImmutableList<Version> V1_18UP = ImmutableList.<Version>builder().addAll(V1_19  ).addAll(V1_18).build();
+		public static final ImmutableList<Version> V1_17UP = ImmutableList.<Version>builder().addAll(V1_18UP).addAll(V1_17).build();
+		public static final ImmutableList<Version> V1_16UP = ImmutableList.<Version>builder().addAll(V1_17UP).addAll(V1_16).build();
+		public static final ImmutableList<Version> V1_12UP = ImmutableList.<Version>builder().addAll(V1_16UP).addAll(V1_12).build();
 	}
 	
 	public static interface Option<T> {
@@ -157,41 +162,43 @@ public interface IConfig { // use forges config update system... somehow
 	}
 	
 	public static enum BooleanOption implements Option<Boolean> {
-		ABSORPTION_ENABLE           ("showAbsorption"             , true , Category.GENERAL      , " Show absorption as border around health"                            , " Available: true, false [default: %s]"),
-		ARMOR_ENABLE                ("enableArmorBar"             , true , Category.GENERAL      , " Enable custom armor bar"                                            , " Available: true, false [default: %s]"),
-		ARMOR_TEXT_ENABLE           ("showArmorValue"             , true , Category.GENERAL      , " Show armor value text next to armor bar"                            , " Available: true, false [default: %s]"),
-		ARMOR_TEXT_CONFIG_ENABLE    ("enableArmorValueConfig"     , false, Category.TEXT_CONFIG  , " Enables custom armor value configuration"                           , " Available: true, false [default: %s]"),
-		ARMOR_SHOW_ON_0             ("showArmorWhenZero"          , false, Category.GENERAL      , " Show armor bar when armor is zero"                                  , " Available: true, false [default: %s]"),
-		DEBUG                       ("debug"                      , false, Category.GENERAL_DEBUG, " You don't want this to be on. Believe me"                           , " Available: true, false [default: %s]"),
-		DISABLE_EASTEREGGS          ("disableEastereggs"          , false, Category.GENERAL      , " Disables all easter eggs, which is sad but some want it"            , " Available: true, false [default: %s]"),
-		FROSTBITE_TEXT_ENABLE       ("showFrostbitePercentage"    , true , Category.GENERAL      , " Show frostbite percentage next to health bar"                       , " Available: true, false [default: %s]"),
-		HEALTH_ENABLE               ("enableHealthBar"            , true , Category.GENERAL      , " Enable custom health bar"                                           , " Available: true, false [default: %s]"),
-		HEALTH_TEXT_ENABLE          ("showHealthValue"            , true , Category.GENERAL      , " Show health value text next to health bar"                          , " Available: true, false [default: %s]"),
-		HEALTH_TEXT_CONFIG_ENABLE   ("enableHealthValueConfig"    , false, Category.TEXT_CONFIG  , " Enables custom health value configuration"                          , " Available: true, false [default: %s]"),
-		HEALTH_BG_ALWAYS_SHOW_10    ("alwaysShow10HeartBGs"       , false, Category.GENERAL      , " Always render 10 heart backgrounds, even if max health is lower"    , " Available: true, false [default: %s]"),
-		HIDE_COMPAT_WARNINGS        ("hideCompatWarnings"         , false, Category.COMPAT       , " Hides all compatibility warnings... I don't recommend switching this on except for pack authors", " Available: true, false [default: %s]"),
-		MANTLE_COMPAT               ("mantle"                     , true , Category.COMPAT       , Version.V1_12, " Fixes mantle compatibility"                          , " Available: true, false [default: %s]"),
-		POTIONCORE_COMPAT           ("potioncore"                 , true , Category.COMPAT       , Version.V1_12, " Adds support for potioncore's effects and attributes", " Available: true, false [default: %s]"),
-		PROTECTION_ENABLE           ("showProtection"             , true , Category.GENERAL      , " Show protection as overlay over armor"                              , " Available: true, false [default: %s]"),
-		RESISTANCE_ENABLE           ("showResistance"             , true , Category.GENERAL      , " Show resistance as border around armor"                             , " Available: true, false [default: %s]"),
-		TEXT_SHADOW                 ("textShadow"                 , true , Category.GENERAL      , " Draw shadows for all rendered texts"                                , " Available: true, false [default: %s]"),
-		TOUGHNESS_BAR               ("useToughnessBar"            , false, Category.GENERAL      , " Show toughness as it's own bar"                                     , " Available: true, false [default: %s]"),
-		TOUGHNESS_ENABLE            ("enableToughness"            , true , Category.GENERAL      , " Show toughness as overlay over armor or it's own bar"               , " Available: true, false [default: %s]"),
-		TOUGHNESS_SHOW_ON_0         ("showToughnessWhenZero"      , false, Category.GENERAL      , " Show toughness bar when toughness is zero"                          , " Available: true, false [default: %s]"),
-		TOUGHNESS_TEXT_ENABLE       ("showToughnessValue"         , true , Category.GENERAL      , " Show toughness value text next to toughness bar"                    , " Available: true, false [default: %s]"),
-		TOUGHNESS_TEXT_CONFIG_ENABLE("enableToughnessValueConfig" , false, Category.TEXT_CONFIG  , " Enables custom toughness value configuration"                       , " Available: true, false [default: %s]");
+		ABSORPTION_ENABLE           ("showAbsorption"            , true , Category.GENERAL      , " Show absorption as border around health"                                     , " Available: true, false [default: %s]"),
+		ARMOR_ENABLE                ("enableArmorBar"            , true , Category.GENERAL      , " Enable custom armor bar"                                                     , " Available: true, false [default: %s]"),
+		ARMOR_TEXT_ENABLE           ("showArmorValue"            , true , Category.GENERAL      , " Show armor value text next to armor bar"                                     , " Available: true, false [default: %s]"),
+		ARMOR_TEXT_CONFIG_ENABLE    ("enableArmorValueConfig"    , false, Category.TEXT_CONFIG  , " Enables custom armor value configuration"                                    , " Available: true, false [default: %s]"),
+		ARMOR_SHOW_ON_0             ("showArmorWhenZero"         , false, Category.GENERAL      , " Show armor bar when armor is zero"                                           , " Available: true, false [default: %s]"),
+		DEBUG                       ("debug"                     , false, Category.GENERAL_DEBUG, " You don't want this to be on. Believe me"                                    , " Available: true, false [default: %s]"),
+		DISABLE_EASTEREGGS          ("disableEastereggs"         , false, Category.GENERAL      , " Disables all easter eggs, which is sad but some want it"                     , " Available: true, false [default: %s]"),
+		FROSTBITE_TEXT_ENABLE       ("showFrostbitePercentage"   , true , Category.GENERAL      , " Show frostbite percentage next to health bar"                                , " Available: true, false [default: %s]"),
+		HEALTH_ENABLE               ("enableHealthBar"           , true , Category.GENERAL      , " Enable custom health bar"                                                    , " Available: true, false [default: %s]"),
+		HEALTH_TEXT_ENABLE          ("showHealthValue"           , true , Category.GENERAL      , " Show health value text next to health bar"                                   , " Available: true, false [default: %s]"),
+		HEALTH_TEXT_CONFIG_ENABLE   ("enableHealthValueConfig"   , false, Category.TEXT_CONFIG  , " Enables custom health value configuration"                                   , " Available: true, false [default: %s]"),
+		HEALTH_BG_ALWAYS_SHOW_10    ("alwaysShow10HeartBGs"      , false, Category.GENERAL      , " Always render 10 heart backgrounds, even if max health is lower"             , " Available: true, false [default: %s]"),
+		HIDE_COMPAT_WARNINGS        ("hideCompatWarnings"        , false, Category.COMPAT       , " Hides all compatibility warnings...", "I don't recommend switching this on except for pack authors", " Available: true, false [default: %s]"),
+		MANTLE_COMPAT               ("mantle"                    , true , Category.COMPAT       , Version.V1_12, " Fixes mantle compatibility"                                   , " Available: true, false [default: %s]"),
+		POTIONCORE_COMPAT           ("potioncore"                , true , Category.COMPAT       , Version.V1_12, " Adds support for potioncore's effects and attributes"         , " Available: true, false [default: %s]"),
+		PROTECTION_ENABLE           ("showProtection"            , true , Category.GENERAL      , " Show protection as overlay over armor"                                       , " Available: true, false [default: %s]"),
+		RESISTANCE_ENABLE           ("showResistance"            , true , Category.GENERAL      , " Show resistance as border around armor"                                      , " Available: true, false [default: %s]"),
+		TABLIST_HEALTH_ENABLE       ("enableTablistHealth"       , true , Category.GENERAL      , Version.V1_16UP, " Enable custom tablist health rendering (displaytype health)", " Available: true, false [default: %s]"),
+		TABLIST_HEALTH_ALWAYS_MAX   ("alwaysShowMaxTablistHearts", true , Category.GENERAL      , Version.V1_16UP, " Always render max (configured) heart backgrounds in tablist, even if health is lower", " Available: true, false [default: %s]"),
+		TEXT_SHADOW                 ("textShadow"                , true , Category.GENERAL      , " Draw shadows for all rendered texts"                                         , " Available: true, false [default: %s]"),
+		TOUGHNESS_BAR               ("useToughnessBar"           , false, Category.GENERAL      , " Show toughness as it's own bar"                                              , " Available: true, false [default: %s]"),
+		TOUGHNESS_ENABLE            ("enableToughness"           , true , Category.GENERAL      , " Show toughness as overlay over armor or it's own bar"                        , " Available: true, false [default: %s]"),
+		TOUGHNESS_SHOW_ON_0         ("showToughnessWhenZero"     , false, Category.GENERAL      , " Show toughness bar when toughness is zero"                                   , " Available: true, false [default: %s]"),
+		TOUGHNESS_TEXT_ENABLE       ("showToughnessValue"        , true , Category.GENERAL      , " Show toughness value text next to toughness bar"                             , " Available: true, false [default: %s]"),
+		TOUGHNESS_TEXT_CONFIG_ENABLE("enableToughnessValueConfig", false, Category.TEXT_CONFIG  , " Enables custom toughness value configuration"                                , " Available: true, false [default: %s]");
 		
 		final String key;
 		final boolean def;
 		final Category category;
-		final List<Version> versions;
-		final List<String> comments;
+		final ImmutableList<Version> versions;
+		final ImmutableList<String> comments;
 		BooleanOption(String key, boolean def, Category category, String... comments) { this(key, def, category, Version.ALL, comments); }
-		BooleanOption(String key, boolean def, Category category, List<Version> versions, String... comments) {
+		BooleanOption(String key, boolean def, Category category, ImmutableList<Version> versions, String... comments) {
 			this.key = key;
 			this.def = def;
 			this.category = category;
-			this.versions = ImmutableList.copyOf(versions);
+			this.versions = versions;
 			this.comments = Arrays.stream(comments).map(s -> String.format(s, def)).collect(ImmutableList.toImmutableList());
 			this.category.options.add(this);
 		}
@@ -228,26 +235,89 @@ public interface IConfig { // use forges config update system... somehow
 	}
 	
 	public static enum IntegerOption implements BoundedOption<Integer> {
-		TEXT_COLOR_FULL_RESISTANCE("resistanceFull", 0x8a0f0f, Category.TEXT_COLOR, " Color when resistance > 5"                     , " Available: 0x000000 ~ 0xffffff [default: %s]"),
-		TEXT_COLOR_ARMOR_0        ("armor0"        , 0x3d3d3d, Category.TEXT_COLOR, " Color when armor = 0"                          , " Available: 0x000000 ~ 0xffffff [default: %s]"),
-		TEXT_COLOR_ARMOR_LT25     ("armorLT25"     , 0x44ff11, Category.TEXT_COLOR, " Color when armor < 25"                         , " Available: 0x000000 ~ 0xffffff [default: %s]"),
-		TEXT_COLOR_ARMOR_EQ25     ("armorEQ25"     , 0xff8811, Category.TEXT_COLOR, " Color when armor = 25"                         , " Available: 0x000000 ~ 0xffffff [default: %s]"),
-		TEXT_COLOR_ARMOR_GT25     ("armorGT25"     , 0xff3311, Category.TEXT_COLOR, " Color when armor > 25"                         , " Available: 0x000000 ~ 0xffffff [default: %s]"),
-		TEXT_COLOR_FROSTBITE      ("heartFrostbite", 0x01bef2, Category.TEXT_COLOR, " Color when fully frozen"                       , " Available: 0x000000 ~ 0xffffff [default: %s]"),
-		TEXT_COLOR_POISON         ("heartPoison"   , 0x947818, Category.TEXT_COLOR, " Color when poisoned"                           , " Available: 0x000000 ~ 0xffffff [default: %s]"),
-		TEXT_COLOR_WITHER         ("heartWither"   , 0x2b2b2b, Category.TEXT_COLOR, " Color when withered"                           , " Available: 0x000000 ~ 0xffffff [default: %s]"),
-		TEXT_COLOR_HEART          ("heart"         , 0xff1313, Category.TEXT_COLOR, " Color normal status"                           , " Available: 0x000000 ~ 0xffffff [default: %s]"),
-		TEXT_COLOR_ABSORPTION     ("absorption"    , 0xffc300, Category.TEXT_COLOR, " Color of absorption"                           , " Available: 0x000000 ~ 0xffffff [default: %s]"),
-		TEXT_COLOR_SEPARATOR      ("separator"     , 0x3d3d3d, Category.TEXT_COLOR, " Color of separator"                            , " Available: 0x000000 ~ 0xffffff [default: %s]"),
-		TEXT_COLOR_TOUGHNESS      ("toughness"     , 0xff8811, Category.TEXT_COLOR, " Color of toughness"                            , " Available: 0x000000 ~ 0xffffff [default: %s]");
+		TABLIST_MAX_HEART_COUNT   ("maxTablistHeartCount", 10, 1, 10, Category.GENERAL   , Version.V1_16UP, "Sets the max number of hearts rendered in the tablist", " Available: %s ~ %s [default: %s]");
+		
+		final String key;
+		final int    def, min, max;
+		final Category category;
+		final List<Version> versions;
+		final List<String> comments;
+		IntegerOption(String key, int def, Category category, String... comments) { this(key, def, category, Version.ALL, comments); }
+		IntegerOption(String key, int def, Category category, List<Version> versions, String... comments) { this(key, def, Integer.MAX_VALUE, category, versions, comments); }
+		IntegerOption(String key, int def, int max, Category category, List<Version> versions, String... comments) { this(key, def, 0, max, category, versions, comments); }
+		IntegerOption(String key, int def, int min, int max, Category category, List<Version> versions, String... comments) {
+			this.key = key;
+			this.def = def;
+			this.min = min;
+			this.max = max;
+			this.category = category;
+			this.versions = versions;
+			this.comments = Arrays.stream(comments).map(s -> String.format(s, Integer.toString(min), Integer.toString(max), Integer.toString(def))).collect(ImmutableList.toImmutableList());
+			this.category.options.add(this);
+		}
+		
+		@Override
+		public String key() {
+			return this.key;
+		}
+		
+		@Override
+		public String[] comments() {
+			return this.comments.toArray(new String[0]);
+		}
+		
+		@Override
+		public Integer def() {
+			return this.def;
+		}
+		
+		@Override
+		public Integer min() {
+			return this.min;
+		}
+		
+		@Override
+		public Integer max() {
+			return this.max;
+		}
+		
+		@Override
+		public Category category() {
+			return this.category;
+		}
+		
+		@Override
+		public boolean isAvailableIn(Version version) {
+			return this.versions.contains(version);
+		}
+		
+		@Override
+		public Class<Integer> type() {
+			return Integer.class;
+		}
+	}
+	
+	public static enum HexOption implements BoundedOption<Integer> {
+		TEXT_COLOR_FULL_RESISTANCE("resistanceFull"      , 0x8a0f0f , Category.TEXT_COLOR, " Color when resistance > 5"                     , " Available: 0x000000 ~ 0xffffff [default: %s]"),
+		TEXT_COLOR_ARMOR_0        ("armor0"              , 0x3d3d3d , Category.TEXT_COLOR, " Color when armor = 0"                          , " Available: 0x000000 ~ 0xffffff [default: %s]"),
+		TEXT_COLOR_ARMOR_LT25     ("armorLT25"           , 0x44ff11 , Category.TEXT_COLOR, " Color when armor < 25"                         , " Available: 0x000000 ~ 0xffffff [default: %s]"),
+		TEXT_COLOR_ARMOR_EQ25     ("armorEQ25"           , 0xff8811 , Category.TEXT_COLOR, " Color when armor = 25"                         , " Available: 0x000000 ~ 0xffffff [default: %s]"),
+		TEXT_COLOR_ARMOR_GT25     ("armorGT25"           , 0xff3311 , Category.TEXT_COLOR, " Color when armor > 25"                         , " Available: 0x000000 ~ 0xffffff [default: %s]"),
+		TEXT_COLOR_FROSTBITE      ("heartFrostbite"      , 0x01bef2 , Category.TEXT_COLOR, " Color when fully frozen"                       , " Available: 0x000000 ~ 0xffffff [default: %s]"),
+		TEXT_COLOR_POISON         ("heartPoison"         , 0x947818 , Category.TEXT_COLOR, " Color when poisoned"                           , " Available: 0x000000 ~ 0xffffff [default: %s]"),
+		TEXT_COLOR_WITHER         ("heartWither"         , 0x2b2b2b , Category.TEXT_COLOR, " Color when withered"                           , " Available: 0x000000 ~ 0xffffff [default: %s]"),
+		TEXT_COLOR_HEART          ("heart"               , 0xff1313 , Category.TEXT_COLOR, " Color normal status"                           , " Available: 0x000000 ~ 0xffffff [default: %s]"),
+		TEXT_COLOR_ABSORPTION     ("absorption"          , 0xffc300 , Category.TEXT_COLOR, " Color of absorption"                           , " Available: 0x000000 ~ 0xffffff [default: %s]"),
+		TEXT_COLOR_SEPARATOR      ("separator"           , 0x3d3d3d , Category.TEXT_COLOR, " Color of separator"                            , " Available: 0x000000 ~ 0xffffff [default: %s]"),
+		TEXT_COLOR_TOUGHNESS      ("toughness"           , 0xff8811 , Category.TEXT_COLOR, " Color of toughness"                            , " Available: 0x000000 ~ 0xffffff [default: %s]");
 		
 		final String key;
 		final int    def;
 		final Category category;
 		final List<Version> versions;
 		final List<String> comments;
-		IntegerOption(String key, int def, Category category, String... comments) { this(key, def, category, Version.ALL, comments); }
-		IntegerOption(String key, int def, Category category, List<Version> versions, String... comments) {
+		HexOption(String key, int def, Category category, String... comments) { this(key, def, category, Version.ALL, comments); }
+		HexOption(String key, int def, Category category, ImmutableList<Version> versions, String... comments) {
 			this.key = key;
 			this.def = def;
 			this.category = category;
