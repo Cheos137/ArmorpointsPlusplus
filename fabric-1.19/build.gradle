@@ -17,6 +17,12 @@ repositories {
 	maven { url 'https://maven.ryanliptak.com/' } // appleskin
 	maven { url 'https://maven.shedaniel.me/' }   // cloth - needed for appleskin runtime
 	maven { url 'https://maven.terraformersmc.com/releases/' } // modmenu
+	maven { url 'https://ladysnake.jfrog.io/artifactory/mods' } // cca
+	maven { url 'https://jitpack.io' }
+	exclusiveContent {
+		forRepository { maven { url 'https://api.modrinth.com/maven' }} // modrinth
+		filter { includeGroup 'maven.modrinth' }
+	}
 }
 
 dependencies {
@@ -35,6 +41,18 @@ dependencies {
 		exclude module: 'fabric-api'
 		exclude module: 'modmenu'
 	}
+
+	modCompileOnly 'maven.modrinth:spectrum:1.5.7+1.19.2'
+	// modRuntimeOnly 'maven.modrinth:spectrum:1.5.7+1.19.2'
+	// modRuntimeOnly 'maven.modrinth:owo-lib:0.8.5+1.19'
+	// modRuntimeOnly 'maven.modrinth:revelationary:1.0.2+1.19.2'
+	// modRuntimeOnly 'maven.modrinth:patchouli:1.19.2-77-fabric'
+	// modRuntimeOnly 'maven.modrinth:trinkets:3.4.0'
+	// modRuntimeOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.0.2'
+	// modRuntimeOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.0.2'
+	// modRuntimeOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-item:5.0.2'
+	// modRuntimeOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-level:5.0.2'
+	// modRuntimeOnly 'com.github.DaFuqs:AdditionalEntityAttributes:1.19-SNAPSHOT'
 }
 
 processResources {

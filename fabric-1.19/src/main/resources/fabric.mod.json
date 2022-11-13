@@ -35,7 +35,8 @@
     "suggests": {
       "fabric": "*",
       "fabric-networking-api-v1": "*",
-      "fabric-rendering-v1": "*"
+      "fabric-rendering-v1": "*",
+      "modmenu": "*"
     },
 
     "custom": {

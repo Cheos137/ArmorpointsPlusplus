@@ -22,73 +22,80 @@ public class Overlays {
 	private static final Minecraft minecraft         = Minecraft.getInstance();
 	private static int lastArmorY = 0, lastHealthY = 0, lastToughnessY = 0;
 	
-	static void playerHealth(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+	static boolean playerHealth(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		lastHealthY = baseY(gui, screenHeight);
 		if (!ApppConfig.instance().bool(BooleanOption.HEALTH_ENABLE)) {
-			if (!minecraft.options.hideGui && DATA_PROVIDER.shouldDrawSurvivalElements())
+			if (!minecraft.options.hideGui && DATA_PROVIDER.shouldDrawSurvivalElements()) {
 				gui.renderHealth(poseStack);
-		} else if (Components.HEALTH.render(ctx(poseStack, baseX(screenWidth), lastHealthY)))
+				return true;
+			}
+		} else if (Components.HEALTH.render(ctx(poseStack, baseX(screenWidth), lastHealthY))) {
 			gui.leftHeight += 10;
+			return true;
+		}
+		return false;
 	}
 	
-	static void absorption(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
-		Components.ABSOPRTION.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
+	static boolean absorption(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		return Components.ABSOPRTION.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
 	}
 	
-	static void armorLevel(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+	static boolean armorLevel(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		RenderContext ctx = ctx(poseStack, baseX(screenWidth), lastArmorY = baseY(gui, screenHeight));
 		boolean flag = false;
 		if (!ApppConfig.instance().bool(BooleanOption.ARMOR_ENABLE))
 			flag = Components.VANILLA_ARMOR.render(ctx);
 		else flag = Components.ARMOR.render(ctx);
 		if (flag) gui.leftHeight += 10;
+		return flag;
 	}
 	
-	static void armorToughness(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+	static boolean armorToughness(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		Side side = ApppConfig.instance().enm(EnumOption.TOUGHNESS_SIDE);
 		if (Components.TOUGHNESS.render(ctx(poseStack, baseX(screenWidth, side), lastToughnessY = baseY(gui, screenHeight, side))))
 			switch (side) {
 				case LEFT:
 					gui.leftHeight += 10;
-					break;
+					return true;
 				case RIGHT:
 					gui.rightHeight += 10;
-					break;
+					return true;
 			}
+		return false;
 	}
 	
-	static void resistance(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
-		Components.RESISTANCE.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
+	static boolean resistance(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		return Components.RESISTANCE.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
 	}
 	
-	static void protection(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
-		Components.PROTECTION.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
+	static boolean protection(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		return Components.PROTECTION.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
 	}
 	
-	static void armorToughnessOv(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
-		Components.TOUGHNESS_OVER.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
+	static boolean armorToughnessOv(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		return Components.TOUGHNESS_OVER.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
 	}
 	
-	static void magicShield(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
-		Components.MAGIC_SHIELD.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
+	static boolean magicShield(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		return Components.MAGIC_SHIELD.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
 	}
 	
-	static void armorText(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
-		Components.ARMOR_TEXT.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
+	static boolean armorText(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		return Components.ARMOR_TEXT.render(ctx(poseStack, baseX(screenWidth), lastArmorY));
 	}
 	
-	static void healthText(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
-		Components.HEALTH_TEXT.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
+	static boolean healthText(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		return Components.HEALTH_TEXT.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
 	}
 	
-	static void toughnessText(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
-		Components.TOUGHNESS_TEXT.render(ctx(poseStack, baseX(screenWidth, ApppConfig.instance().enm(EnumOption.TOUGHNESS_SIDE)), lastToughnessY));
+	static boolean toughnessText(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		return Components.TOUGHNESS_TEXT.render(ctx(poseStack, baseX(screenWidth, ApppConfig.instance().enm(EnumOption.TOUGHNESS_SIDE)), lastToughnessY));
 	}
 	
-	static void debug(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+	static boolean debug(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		RenderContext ctx = ctx(poseStack, baseX(screenWidth), lastArmorY);
-		Components.DEBUG.render(ctx);
-		Components.DEBUG_TEXT.render(ctx);
+		return Components.DEBUG.render(ctx) &
+			   Components.DEBUG_TEXT.render(ctx);
 	}
 	
 	private static RenderContext ctx(PoseStack poseStack, int x, int y) {
