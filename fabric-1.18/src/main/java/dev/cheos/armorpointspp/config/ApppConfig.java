@@ -15,7 +15,7 @@ import net.fabricmc.loader.api.FabricLoader;
 public class ApppConfig implements IConfig {
 	private static ApppConfig INSTANCE;
 	private static ConfigTree tree;
-	private static final File configFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "armorpointspp.json");
+	private static final File configFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "armorpointspp.json5");
 	public static final Version VERSION = Version.v1_18;
 	private static final Map<String, BoolValue>    boolConfigs   = new HashMap<>();
 	private static final Map<String, IntValue>     intConfigs    = new HashMap<>();
