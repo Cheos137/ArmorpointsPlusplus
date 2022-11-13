@@ -4,14 +4,13 @@ import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
-import net.minecraftforge.common.util.Lazy;
 
 public abstract class ApppConfigValue<T, U> {
 	protected final String name;
 	protected final String[] comments;
 	protected final T def;
 	protected ConfigValue<T> confValue;
-	protected Lazy<T> value;
+//	protected Lazy<T> value;
 	
 	protected ApppConfigValue(String name, T def, String... comments) {
 		this.name = name;
@@ -22,22 +21,22 @@ public abstract class ApppConfigValue<T, U> {
 	public void define(ForgeConfigSpec.Builder builder) {
 		builder.comment(this.comments);
 		this.confValue = builder.define(this.name, this.def);
-		this.value = Lazy.of(this.confValue::get);
+//		this.value = Lazy.of(this.confValue::get);
 	}
 	
-	public void invalidate() {
-		this.value = Lazy.of(this.confValue::get);
-	}
+//	public void invalidate() {
+//		this.value = Lazy.of(this.confValue::get);
+//	}
 	
 	@SuppressWarnings("unchecked")
-	public U get() { return (U) this.value.get(); }
+	public U get() { return (U) this.confValue.get(); }
 	
 	
 	public static class HexValue extends ApppConfigValue<String, Integer> {
 		public HexValue(String name, Integer def, String... comments) { super(name, hex(def, 6), comments); }
 		
 		@Override
-		public Integer get() { return fromHex(this.value.get()); }
+		public Integer get() { return fromHex(this.confValue.get()); }
 		private static String hex(int i, int minlen) { return String.format("0x%0" + minlen + "x", i); }
 		private static int fromHex(String hex) { return Integer.parseInt(hex.substring(2), 16); }
 	}
@@ -58,7 +57,7 @@ public abstract class ApppConfigValue<T, U> {
 		public void define(ForgeConfigSpec.Builder builder) {
 			builder.comment(this.comments);
 			this.confValue = builder.defineInRange(this.name, this.def, this.min, this.max);
-			this.value = Lazy.of(this.confValue::get);
+//			this.value = Lazy.of(this.confValue::get);
 		}
 	}
 	
@@ -88,12 +87,12 @@ public abstract class ApppConfigValue<T, U> {
 		public void define(ForgeConfigSpec.Builder builder) {
 			builder.comment(this.comments);
 			this.confValue = builder.defineInRange(this.name, this.def, this.min, this.max);
-			this.value = Lazy.of(this.confValue::get);
+//			this.value = Lazy.of(this.confValue::get);
 		}
 		
 		@Override
 		public Float get() {
-			return this.value.get().floatValue();
+			return this.confValue.get().floatValue();
 		}
 	}
 	
@@ -108,7 +107,7 @@ public abstract class ApppConfigValue<T, U> {
 		}
 		
 		@Override
-		public T get() { return Enum.valueOf(this.type, this.value.get()); }
+		public T get() { return Enum.valueOf(this.type, this.confValue.get()); }
 		
 		public static <T extends Enum<T>> EnumValue<T> of(EnumOption<T> opt) {
 			return new EnumValue<>(opt.key(), opt.def(), opt.comments());

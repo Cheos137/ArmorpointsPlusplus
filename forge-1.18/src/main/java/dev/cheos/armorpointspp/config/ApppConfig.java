@@ -68,13 +68,14 @@ public class ApppConfig implements IConfig {
 	}
 	
 	@Override
+	@Deprecated
 	public void invalidateAll() {
-		  boolConfigs.values().forEach(ApppConfigValue::invalidate);
-		   intConfigs.values().forEach(ApppConfigValue::invalidate);
-		   hexConfigs.values().forEach(ApppConfigValue::invalidate);
-		 floatConfigs.values().forEach(ApppConfigValue::invalidate);
-		stringConfigs.values().forEach(ApppConfigValue::invalidate);
-		  enumConfigs.values().forEach(ApppConfigValue::invalidate);
+//		  boolConfigs.values().forEach(ApppConfigValue::invalidate);
+//		   intConfigs.values().forEach(ApppConfigValue::invalidate);
+//		   hexConfigs.values().forEach(ApppConfigValue::invalidate);
+//		 floatConfigs.values().forEach(ApppConfigValue::invalidate);
+//		stringConfigs.values().forEach(ApppConfigValue::invalidate);
+//		  enumConfigs.values().forEach(ApppConfigValue::invalidate);
 	}
 	
 	private static void define() {
