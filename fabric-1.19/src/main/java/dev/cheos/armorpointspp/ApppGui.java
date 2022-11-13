@@ -3,7 +3,7 @@ package dev.cheos.armorpointspp;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import dev.cheos.armorpointspp.compat.AppleskinSafeAccess;
+import dev.cheos.armorpointspp.compat.*;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -36,13 +36,13 @@ public class ApppGui extends Gui {
 	@Override
 	protected void renderPlayerHealth(PoseStack poseStack) {
 		// LEFT SIDE
-		Overlays.playerHealth    (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
-		Overlays.absorption      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
-		Overlays.armorLevel      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
-		Overlays.magicShield     (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight); // is this even necessary on fabric?
-		Overlays.resistance      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
-		Overlays.protection      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
-		Overlays.armorToughnessOv(this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
+		boolean health = Overlays.playerHealth    (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
+		boolean absorb = Overlays.absorption      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
+		boolean armor  = Overlays.armorLevel      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
+		boolean magics = Overlays.magicShield     (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight); // is this even necessary on fabric?
+		boolean resist = Overlays.resistance      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
+		boolean protec = Overlays.protection      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
+		boolean toughn = Overlays.armorToughnessOv(this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
 		
 		// RIGHT SIDE
 		if (getVehicleMaxHearts(getPlayerVehicleWithHealth()) == 0)
@@ -54,6 +54,12 @@ public class ApppGui extends Gui {
 		
 		// RIGHT SIDE AGAIN
 		renderAir(poseStack);
+		
+		// COMPAT
+		if (Compat.isSpectrumLoaded()) {
+			SpectrumSafeAccess.handleOnRender(poseStack, this.screenWidth, this.screenHeight - (this.leftHeight - (armor ? 59 : 49)), getCameraPlayer()); // little hack to get spectrum to render at the correct y
+			this.leftHeight += 10;
+		}
 		
 		// TEXT STUFF
 		Overlays.armorText    (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
@@ -127,7 +133,7 @@ public class ApppGui extends Gui {
 	
 	public void renderFood(PoseStack poseStack) {
 		this.minecraft.getProfiler().push("food");
-		if (Armorpointspp.isAppleskinLoaded())
+		if (Compat.isAppleskinLoaded())
 			AppleskinSafeAccess.handlerOnPreRender(poseStack);
 		setup(true, false, GUI_ICONS_LOCATION);
 		
@@ -145,7 +151,7 @@ public class ApppGui extends Gui {
 			int x = left - i * 8 - 9;
 			int y = top;
 			int icon = 16;
-			byte background = 0;
+			int background = 0;
 			
 			if (minecraft.player.hasEffect(MobEffects.HUNGER)) {
 				icon += 36;
@@ -162,7 +168,7 @@ public class ApppGui extends Gui {
 				blit(poseStack, x, y, icon + 45, 27, 9, 9);
 		}
 		
-		if (Armorpointspp.isAppleskinLoaded())
+		if (Compat.isAppleskinLoaded())
 			AppleskinSafeAccess.handlerOnRender(poseStack);
 		minecraft.getProfiler().pop();
 	}

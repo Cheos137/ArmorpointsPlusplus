@@ -3,6 +3,7 @@ package dev.cheos.armorpointspp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dev.cheos.armorpointspp.compat.Compat;
 import dev.cheos.armorpointspp.compat.FabricAPISafeAccess;
 import dev.cheos.armorpointspp.config.ApppConfig;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
@@ -18,13 +19,11 @@ import net.minecraft.client.multiplayer.ClientHandshakePacketListenerImpl;
 public class Armorpointspp {
 	public static final String MODID = "armorpointspp";
 	public static final Logger LOGGER = LoggerFactory.getLogger("Armorpoints++");
-	private static boolean fabricApi, appleskin;
 	
 	public void client() {
+		Compat.init();
 		// register login listener to reload config on world load
-		fabricApi = FabricLoader.getInstance().isModLoaded("fabric");
-		appleskin = FabricLoader.getInstance().isModLoaded("appleskin");
-		if (fabricApi)
+		if (Compat.isFabricApiLoaded())
 			FabricAPISafeAccess.registerClientLoginInitEventListener(Armorpointspp::onLogin);
 		
 		// load config
@@ -68,15 +67,6 @@ public class Armorpointspp {
 		LOGGER.warn("NOTICE: If that is not an option for you, please double-check your");
 		LOGGER.warn("NOTICE: configuration files to make sure everything works.");
 		LOGGER.warn("-=================================================================-");
-	}
-	
-	
-	public static boolean isFabricApiLoaded() {
-		return fabricApi;
-	}
-	
-	public static boolean isAppleskinLoaded() {
-		return appleskin;
 	}
 	
 	
