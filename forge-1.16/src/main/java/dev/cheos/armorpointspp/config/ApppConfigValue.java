@@ -97,17 +97,23 @@ public abstract class ApppConfigValue<T, U> {
 	}
 	
 	
-	public static class EnumValue<T extends Enum<T>> extends ApppConfigValue<String, T> {
-		private final Class<T> type;
+	public static class EnumValue<T extends Enum<T>> extends ApppConfigValue<T, T> {
+//		private final Class<T> type;
 		
-		@SuppressWarnings("unchecked")
 		public EnumValue(String name, T def, String[] comments) {
-			super(name, def.name(), comments);
-			this.type = (Class<T>) def.getClass();
+			super(name, def, comments);
+//			this.type = (Class<T>) def.getClass();
 		}
 		
 		@Override
-		public T get() { return Enum.valueOf(this.type, this.confValue.get()); }
+		public void define(ForgeConfigSpec.Builder builder) {
+			builder.comment(this.comments);
+			this.confValue = builder.defineEnum(this.name, this.def);
+//			this.value = Lazy.of(this.confValue::get);
+		}
+		
+		@Override
+		public T get() { return this.confValue.get(); }
 		
 		public static <T extends Enum<T>> EnumValue<T> of(EnumOption<T> opt) {
 			return new EnumValue<>(opt.key(), opt.def(), opt.comments());
