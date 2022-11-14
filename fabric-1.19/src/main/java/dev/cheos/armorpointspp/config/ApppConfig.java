@@ -46,7 +46,7 @@ public class ApppConfig implements IConfig {
 			} catch (ValueDeserializationException | IOException e) {
 				e.printStackTrace();
 			}
-		else if (Files.isRegularFile(configFile.resolveSibling("armorpointspp.json"))) // migrate from legacy config file - will happen on startup ->
+		else if (Files.isRegularFile(configFile.resolveSibling("armorpointspp.json"))) // migrate from legacy config file - config will always be saved immediately after
 			try {
 				Path legacy = configFile.resolveSibling("armorpointspp.json");
 				FiberSerialization.deserialize(tree, Files.newInputStream(legacy), new JanksonValueSerializer(false));
