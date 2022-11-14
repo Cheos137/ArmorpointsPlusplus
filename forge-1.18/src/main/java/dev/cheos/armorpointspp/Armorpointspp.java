@@ -11,7 +11,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.*;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkConstants;
@@ -29,7 +28,7 @@ public class Armorpointspp {
 						() -> NetworkConstants.IGNORESERVERONLY,
 						(remote, isServer) -> true));
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::client);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::reload);
+//		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::reload);
 		ApppConfig.init();
 	}
 	
@@ -40,10 +39,10 @@ public class Armorpointspp {
 		if (!ApppConfig.instance().bool(BooleanOption.HIDE_COMPAT_WARNINGS)) checkCompat();
 	}
 	
-	private void reload(ModConfigEvent.Reloading event) {
-		LOGGER.debug("reloading config");
-		ApppConfig.instance().invalidateAll();
-	}
+//	private void reload(ModConfigEvent.Reloading event) {
+//		LOGGER.debug("reloading config");
+//		ApppConfig.instance().invalidateAll();
+//	}
 	
 	private void checkCompat() {
 		checkIncompatible("colorfulhealthbar", "ColorfulHealthBar");
