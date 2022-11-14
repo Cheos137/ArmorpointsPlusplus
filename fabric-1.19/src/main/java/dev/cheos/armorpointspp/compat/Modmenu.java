@@ -103,6 +103,7 @@ public class Modmenu implements ModMenuApi {
 			}));
 			addRenderableWidget(new Button(this.width / 2 - 154, this.height - 28, 150, 20, CommonComponents.GUI_CANCEL, (btn) -> {
 				ApppConfig.load();
+				ApppConfig.save();
 				this.minecraft.setScreen(this.prev);
 			}));
 		}

@@ -1,6 +1,8 @@
 package dev.cheos.armorpointspp.config;
 
-import java.io.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 import dev.cheos.armorpointspp.config.ApppConfigValue.*;
@@ -15,8 +17,8 @@ import net.fabricmc.loader.api.FabricLoader;
 public class ApppConfig implements IConfig {
 	private static ApppConfig INSTANCE;
 	private static ConfigTree tree;
-	private static final File configFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), "armorpointspp.json5");
-	public static final Version VERSION = Version.v1_18;
+	private static final Path configFile = FabricLoader.getInstance().getConfigDir().resolve("armorpointspp.json5");
+	public static final Version VERSION = Version.v1_19;
 	private static final Map<String, BoolValue>    boolConfigs   = new HashMap<>();
 	private static final Map<String, IntValue>     intConfigs    = new HashMap<>();
 	private static final Map<String, HexValue>     hexConfigs    = new HashMap<>();
@@ -38,9 +40,17 @@ public class ApppConfig implements IConfig {
 	}
 	
 	public static void load() {
-		if (configFile.isFile())
+		if (Files.isRegularFile(configFile))
 			try {
-				FiberSerialization.deserialize(tree, new FileInputStream(configFile), new JanksonValueSerializer(false));
+				FiberSerialization.deserialize(tree, Files.newInputStream(configFile), new JanksonValueSerializer(false));
+			} catch (ValueDeserializationException | IOException e) {
+				e.printStackTrace();
+			}
+		else if (Files.isRegularFile(configFile.resolveSibling("armorpointspp.json"))) // migrate from legacy config file - will happen on startup ->
+			try {
+				Path legacy = configFile.resolveSibling("armorpointspp.json");
+				FiberSerialization.deserialize(tree, Files.newInputStream(legacy), new JanksonValueSerializer(false));
+				Files.delete(legacy);
 			} catch (ValueDeserializationException | IOException e) {
 				e.printStackTrace();
 			}
@@ -48,13 +58,11 @@ public class ApppConfig implements IConfig {
 	
 	public static void save() {
 		try {
-			if (!configFile.exists()) {
-				configFile.getParentFile().mkdirs();
-				configFile.createNewFile();
-			}
-			if (configFile.isDirectory())
-				throw new IllegalStateException("config file must not be a directory: " + configFile.getAbsolutePath());
-			FiberSerialization.serialize(tree, new FileOutputStream(configFile), new JanksonValueSerializer(false));
+			if (Files.notExists(configFile))
+				Files.createDirectories(configFile.getParent());
+			if (Files.isDirectory(configFile))
+				throw new IllegalStateException("config file must not be a directory: " + configFile.toAbsolutePath());
+			FiberSerialization.serialize(tree, Files.newOutputStream(configFile), new JanksonValueSerializer(false));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -134,7 +142,7 @@ public class ApppConfig implements IConfig {
 		
 		public ConfigBuilder(ConfigTreeBuilder builder) { // note to self: this requires parent categories to have lower ordinals to work
 			for (Category category : Category.values())
-				configure(builder, category, 0);
+					configure(builder, category, 0);
 			tree = builder.build();
 		}
 		
