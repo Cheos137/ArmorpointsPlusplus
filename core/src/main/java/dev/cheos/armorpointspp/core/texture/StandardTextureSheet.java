@@ -77,9 +77,7 @@ public class StandardTextureSheet implements ITextureSheet {
 		if (icon) {
 			ctx.poseStack.pushPose();
 			ctx.poseStack.scale(0.5F, 0.5F, 1);
-			blit(ctx, 2 * (x) + 9, 2 * y + 8, 45.5F + 18 * ctx.math.clamp(spriteLevel, 0, 11), 9); // no empty icons -> 0 = silver icon
-			// u should be 45px, but when scaled by 0.5, 45.5px somehow works better (45px includes a weird border from the lefthand sprite) [offset]
-			// v should be  9px which i deemed to be the best option, even when scaled
+			blit(ctx, 2 * (x) + 9, 2 * y + 8, 45 + 18 * ctx.math.clamp(spriteLevel, 0, 11), 9); // no empty icons -> 0 = silver icon
 			ctx.poseStack.popPose();
 		} else blit(ctx, x, y, (half ? 36 : 27) + 18 * ctx.math.clamp(spriteLevel, 0, getMaxToughnessLevel()), 9);
 	}
