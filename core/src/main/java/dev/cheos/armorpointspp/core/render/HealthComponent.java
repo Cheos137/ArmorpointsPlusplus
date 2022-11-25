@@ -24,7 +24,7 @@ public class HealthComponent implements IRenderComponent {
 		ctx.profiler.push("health");
 		ITextureSheet tex = tex(ctx).bind(ctx);
 		boolean frozen   = ctx.data.isFullyFrozen();
-		boolean hardcore = ctx.data.isHardcore();
+		boolean hardcore = ctx.data.isHardcore() || ctx.data.isEffectActive("spectrum:divinity");
 		int health       = ctx.math.ceil(ctx.data.health());
 		int heartStack   = Math.min((health - 1) / 20, 10);
 		
