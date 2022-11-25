@@ -1,14 +1,23 @@
 package dev.cheos.armorpointspp.impl;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
 import dev.cheos.armorpointspp.core.adapter.*;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 
 public class DataProviderImpl implements IDataProvider {
+	private final Cache<String, Boolean> effectActiveCache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.SECONDS).build();
 	private final Minecraft minecraft  = Minecraft.getInstance();
 	private final boolean attributefix = false; // we live in fabric land - no attributefix // FabricLoader.getInstance().isModLoaded("attributefix");
 	
@@ -90,6 +99,16 @@ public class DataProviderImpl implements IDataProvider {
 	@Override
 	public boolean isHardcore() {
 		return this.minecraft.level.getLevelData().isHardcore();
+	}
+	
+	@Override
+	public boolean isEffectActive(String id) {
+		try {
+			return this.effectActiveCache.get(id, () -> {
+				ResourceLocation loc = new ResourceLocation(id);
+				return Registry.MOB_EFFECT.containsKey(loc) && this.minecraft.player.hasEffect(Registry.MOB_EFFECT.get(loc));
+			});
+		} catch (ExecutionException e) { return false; }
 	}
 	
 	@Override
