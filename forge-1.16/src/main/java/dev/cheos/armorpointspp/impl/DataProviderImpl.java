@@ -1,15 +1,24 @@
 package dev.cheos.armorpointspp.impl;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
 import dev.cheos.armorpointspp.core.adapter.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Effect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class DataProviderImpl implements IDataProvider {
+	private final Cache<String, Boolean> effectActiveCache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.SECONDS).build();
 	private final Minecraft minecraft  = Minecraft.getInstance();
 	
 	@Override
@@ -95,6 +104,16 @@ public class DataProviderImpl implements IDataProvider {
 	@Override
 	public boolean isHardcore() {
 		return this.minecraft.level.getLevelData().isHardcore();
+	}
+	
+	@Override
+	public boolean isEffectActive(String id) {
+		try {
+			return this.effectActiveCache.get(id, () -> {
+				ResourceLocation loc = new ResourceLocation(id);
+				return ForgeRegistries.POTIONS.containsKey(loc) && this.minecraft.player.hasEffect(ForgeRegistries.POTIONS.getValue(loc));
+			});
+		} catch (ExecutionException e) { return false; }
 	}
 	
 	@Override

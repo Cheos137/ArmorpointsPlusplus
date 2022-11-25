@@ -18,6 +18,7 @@ public interface IDataProvider {
 	boolean isPotionCoreLoaded();
 	boolean isFullyFrozen();
 	boolean isHardcore();
+	boolean isEffectActive(String id);
 	boolean isEffectActive(IMobEffect effect);
 	boolean shouldDrawSurvivalElements();
 	IMobEffectInstance getActiveEffect(IMobEffect effect);

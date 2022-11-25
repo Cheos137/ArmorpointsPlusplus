@@ -1,5 +1,11 @@
 package dev.cheos.armorpointspp.impl;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
 import dev.cheos.armorpointspp.Armorpointspp;
 import dev.cheos.armorpointspp.config.ApppConfig;
 import dev.cheos.armorpointspp.core.adapter.*;
@@ -9,9 +15,12 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class DataProviderImpl implements IDataProvider {
+	private final Cache<String, Boolean> effectActiveCache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.SECONDS).build();
 	private final Minecraft minecraft  = Minecraft.getMinecraft();
 	private final boolean potioncore   = Armorpointspp.POTIONCORE && ApppConfig.instance().bool(BooleanOption.POTIONCORE_COMPAT);
 	
@@ -98,6 +107,16 @@ public class DataProviderImpl implements IDataProvider {
 	@Override
 	public boolean isHardcore() {
 		return this.minecraft.world.getWorldInfo().isHardcoreModeEnabled();
+	}
+	
+	@Override
+	public boolean isEffectActive(String id) {
+		try {
+			return this.effectActiveCache.get(id, () -> {
+				ResourceLocation loc = new ResourceLocation(id);
+				return ForgeRegistries.POTIONS.containsKey(loc) && this.minecraft.player.isPotionActive(ForgeRegistries.POTIONS.getValue(loc));
+			});
+		} catch (ExecutionException e) { return false; }
 	}
 	
 	@Override
