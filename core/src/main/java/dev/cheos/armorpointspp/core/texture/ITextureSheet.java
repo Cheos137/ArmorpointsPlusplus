@@ -36,7 +36,8 @@ public interface ITextureSheet {
 	static final BiMap<String, ITextureSheet> sheets = HashBiMap.create();
 	static final ITextureSheet vanillaSheet = register("vanilla", new VanillaTextureSheet());
 	static final ITextureSheet defaultSheet = register("default", new StandardTextureSheet("icons"));
-	static final List<ITextureSheet> builtins = ImmutableList.of(defaultSheet, vanillaSheet); // only to be used for config option, does not contain vanilla sheet
+	static final ITextureSheet hallowSheet  = register("hallow" , new StandardTextureSheet("hallow"));
+	static final List<ITextureSheet> builtins = ImmutableList.of(defaultSheet, hallowSheet, vanillaSheet); // only to be used for config option, does not contain vanilla sheet
 	// TODO add other builtin texture sheets
 	public static ITextureSheet vanillaSheet() { return vanillaSheet; }
 	public static ITextureSheet defaultSheet() { return defaultSheet; }

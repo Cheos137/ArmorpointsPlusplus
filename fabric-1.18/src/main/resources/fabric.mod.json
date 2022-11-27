@@ -1,49 +1,50 @@
 {
-    "schemaVersion": 1,
-    "id": "armorpointspp",
-    "version": "${version}",
-  
-    "name": "Armorpoints++",
-    "description": "A light-weight mod overhauling vanilla ui components",
-    "authors": [
-      "Cheos"
-    ],
-    "contact": {
-      "homepage": "https://modrinth.com/mod/armorpoints",
-      "issues": "https://github.com/Cheos137/ArmorpointsPlusplus/issues/new/choose",
-      "sources": "https://github.com/Cheos137/ArmorpointsPlusplus.git"
-    },
-  
-    "license": "MIT",
-    "icon": "assets/armorpointspp/icon.png",
-    "accessWidener": "armorpointspp.accesswidener",
-  
-    "environment": "client",
-    "entrypoints": {
-      "client": [ "dev.cheos.armorpointspp.Armorpointspp::client" ],
-      "modmenu": [ "dev.cheos.armorpointspp.compat.Modmenu" ]
-    },
-    "mixins": [
-      "armorpointspp.mixins.json"
-    ],
-  
-    "depends": {
-      "fabricloader": ">=0.13.3",
-      "minecraft": "1.18.x",
-      "java": ">=17"
-    },
-    "suggests": {
-      "fabric": "*",
-      "fabric-networking-api-v1": "*",
-      "fabric-rendering-v1": "*",
-      "modmenu": "*"
-    },
+  "schemaVersion": 1,
+  "id": "armorpointspp",
+  "version": "${version}",
 
-    "custom": {
-      "modmenu": {
-        "links": {
-          "modmenu.discord": "https://discord.gg/rBmVqjrazz"
-        }
+  "name": "Armorpoints++",
+  "description": "A light-weight mod overhauling vanilla ui components",
+  "authors": [
+    "Cheos",
+    "Sopsy_Hallow (Additional Textures)"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/armorpoints",
+    "issues": "https://github.com/Cheos137/ArmorpointsPlusplus/issues/new/choose",
+    "sources": "https://github.com/Cheos137/ArmorpointsPlusplus.git"
+  },
+
+  "license": "MIT",
+  "icon": "assets/armorpointspp/icon.png",
+  "accessWidener": "armorpointspp.accesswidener",
+
+  "environment": "client",
+  "entrypoints": {
+    "client": [ "dev.cheos.armorpointspp.Armorpointspp::client" ],
+    "modmenu": [ "dev.cheos.armorpointspp.compat.Modmenu" ]
+  },
+  "mixins": [
+    "armorpointspp.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.13.3",
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  },
+  "suggests": {
+    "fabric": "*",
+    "fabric-networking-api-v1": "*",
+    "fabric-rendering-v1": "*",
+    "modmenu": "*"
+  },
+
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/rBmVqjrazz"
       }
     }
   }
+}

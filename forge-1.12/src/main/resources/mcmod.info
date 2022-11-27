@@ -8,7 +8,7 @@
     "url": "https://modrinth.com/mod/armorpoints",
     "updateUrl": "https://api.modrinth.com/updates/xvAim1vw/forge_updates.json",
     "authorList": ["Cheos"],
-    "credits": "Cheos",
+    "credits": "Code: Cheos, Additional Textures: Sopsy_Hallow",
     "logoFile": "assets/armorpointspp/icon.png",
     "screenshots": [],
     "dependencies": []
