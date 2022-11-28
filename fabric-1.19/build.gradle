@@ -43,16 +43,7 @@ dependencies {
 	}
 
 	modCompileOnly 'maven.modrinth:spectrum:1.5.7+1.19.2'
-	// modRuntimeOnly 'maven.modrinth:spectrum:1.5.7+1.19.2'
-	// modRuntimeOnly 'maven.modrinth:owo-lib:0.8.5+1.19'
-	// modRuntimeOnly 'maven.modrinth:revelationary:1.0.2+1.19.2'
-	// modRuntimeOnly 'maven.modrinth:patchouli:1.19.2-77-fabric'
-	// modRuntimeOnly 'maven.modrinth:trinkets:3.4.0'
-	// modRuntimeOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.0.2'
-	// modRuntimeOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.0.2'
-	// modRuntimeOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-item:5.0.2'
-	// modRuntimeOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-level:5.0.2'
-	// modRuntimeOnly 'com.github.DaFuqs:AdditionalEntityAttributes:1.19-SNAPSHOT'
+	modCompileOnly 'maven.modrinth:raised:Fabric-1.19.2-1.1.4'
 }
 
 processResources {

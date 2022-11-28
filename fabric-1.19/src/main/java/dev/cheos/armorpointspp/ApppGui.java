@@ -2,6 +2,7 @@ package dev.cheos.armorpointspp;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.yurisuika.raised.Raised;
 
 import dev.cheos.armorpointspp.compat.*;
 import net.minecraft.Util;
@@ -24,16 +25,28 @@ public class ApppGui extends Gui {
 	
 	public ApppGui(Minecraft minecraft, ItemRenderer itemRenderer) {
 		super(minecraft, itemRenderer);
+		
+		if (Compat.isRaisedLoaded()) {
+			this.leftHeight += Raised.getDistance();
+			this.rightHeight += Raised.getDistance();
+		}
 	}
 	
 	@Override
 	public void render(PoseStack poseStack, float partialTicks) {
 		this.leftHeight = this.rightHeight = 39;
 		this.partialTicksCur = partialTicks;
+		
+		if (Compat.isRaisedLoaded()) {
+			this.leftHeight += Raised.getDistance();
+			this.rightHeight += Raised.getDistance();
+		}
+		
 		super.render(poseStack, partialTicks);
 	}
 	
 	@Override
+	@SuppressWarnings("unused")
 	protected void renderPlayerHealth(PoseStack poseStack) {
 		// LEFT SIDE
 		boolean health = Overlays.playerHealth    (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
