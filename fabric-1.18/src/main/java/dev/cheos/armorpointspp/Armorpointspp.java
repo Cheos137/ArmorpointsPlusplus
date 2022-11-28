@@ -41,6 +41,7 @@ public class Armorpointspp {
 //		checkIncompatible("mantle", "Mantle");
 	}
 	
+	@SuppressWarnings("unused")
 	private void checkIncompatible(String modId, String name) {
 		if (FabricLoader.getInstance().isModLoaded(modId)) logIncompatible(name);
 	}
