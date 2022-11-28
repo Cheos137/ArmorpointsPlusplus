@@ -37,6 +37,7 @@ public class Overlays {
 	public static final ResourceLocation MOUNT_HEALTH       = new ResourceLocation("minecraft"        , "mount_health"),
 										 PLAYER_HEALTH      = new ResourceLocation("minecraft"        , "player_health"),
 										 ABSORPTION         = new ResourceLocation(Armorpointspp.MODID, "absorption"),
+										 ABSORPTION_OV      = new ResourceLocation(Armorpointspp.MODID, "absorption_ov"),
 										 ARMOR_LEVEL        = new ResourceLocation("minecraft"        , "armor_level"),
 										 MAGIC_SHIELD       = new ResourceLocation(Armorpointspp.MODID, "pc_magic_shield"),
 										 PROTECTION         = new ResourceLocation(Armorpointspp.MODID, "protection"),
@@ -53,18 +54,19 @@ public class Overlays {
 		MissedFunctionality missedFunctionality = new MissedFunctionality(event);
 		
 		missedFunctionality.unregister(ARMOR_LEVEL);
-		missedFunctionality.registerOverriding(PLAYER_HEALTH              , Overlays::playerHealth);
-		event.registerAbove(PLAYER_HEALTH, ABSORPTION           .getPath(), Overlays::absorption);
-		missedFunctionality.registerArbitraryAbove(ABSORPTION, ARMOR_LEVEL, Overlays::armorLevel);
-		event.registerAbove(ARMOR_LEVEL  , MAGIC_SHIELD         .getPath(), Overlays::magicShield);
-		event.registerAbove(MAGIC_SHIELD , RESISTANCE           .getPath(), Overlays::resistance);
-		event.registerAbove(RESISTANCE   , PROTECTION           .getPath(), Overlays::protection);
-		event.registerAbove(MOUNT_HEALTH , ARMOR_TOUGHNESS      .getPath(), Overlays::armorToughness);
-		event.registerAbove(PROTECTION   , ARMOR_TOUGHNESS_OV   .getPath(), Overlays::armorToughnessOv);
-		event.registerAbove(ITEM_NAME    , ARMOR_TEXT           .getPath(), Overlays::armorText);
-		event.registerAbove(ITEM_NAME    , HEALTH_TEXT          .getPath(), Overlays::healthText);
-		event.registerAbove(ITEM_NAME    , TOUGHNESS_TEXT       .getPath(), Overlays::toughnessText);
-		event.registerAboveAll("debug"                                    , Overlays::debug);
+		missedFunctionality.registerOverriding(PLAYER_HEALTH                 , Overlays::playerHealth);
+		event.registerAbove(PLAYER_HEALTH, ABSORPTION              .getPath(), Overlays::absorption);
+		event.registerAbove(ABSORPTION   , ABSORPTION_OV           .getPath(), Overlays::absorptionOv);
+		missedFunctionality.registerArbitraryAbove(ABSORPTION_OV, ARMOR_LEVEL, Overlays::armorLevel);
+		event.registerAbove(ARMOR_LEVEL  , MAGIC_SHIELD            .getPath(), Overlays::magicShield);
+		event.registerAbove(MAGIC_SHIELD , RESISTANCE              .getPath(), Overlays::resistance);
+		event.registerAbove(RESISTANCE   , PROTECTION              .getPath(), Overlays::protection);
+		event.registerAbove(MOUNT_HEALTH , ARMOR_TOUGHNESS         .getPath(), Overlays::armorToughness);
+		event.registerAbove(PROTECTION   , ARMOR_TOUGHNESS_OV      .getPath(), Overlays::armorToughnessOv);
+		event.registerAbove(ITEM_NAME    , ARMOR_TEXT              .getPath(), Overlays::armorText);
+		event.registerAbove(ITEM_NAME    , HEALTH_TEXT             .getPath(), Overlays::healthText);
+		event.registerAbove(ITEM_NAME    , TOUGHNESS_TEXT          .getPath(), Overlays::toughnessText);
+		event.registerAboveAll("debug"                                       , Overlays::debug);
 	}
 	
 	private static void playerHealth(ForgeGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
@@ -77,7 +79,11 @@ public class Overlays {
 	}
 	
 	private static void absorption(ForgeGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
-		Components.ABSOPRTION.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
+		Components.ABSORPTION.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
+	}
+	
+	private static void absorptionOv(ForgeGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		Components.ABSORPTION_OVER.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
 	}
 	
 	private static void armorLevel(ForgeGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {

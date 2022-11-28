@@ -25,6 +25,7 @@ public class HealthComponent implements IRenderComponent {
 		ITextureSheet tex = tex(ctx).bind(ctx);
 		boolean frozen   = ctx.data.isFullyFrozen();
 		boolean hardcore = ctx.data.isHardcore() || ctx.data.isEffectActive("spectrum:divinity");
+		boolean absorbOv = ctx.data.absorption() > 0 && ctx.config.bool(BooleanOption.ABSORPTION_ENABLE) && ctx.config.bool(BooleanOption.ABSORPTION_OVERLAY);
 		int health       = ctx.math.ceil(ctx.data.health());
 		int heartStack   = Math.min((health - 1) / 20, 10);
 		
@@ -72,7 +73,7 @@ public class HealthComponent implements IRenderComponent {
 			if (blink && heartValue <= this.displayHealth) tex.drawHeart(ctx, heartX, heartY, heartStack, heartValue == this.displayHealth, true , hardcore, style);
 			if (         heartValue <=             health) tex.drawHeart(ctx, heartX, heartY, heartStack, heartValue ==             health, false, hardcore, style);
 			
-			if (frozen)
+			if (frozen && !absorbOv)
 				switch (ctx.config.enm(EnumOption.FROSTBITE_STYLE)) {
 					case FULL:
 						if (heartValue <= health)

@@ -162,7 +162,8 @@ public interface IConfig { // use forges config update system... somehow
 	}
 	
 	public static enum BooleanOption implements Option<Boolean> {
-		ABSORPTION_ENABLE           ("showAbsorption"            , true , Category.GENERAL      , " Show absorption as border around health"                                     , " Available: true, false [default: %s]"),
+		ABSORPTION_ENABLE           ("enableAbsorption"          , true , Category.GENERAL      , " Show absorption as border around health"                                     , " Available: true, false [default: %s]"),
+		ABSORPTION_OVERLAY          ("useAbsorptionOverlay"      , false, Category.GENERAL      , " Show absorption as hearts within the health bar"                             , " Available: true, false [default: %s]"),
 		ARMOR_ENABLE                ("enableArmorBar"            , true , Category.GENERAL      , " Enable custom armor bar"                                                     , " Available: true, false [default: %s]"),
 		ARMOR_TEXT_ENABLE           ("showArmorValue"            , true , Category.GENERAL      , " Show armor value text next to armor bar"                                     , " Available: true, false [default: %s]"),
 		ARMOR_TEXT_CONFIG_ENABLE    ("enableArmorValueConfig"    , false, Category.TEXT_CONFIG  , " Enables custom armor value configuration"                                    , " Available: true, false [default: %s]"),

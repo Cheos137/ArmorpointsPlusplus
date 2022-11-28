@@ -72,6 +72,18 @@ public class StandardTextureSheet implements ITextureSheet {
 	}
 	
 	@Override
+	public void drawAbsorbHeart(RenderContext ctx, int x, int y, boolean half, boolean right, boolean hardcore) {
+		blit(ctx ,
+				x,
+				y,
+				(hardcore ? 126 : 117)
+				+ (half && right ? 5 : 0),
+				117,
+				half ? right ? 4 : 5 : spriteWidth(),
+				9);
+	}
+	
+	@Override
 	public void drawToughness(RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean icon) {
 		if (spriteLevel >= getMaxToughnessLevel()) half = false;
 		if (icon) {

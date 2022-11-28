@@ -34,7 +34,11 @@ public class Overlays {
 	}
 	
 	static boolean absorption(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
-		return Components.ABSOPRTION.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
+		return Components.ABSORPTION.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
+	}
+	
+	static boolean absorptionOv(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		return Components.ABSORPTION_OVER.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
 	}
 	
 	static boolean armorLevel(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {

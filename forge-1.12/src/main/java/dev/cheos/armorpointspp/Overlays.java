@@ -33,7 +33,11 @@ public class Overlays {
 	}
 	
 	static void absorption(GuiIngameForge gui, float partialTicks, int screenWidth, int screenHeight) {
-		Components.ABSOPRTION.render(ctx(baseX(screenWidth), lastHealthY));
+		Components.ABSORPTION.render(ctx(baseX(screenWidth), lastHealthY));
+	}
+	
+	static void absorptionOv(GuiIngameForge gui, float partialTicks, int screenWidth, int screenHeight) {
+		Components.ABSORPTION_OVER.render(ctx(baseX(screenWidth), lastHealthY));
 	}
 	
 	static void armorLevel(GuiIngameForge gui, float partialTicks, int screenWidth, int screenHeight) {

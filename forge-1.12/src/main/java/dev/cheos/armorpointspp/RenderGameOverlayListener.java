@@ -85,6 +85,7 @@ public class RenderGameOverlayListener {
 				}
 				Overlays.playerHealth(gui, partialTicks, screenWidth, screenHeight);
 				Overlays.absorption  (gui, partialTicks, screenWidth, screenHeight);
+				Overlays.absorptionOv(gui, partialTicks, screenWidth, screenHeight);
 				post(event, HEALTH);
 				break;
 			case TEXT:

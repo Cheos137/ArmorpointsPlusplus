@@ -50,6 +50,7 @@ public class ApppGui extends Gui {
 		// LEFT SIDE
 		boolean health = Overlays.playerHealth    (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
 		boolean absorb = Overlays.absorption      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
+		boolean absbov = Overlays.absorptionOv    (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
 		boolean armor  = Overlays.armorLevel      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
 		boolean magics = Overlays.magicShield     (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight); // is this even necessary on fabric?
 		boolean resist = Overlays.resistance      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);

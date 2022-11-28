@@ -13,8 +13,9 @@ public interface ITextureSheet {
 	void drawAbsorb     (RenderContext ctx, int x, int y, int amount,                    boolean bright);                                       // 0 -> nothing
 	void drawArmor      (RenderContext ctx, int x, int y, int spriteLevel, boolean half);                                                      // 0 -> "empty" background
 	void drawHeart      (RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean bright, boolean hardcore, HeartStyle style); // 0 -> nothing
-	void drawToughness  (RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean icon);                                      //
-	void drawMagicShield(RenderContext ctx, int x, int y, int spriteLevel);                                                                 // 0 -> lowest level
+	void drawAbsorbHeart(RenderContext ctx, int x, int y,                  boolean half, boolean right , boolean hardcore);                  //
+	void drawToughness  (RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean icon);                                     //
+	void drawMagicShield(RenderContext ctx, int x, int y, int spriteLevel);                                                                // 0 -> lowest level
 	
 	String texLocation();
 	
@@ -28,6 +29,9 @@ public interface ITextureSheet {
 	default int getMaxToughnessLevel() { return 12; }
 	
 	default ITextureSheet bind(RenderContext ctx) { ctx.renderer.setupTexture(this); return this; }
+	default ITextureSheet blit(RenderContext ctx, int x, int y, float u, float v, int w, int h) {
+		ctx.renderer.blit(ctx.poseStack, x, y, u, v, w, h, texWidth(), texHeight()); return this;
+	}
 	default ITextureSheet blit(RenderContext ctx, int x, int y, float u, float v) {
 		ctx.renderer.blit(ctx.poseStack, x, y, u, v, spriteWidth(), spriteHeight(), texWidth(), texHeight()); return this;
 	}

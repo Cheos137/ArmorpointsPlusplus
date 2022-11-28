@@ -30,7 +30,8 @@ public class Overlays {
 	public static final IIngameOverlay MOUNT_HEALTH_ELEMENT = ForgeIngameGui.MOUNT_HEALTH_ELEMENT,
 								  PLAYER_HEALTH      = OverlayRegistry.registerOverlayAbove(BOSS_HEALTH_ELEMENT,  "Player Health",           Overlays::playerHealth),
 								  ABSORPTION         = OverlayRegistry.registerOverlayAbove(PLAYER_HEALTH,        "Appp Absorption",         Overlays::absorption),
-								  ARMOR_LEVEL        = OverlayRegistry.registerOverlayAbove(ABSORPTION,           "Armor Level",             Overlays::armorLevel),
+								  ABSORPTION_OV      = OverlayRegistry.registerOverlayAbove(ABSORPTION,           "Appp Absorption OV",      Overlays::absorptionOv),
+								  ARMOR_LEVEL        = OverlayRegistry.registerOverlayAbove(ABSORPTION_OV,        "Armor Level",             Overlays::armorLevel),
 								  MAGIC_SHIELD       = OverlayRegistry.registerOverlayAbove(ARMOR_LEVEL,          "Appp Magic Shield",       Overlays::magicShield),
 								  RESISTANCE         = OverlayRegistry.registerOverlayAbove(MAGIC_SHIELD,         "Appp Resistance",         Overlays::resistance),
 								  PROTECTION         = OverlayRegistry.registerOverlayAbove(RESISTANCE,           "Appp Protection",         Overlays::protection),
@@ -70,7 +71,11 @@ public class Overlays {
 	}
 	
 	private static void absorption(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
-		Components.ABSOPRTION.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
+		Components.ABSORPTION.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
+	}
+	
+	private static void absorptionOv(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		Components.ABSORPTION_OVER.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
 	}
 	
 	private static void armorLevel(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {

@@ -35,7 +35,11 @@ public class Overlays {
 	}
 	
 	static void absorption(ForgeIngameGui gui, MatrixStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
-		Components.ABSOPRTION.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
+		Components.ABSORPTION.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
+	}
+	
+	static void absorptionOv(ForgeIngameGui gui, MatrixStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		Components.ABSORPTION_OVER.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
 	}
 	
 	static void armorLevel(ForgeIngameGui gui, MatrixStack poseStack, float partialTicks, int screenWidth, int screenHeight) {

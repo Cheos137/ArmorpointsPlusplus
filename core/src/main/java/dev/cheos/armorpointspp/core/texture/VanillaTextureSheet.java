@@ -38,6 +38,18 @@ public final class VanillaTextureSheet implements ITextureSheet {
 	}
 	
 	@Override
+	public void drawAbsorbHeart(RenderContext ctx, int x, int y, boolean half, boolean right, boolean hardcore) {
+		blit(ctx ,
+				x,
+				y,
+				160
+				+ (half && right ? 5 : 0),
+				(hardcore ? 45 : 0),
+				half ? right ? 4 : 5 : spriteWidth(),
+				9);
+	}
+	
+	@Override
 	public void drawToughness(RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean icon) {
 		throw new UnsupportedOperationException("Appp toughness not available with vanilla texture");
 	}
