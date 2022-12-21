@@ -11,6 +11,14 @@ body:
       options:
       - label: I have searched the existing issues
         required: true
+  - type: checkboxes
+    id: latest
+    attributes:
+      label: Are you using the latest version currently available?
+      description: Please check if the issue still persists in the latest version available before creating an issue.
+      options:
+      - label: I am using the latest version currently available
+        required: true
   - type: textarea
     id: description
     attributes:
