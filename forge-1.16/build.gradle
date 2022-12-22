@@ -61,7 +61,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.2.35'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.39'
     implementation project(':core')
 
     // TESTING
