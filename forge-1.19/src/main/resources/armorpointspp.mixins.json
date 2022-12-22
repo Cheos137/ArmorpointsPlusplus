@@ -5,7 +5,8 @@
 	"refmap": "mixins.refmap.json",
 	"client": [
 		"IRegisterGuiOverlaysEventMixin",
-		"PlayerTabOverlayMixin"
+		"PlayerTabOverlayMixin",
+		"HealthStateMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

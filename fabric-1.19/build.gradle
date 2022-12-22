@@ -42,7 +42,7 @@ dependencies {
 		exclude module: 'modmenu'
 	}
 
-	modCompileOnly 'maven.modrinth:spectrum:1.5.7+1.19.2'
+	// modCompileOnly 'maven.modrinth:spectrum:1.5.7+1.19.2'
 	modCompileOnly 'maven.modrinth:raised:Fabric-1.19.3-1.1.4'
 }
 
