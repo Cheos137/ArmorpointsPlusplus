@@ -6,7 +6,7 @@ plugins {
 
 version = '1.18.2-' + modVersion
 group = modGroup
-archivesBaseName =  modName + '-forge'
+archivesBaseName = modName + '-forge'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -37,7 +37,7 @@ sourceSets.main.java { srcDir project(':core').sourceSets.main.java }
 sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.0'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.92'
     implementation project(':core')
 }
 
