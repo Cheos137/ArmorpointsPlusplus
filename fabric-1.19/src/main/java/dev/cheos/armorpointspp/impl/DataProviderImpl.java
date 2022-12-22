@@ -9,7 +9,7 @@ import com.google.common.cache.CacheBuilder;
 import dev.cheos.armorpointspp.core.adapter.*;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
@@ -106,7 +106,7 @@ public class DataProviderImpl implements IDataProvider {
 		try {
 			return this.effectActiveCache.get(id, () -> {
 				ResourceLocation loc = new ResourceLocation(id);
-				return Registry.MOB_EFFECT.containsKey(loc) && this.minecraft.player.hasEffect(Registry.MOB_EFFECT.get(loc));
+				return BuiltInRegistries.MOB_EFFECT.containsKey(loc) && this.minecraft.player.hasEffect(BuiltInRegistries.MOB_EFFECT.get(loc));
 			});
 		} catch (ExecutionException e) { return false; }
 	}

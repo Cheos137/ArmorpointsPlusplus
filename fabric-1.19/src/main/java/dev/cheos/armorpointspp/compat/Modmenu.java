@@ -13,6 +13,7 @@ import dev.cheos.armorpointspp.config.ApppConfig;
 import dev.cheos.armorpointspp.config.ApppConfigValue;
 import dev.cheos.armorpointspp.config.ApppConfigValue.*;
 import dev.cheos.armorpointspp.core.adapter.IConfig;
+import dev.cheos.armorpointspp.mixin.AbstractWidgetMixin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -97,14 +98,14 @@ public class Modmenu implements ModMenuApi {
 			for (TabButton tb : this.tabs)
 				addRenderableWidget(tb);
 			
-			addRenderableWidget(new Button(this.width / 2 + 004, this.height - 28, 150, 20, CommonComponents.GUI_DONE, (btn) -> {
+			addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, (btn) -> {
 				ApppConfig.save();
 				this.minecraft.setScreen(this.prev);
-			}));
-			addRenderableWidget(new Button(this.width / 2 - 154, this.height - 28, 150, 20, CommonComponents.GUI_CANCEL, (btn) -> {
+			}).bounds(this.width / 2 + 004, this.height - 28, 150, 20).build());
+			addRenderableWidget(Button.builder(CommonComponents.GUI_CANCEL, (btn) -> {
 				ApppConfig.load();
 				this.minecraft.setScreen(this.prev);
-			}));
+			}).bounds(this.width / 2 - 154, this.height - 28, 150, 20).build());
 		}
 		
 		@Override
@@ -113,7 +114,12 @@ public class Modmenu implements ModMenuApi {
 			this.tabContents.get(this.selectedCategory).render(poseStack, mouseX, mouseY, partialTicks);
 			drawCenteredString(poseStack, this.font, this.title, this.width / 2, 5, 0xFFFFFF);
 			super.render(poseStack, mouseX, mouseY, partialTicks);
-			this.tabContents.get(this.selectedCategory).getMouseOver(mouseX, mouseY).ifPresent(w -> w.renderToolTip(poseStack, mouseX, mouseY));
+			this.tabContents.get(this.selectedCategory)
+					.getMouseOver(mouseX, mouseY)
+					.ifPresent(w -> {
+							if (((AbstractWidgetMixin) w).getTooltip() instanceof Tooltip tooltip)
+								renderTooltip(poseStack, tooltip.toCharSequence(this.minecraft), mouseX, mouseY); // TODO fix width in 1.19.3
+					});
 		}
 		
 		@Override
@@ -165,58 +171,52 @@ public class Modmenu implements ModMenuApi {
 			@Override
 			public boolean isMouseOver(double mx, double my) {
 				return this.visible
-						&& mx >= this.x && my >= this.y
-						&& mx < this.x + this.width && my < this.y + this.height
+						&& mx >= getX() && my >= getY()
+						&& mx < getX() + this.width && my < getY() + this.height
 						&& mx >= 20 && mx < ModmenuScreen.this.width - 20;
 			}
 			
-			@Override public void updateNarration(NarrationElementOutput var1) { }
+			@Override
+			protected void updateWidgetNarration(NarrationElementOutput elem) { }
 		}
 		
 		
 		public class TextWidget extends AbstractWidget {
-			private final List<Component> tooltip;
-			
-			public TextWidget(int x, int y, int w, int h, Component text, List<Component> tooltip) {
+			public TextWidget(int x, int y, int w, int h, Component text, Component tooltip) {
 				super(x, y, w, h, text);
-				this.tooltip = tooltip;
+				setTooltip(Tooltip.create(tooltip));
 				this.active = false;
 			}
 			
 			@Override
 			public void render(PoseStack poseStack, int mx, int my, float partialTicks) {
-		        AbstractWidget.drawCenteredString(poseStack, ModmenuScreen.this.font, getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, 0xFFFFFF | Mth.ceil(this.alpha * 255.0f) << 24);
+		        AbstractWidget.drawCenteredString(poseStack, ModmenuScreen.this.font, getMessage(), getX() + this.width / 2, getY() + (this.height - 8) / 2, 0xFFFFFF | Mth.ceil(this.alpha * 255.0f) << 24);
 			}
 			
 			@Override
 			public boolean isMouseOver(double mx, double my) {
 				return this.visible
-						&& mx >= this.x && my >= this.y
-						&& mx < this.x + this.width && my < this.y + this.height;
+						&& mx >= getX() && my >= getY()
+						&& mx < getX() + this.width && my < getY() + this.height;
 			}
 			
 			@Override
-			public void renderToolTip(PoseStack poseStack, int mx, int my) {
-				ModmenuScreen.this.renderTooltip(poseStack, this.tooltip, Optional.empty(), mx, my);
-			}
-			
-			@Override public void updateNarration(NarrationElementOutput var1) { }
+			protected void updateWidgetNarration(NarrationElementOutput elem) { }
 		}
 		
 		
 		public class TextOption implements WidgetProvider {
 			private final Component text;
-			private final List<? extends Component> tooltip;
+			private final Component tooltip;
 			
 			public TextOption(String text, String[] tooltip) {
 				this.text = Component.literal(text);
-				this.tooltip = Arrays.stream(tooltip).map(Component::literal).toList();
+				this.tooltip = Component.literal(String.join("\n", tooltip));
 			}
 			
 			@Override
-			@SuppressWarnings("unchecked")
 			public AbstractWidget createButton(int x, int y, int w) { // h = 20
-				return new TextWidget(x, y, w, 20, this.text, (List<Component>) this.tooltip);
+				return new TextWidget(x, y, w, 20, this.text, this.tooltip);
 			}
 		}
 		
@@ -418,7 +418,7 @@ public class Modmenu implements ModMenuApi {
 				@Override
 				public void render(PoseStack poseStack, int i, int j, int k, int l, int m, int n, int o, boolean bl, float f) {
 					this.children.forEach(w -> {
-						w.y = j;
+						w.setY(j);
 						w.render(poseStack, n, o, f);
 					});
 				}

@@ -4,7 +4,8 @@
 	"compatibilityLevel": "JAVA_17",
 	"refmap": "mixins.refmap.json",
 	"client": [
-		"IRegisterGuiOverlaysEventMixin"
+		"IRegisterGuiOverlaysEventMixin",
+		"HealthStateMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
