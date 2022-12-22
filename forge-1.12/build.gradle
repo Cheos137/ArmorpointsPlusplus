@@ -48,10 +48,6 @@ sourceSets.main.java { srcDir project(':core').sourceSets.main.java }
 sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
 repositories {
-    flatDir {
-        dir 'libs'
-    }
-
     maven {
         url 'https://www.cursemaven.com'
         content {
@@ -66,9 +62,6 @@ dependencies {
 
     // SOFTDEPENDS
     implementation fg.deobf('curse.maven:potion-core-242872:2905184') // PotionCore 1.12.2-1.9.0
-
-    // TESTING
-    // implementation fg.deobf('curse.maven:tough-as-nails-246391:2710969') // ToughAsNails 1.12.2-3.1.0.141
 }
 
 processResources {
@@ -78,16 +71,6 @@ processResources {
     filesMatching('mcmod.info') {
         expand 'version':modVersion, 'mcversion':'1.12.2'
     }
-
-    /*
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        expand 'version':modVersion, 'mcversion':'1.12.2'
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }*/
 }
 
 jar {
