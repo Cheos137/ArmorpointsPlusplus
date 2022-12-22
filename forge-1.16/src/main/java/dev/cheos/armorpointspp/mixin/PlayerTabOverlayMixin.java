@@ -19,7 +19,7 @@ import net.minecraft.util.text.TextFormatting;
 
 @Mixin(PlayerTabOverlayGui.class)
 public class PlayerTabOverlayMixin {
-	@Shadow
+	@Shadow(aliases = "field_175253_j")
 	private long visibilityId;
 	
 	@Inject(method = "renderTablistScore", at = @At("HEAD"), cancellable = true)

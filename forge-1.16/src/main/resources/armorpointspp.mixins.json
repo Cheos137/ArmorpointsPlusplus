@@ -2,7 +2,7 @@
 	"required": true,
 	"package": "dev.cheos.armorpointspp.mixin",
 	"compatibilityLevel": "JAVA_8",
-	"refmap": "mixins.refmap.json",
+	"refmap": "armorpointspp.refmap.json",
 	"client": [
 		"PlayerTabOverlayMixin"
 	],

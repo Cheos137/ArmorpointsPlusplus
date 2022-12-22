@@ -120,13 +120,19 @@ public class RenderGameOverlayListener {
 	
 	private static boolean post(Event event) {
 		reposting = true;
+		if (event instanceof RenderGameOverlayEvent)
+			((RenderGameOverlayEvent) event).getMatrixStack().pushPose();
 		boolean cancelled = MinecraftForge.EVENT_BUS.post(event);
+		if (event instanceof RenderGameOverlayEvent)
+			((RenderGameOverlayEvent) event).getMatrixStack().popPose();
 		reposting = false;
 		return cancelled;
 	}
 	
 	private static boolean post(Event event, EventPriority prio) {
 		reposting = true;
+		if (event instanceof RenderGameOverlayEvent)
+			((RenderGameOverlayEvent) event).getMatrixStack().pushPose();
 		try {
 			EventBus bus = (EventBus) MinecraftForge.EVENT_BUS;
 			
@@ -159,6 +165,8 @@ public class RenderGameOverlayListener {
 			Armorpointspp.LOGGER.warn("Exception reposting event " + event.getClass().getName() + " with priority " + prio.name(), t);
 			throw new RuntimeException(t); // simply rethrowing does not work due to checked exceptions inside try block
 		} finally {
+			if (event instanceof RenderGameOverlayEvent)
+				((RenderGameOverlayEvent) event).getMatrixStack().popPose();
 			reposting = false;
 		}
 		return event.isCancelable() && event.isCanceled();
