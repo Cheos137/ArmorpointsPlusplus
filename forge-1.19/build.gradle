@@ -35,26 +35,9 @@ minecraft {
 sourceSets.main.java { srcDir project(':core').sourceSets.main.java }
 sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
-repositories {
-    flatDir {
-        dir 'libs'
-    }
-
-    maven {
-        url 'https://www.cursemaven.com'
-        content {
-            includeGroup 'curse.maven'
-        }
-    }
-}
-
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19.3-44.0.37'
     implementation project(':core')
-
-    // TESTING
-    // implementation fg.deobf('libs:levelhearts:1.19.2-2.4.0')
-    // implementation fg.deobf('curse.maven:levelhearts-273640:3931722') // levelhearts 1.19.2-2.4.0
 }
 
 jar {
