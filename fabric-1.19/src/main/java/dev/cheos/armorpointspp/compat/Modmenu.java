@@ -118,7 +118,8 @@ public class Modmenu implements ModMenuApi {
 			this.tabContents.get(this.selectedCategory)
 					.getMouseOver(mouseX, mouseY)
 					.ifPresent(w -> {
-							if (((AbstractWidgetMixin) w).getTooltip() instanceof Tooltip tooltip)
+							Tooltip tooltip = ((AbstractWidgetMixin) w).getTooltip();
+							if (tooltip != null)
 								renderTooltip(poseStack, tooltip.toCharSequence(this.minecraft), mouseX, mouseY); // TODO fix width in 1.19.3
 					});
 		}
