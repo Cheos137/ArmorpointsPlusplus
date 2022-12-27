@@ -33,8 +33,10 @@ public class RenderGameOverlayListener {
 		
 		if (event.getType() != ARMOR && event.getType() != HEALTH) { // we only want to handle armor and health ourselves
 			if (!(event.isCancelable() && event.isCanceled())) // do not repost if our event somehow got cancelled - SHOULD not happen, though
-				if (repost(event) && event.isCancelable())     // repost the event, returns true if cancelled
+				if (repost(event) && event.isCancelable()) {   // repost the event, returns true if cancelled
 					event.setCanceled(true);                   // cancel our "parent" event if our reposted event got cancelled
+					event.getMatrixStack().popPose();
+				}
 			if (event.getType() != TEXT || (event.isCancelable() && event.isCanceled()))
 				return;                                        // return if we are cancelled and not a text event, we want to render but not handle text events
 		}
@@ -103,36 +105,34 @@ public class RenderGameOverlayListener {
 			return post(new ApppRenderGameOverlayEvent.Text(event.getMatrixStack(), event, ((Text) event).getLeft(), ((Text) event).getRight()), event.getPhase());
 		else if (event instanceof BossInfo)
 			return post(new ApppRenderGameOverlayEvent.BossInfo(event.getMatrixStack(), event, event.getType(), ((BossInfo) event).getBossInfo(), ((BossInfo) event).getX(), ((BossInfo) event).getY(), ((BossInfo) event).getIncrement()), event.getPhase());
-		else if (event instanceof Pre)
+		else if (event instanceof Pre) {
+			event.getMatrixStack().pushPose();
 			return post(new ApppRenderGameOverlayEvent.Pre(event.getMatrixStack(), event, event.getType()), event.getPhase());
-		else if (event instanceof Post)
+		} else if (event instanceof Post) {
 			post(new ApppRenderGameOverlayEvent.Post(event.getMatrixStack(), event, event.getType()), event.getPhase());
-		return false;
+			event.getMatrixStack().popPose();
+		} return false;
 	}
 	
 	private static boolean pre(MatrixStack poseStack, RenderGameOverlayEvent parent, ElementType type) {
+		poseStack.pushPose();
 		return post(new ApppRenderGameOverlayEvent.Pre(poseStack, parent, type));
 	}
 	
 	private static void post(MatrixStack poseStack, RenderGameOverlayEvent parent, ElementType type) {
 		post(new ApppRenderGameOverlayEvent.Post(poseStack, parent, type));
+		poseStack.popPose();
 	}
 	
 	private static boolean post(Event event) {
 		reposting = true;
-		if (event instanceof RenderGameOverlayEvent)
-			((RenderGameOverlayEvent) event).getMatrixStack().pushPose();
 		boolean cancelled = MinecraftForge.EVENT_BUS.post(event);
-		if (event instanceof RenderGameOverlayEvent)
-			((RenderGameOverlayEvent) event).getMatrixStack().popPose();
 		reposting = false;
 		return cancelled;
 	}
 	
 	private static boolean post(Event event, EventPriority prio) {
 		reposting = true;
-		if (event instanceof RenderGameOverlayEvent)
-			((RenderGameOverlayEvent) event).getMatrixStack().pushPose();
 		try {
 			EventBus bus = (EventBus) MinecraftForge.EVENT_BUS;
 			
@@ -165,8 +165,6 @@ public class RenderGameOverlayListener {
 			Armorpointspp.LOGGER.warn("Exception reposting event " + event.getClass().getName() + " with priority " + prio.name(), t);
 			throw new RuntimeException(t); // simply rethrowing does not work due to checked exceptions inside try block
 		} finally {
-			if (event instanceof RenderGameOverlayEvent)
-				((RenderGameOverlayEvent) event).getMatrixStack().popPose();
 			reposting = false;
 		}
 		return event.isCancelable() && event.isCanceled();
