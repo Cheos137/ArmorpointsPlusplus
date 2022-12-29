@@ -99,18 +99,26 @@ public class RenderGameOverlayListener {
 	}
 	
 	private static boolean repost(RenderGameOverlayEvent event) {
-		if (event instanceof Chat)
+		if (event instanceof Chat) {
+			if (event.getPhase() == EventPriority.HIGHEST)
+				event.getMatrixStack().pushPose();
 			return post(new ApppRenderGameOverlayEvent.Chat(event.getMatrixStack(), event, ((Chat) event).getPosX(), ((Chat) event).getPosY()), event.getPhase());
-		else if (event instanceof Text)
+		} else if (event instanceof Text) {
+			if (event.getPhase() == EventPriority.HIGHEST)
+				event.getMatrixStack().pushPose();
 			return post(new ApppRenderGameOverlayEvent.Text(event.getMatrixStack(), event, ((Text) event).getLeft(), ((Text) event).getRight()), event.getPhase());
-		else if (event instanceof BossInfo)
+		} else if (event instanceof BossInfo) {
+			if (event.getPhase() == EventPriority.HIGHEST)
+				event.getMatrixStack().pushPose();
 			return post(new ApppRenderGameOverlayEvent.BossInfo(event.getMatrixStack(), event, event.getType(), ((BossInfo) event).getBossInfo(), ((BossInfo) event).getX(), ((BossInfo) event).getY(), ((BossInfo) event).getIncrement()), event.getPhase());
-		else if (event instanceof Pre) {
-			event.getMatrixStack().pushPose();
+		} else if (event instanceof Pre) {
+			if (event.getPhase() == EventPriority.HIGHEST)
+				event.getMatrixStack().pushPose();
 			return post(new ApppRenderGameOverlayEvent.Pre(event.getMatrixStack(), event, event.getType()), event.getPhase());
 		} else if (event instanceof Post) {
 			post(new ApppRenderGameOverlayEvent.Post(event.getMatrixStack(), event, event.getType()), event.getPhase());
-			event.getMatrixStack().popPose();
+			if (event.getPhase() == EventPriority.LOWEST)
+				event.getMatrixStack().popPose();
 		} return false;
 	}
 	
