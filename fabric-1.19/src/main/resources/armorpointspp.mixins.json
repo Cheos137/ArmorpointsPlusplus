@@ -1,6 +1,7 @@
 {
     "required": true,
     "package": "dev.cheos.armorpointspp.mixin",
+    "plugin": "dev.cheos.armorpointspp.ApppMixinPlugin",
     "compatibilityLevel": "JAVA_17",
     "client": [
         "MinecraftMixin",
