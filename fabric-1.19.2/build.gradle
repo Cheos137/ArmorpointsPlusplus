@@ -23,6 +23,10 @@ repositories {
 		forRepository { maven { url 'https://api.modrinth.com/maven' }} // modrinth
 		filter { includeGroup 'maven.modrinth' }
 	}
+	exclusiveContent {
+		forRepository { maven { url 'https://cursemaven.com' }} // curseforge
+		filter { includeGroup 'curse.maven' }
+	}
 }
 
 dependencies {
@@ -44,6 +48,8 @@ dependencies {
 
 	modCompileOnly 'maven.modrinth:spectrum:1.5.7+1.19.2'
 	modCompileOnly 'maven.modrinth:raised:Fabric-1.19.2-1.1.4'
+	modCompileOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.0.2'
+    modCompileOnly 'curse.maven:bewitchment-394915:4048571' // Bewitchment 1.19-6
 }
 
 processResources {
