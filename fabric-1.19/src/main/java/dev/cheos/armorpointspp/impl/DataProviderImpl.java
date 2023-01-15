@@ -7,6 +7,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
 import dev.cheos.armorpointspp.core.adapter.*;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -19,7 +20,7 @@ import net.minecraft.world.entity.player.Player;
 public class DataProviderImpl implements IDataProvider {
 	private final Cache<String, Boolean> effectActiveCache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.SECONDS).build();
 	private final Minecraft minecraft  = Minecraft.getInstance();
-	private final boolean attributefix = false; // we live in fabric land - no attributefix // FabricLoader.getInstance().isModLoaded("attributefix");
+	private final boolean attributefix = FabricLoader.getInstance().isModLoaded("attributefix");
 	
 	@Override
 	public int armor() {
