@@ -5,12 +5,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import dev.cheos.armorpointspp.config.ApppConfig;
 import dev.cheos.armorpointspp.core.RenderContext;
 import dev.cheos.armorpointspp.core.Side;
+import dev.cheos.armorpointspp.core.adapter.*;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
-import dev.cheos.armorpointspp.core.adapter.IDataProvider;
-import dev.cheos.armorpointspp.core.adapter.IMath;
-import dev.cheos.armorpointspp.core.adapter.IProfiler;
-import dev.cheos.armorpointspp.core.adapter.IRenderer;
 import dev.cheos.armorpointspp.core.render.Components;
 import dev.cheos.armorpointspp.impl.*;
 import net.minecraft.client.Minecraft;
@@ -21,6 +18,10 @@ public class Overlays {
 	private static final IProfiler PROFILER          = new ProfilerImpl();
 	private static final Minecraft minecraft         = Minecraft.getInstance();
 	private static int lastArmorY = 0, lastHealthY = 0, lastToughnessY = 0;
+	
+	static void updateHealthY(ApppGui gui, int screenHeight) { lastHealthY = baseY(gui, screenHeight); }
+	static void updateArmorY(ApppGui gui, int screenHeight) { lastArmorY = baseY(gui, screenHeight); }
+	static void updateToughnessY(ApppGui gui, int screenHeight) { lastToughnessY = baseY(gui, screenHeight, ApppConfig.instance().enm(EnumOption.TOUGHNESS_SIDE)); }
 	
 	static boolean playerHealth(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		lastHealthY = baseY(gui, screenHeight);

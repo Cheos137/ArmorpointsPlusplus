@@ -49,13 +49,19 @@ public class ApppGui extends Gui {
 	@SuppressWarnings("unused")
 	protected void renderPlayerHealth(PoseStack poseStack) {
 		// LEFT SIDE
-		boolean health = Overlays.playerHealth    (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
-		boolean absorb = Overlays.absorption      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
-		boolean armor  = Overlays.armorLevel      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
-		boolean magics = Overlays.magicShield     (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight); // is this even necessary on fabric?
-		boolean resist = Overlays.resistance      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
-		boolean protec = Overlays.protection      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
-		boolean toughn = Overlays.armorToughnessOv(this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
+		boolean health, absorb, armor, magics, resist, protec, toughn, bewitchmentVampire = false;
+		if (Compat.isBewitchmentLoaded()) bewitchmentVampire = BewitchmentCompat.render(this, poseStack, getCameraPlayer(), this.leftHeight, this.leftHeight); // COMPAT
+		if (bewitchmentVampire){
+			this.leftHeight += 10;
+			Overlays.updateHealthY(this, this.screenHeight);
+		} else
+			health = Overlays.playerHealth(this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
+		absorb = Overlays.absorption      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
+		armor  = Overlays.armorLevel      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
+		magics = Overlays.magicShield     (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight); // is this even necessary on fabric?
+		resist = Overlays.resistance      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
+		protec = Overlays.protection      (this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
+		toughn = Overlays.armorToughnessOv(this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
 		
 		// RIGHT SIDE
 		if (getVehicleMaxHearts(getPlayerVehicleWithHealth()) == 0)
