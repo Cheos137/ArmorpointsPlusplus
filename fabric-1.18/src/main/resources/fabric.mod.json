@@ -6,7 +6,9 @@
   "name": "Armorpoints++",
   "description": "A light-weight mod overhauling vanilla ui components",
   "authors": [
-    "Cheos",
+    "Cheos"
+  ],
+  "contributors": [
     "Sopsy_Hallow (Additional Textures)"
   ],
   "contact": {
