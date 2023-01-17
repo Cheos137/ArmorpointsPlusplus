@@ -2,8 +2,6 @@ package dev.cheos.armorpointspp.compat;
 
 import static dev.cheos.libhud.api.Component.*;
 
-import java.util.function.Consumer;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import dev.cheos.armorpointspp.Armorpointspp;
@@ -15,52 +13,50 @@ import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
 import dev.cheos.armorpointspp.core.render.Components;
 import dev.cheos.armorpointspp.impl.*;
-import dev.cheos.libhud.*;
+import dev.cheos.libhud.LibhudGui;
+import dev.cheos.libhud.VanillaComponents;
 import dev.cheos.libhud.api.Component.NamedComponent;
+import dev.cheos.libhud.api.LibhudApi;
 import dev.cheos.libhud.api.event.RegisterComponentsEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 
-public class LibhudCompat implements Consumer<RegisterComponentsEvent> {
+public class Libhud implements LibhudApi {
 	private static final IDataProvider DATA_PROVIDER = new DataProviderImpl();
 	private static final IRenderer RENDERER          = new RendererImpl();
 	private static final IProfiler PROFILER          = new ProfilerImpl();
 	private static final Minecraft minecraft         = Minecraft.getInstance();
 	private static int lastArmorY = 0, lastHealthY = 0, lastToughnessY = 0;
 	
-	public static final NamedComponent ARMOR              = named(VanillaComponents.ARMOR.getName(), LibhudCompat::armorLevel),
-									   HEALTH             = named(VanillaComponents.HEALTH.getName(), LibhudCompat::playerHealth),
-									   ABSORPTION         = named(new ResourceLocation(Armorpointspp.MODID, "absorption"), LibhudCompat::absorption),
-									   ABSORPTION_OV      = named(new ResourceLocation(Armorpointspp.MODID, "absorption_ov"), LibhudCompat::absorptionOv),
-									   MAGIC_SHIELD       = named(new ResourceLocation(Armorpointspp.MODID, "pc_magic_shield"), LibhudCompat::magicShield),
-									   RESISTANCE         = named(new ResourceLocation(Armorpointspp.MODID, "resistance"), LibhudCompat::resistance),
-									   PROTECTION         = named(new ResourceLocation(Armorpointspp.MODID, "protection"), LibhudCompat::protection),
-									   ARMOR_TOUGHNESS    = named(new ResourceLocation(Armorpointspp.MODID, "toughness"), LibhudCompat::armorToughness),
-									   ARMOR_TOUGHNESS_OV = named(new ResourceLocation(Armorpointspp.MODID, "toughness_ov"), LibhudCompat::armorToughnessOv),
-									   ARMOR_TEXT         = named(new ResourceLocation(Armorpointspp.MODID, "armor_text"), LibhudCompat::armorText),
-									   HEALTH_TEXT        = named(new ResourceLocation(Armorpointspp.MODID, "health_text"), LibhudCompat::healthText),
-									   TOUGHNESS_TEXT     = named(new ResourceLocation(Armorpointspp.MODID, "toughness_text"), LibhudCompat::toughnessText),
-									   DEBUG              = named(new ResourceLocation(Armorpointspp.MODID, "debug"), LibhudCompat::debug);
-	
-	public static void init() {
-		Libhud.registerRegisterComponentListener(new LibhudCompat());
-	}
+	public static final NamedComponent ARMOR              = named(VanillaComponents.ARMOR.getName(), Libhud::armorLevel),
+									   HEALTH             = named(VanillaComponents.HEALTH.getName(), Libhud::playerHealth),
+									   ABSORPTION         = named(new ResourceLocation(Armorpointspp.MODID, "absorption"), Libhud::absorption),
+									   ABSORPTION_OV      = named(new ResourceLocation(Armorpointspp.MODID, "absorption_ov"), Libhud::absorptionOv),
+									   MAGIC_SHIELD       = named(new ResourceLocation(Armorpointspp.MODID, "pc_magic_shield"), Libhud::magicShield),
+									   RESISTANCE         = named(new ResourceLocation(Armorpointspp.MODID, "resistance"), Libhud::resistance),
+									   PROTECTION         = named(new ResourceLocation(Armorpointspp.MODID, "protection"), Libhud::protection),
+									   ARMOR_TOUGHNESS    = named(new ResourceLocation(Armorpointspp.MODID, "toughness"), Libhud::armorToughness),
+									   ARMOR_TOUGHNESS_OV = named(new ResourceLocation(Armorpointspp.MODID, "toughness_ov"), Libhud::armorToughnessOv),
+									   ARMOR_TEXT         = named(new ResourceLocation(Armorpointspp.MODID, "armor_text"), Libhud::armorText),
+									   HEALTH_TEXT        = named(new ResourceLocation(Armorpointspp.MODID, "health_text"), Libhud::healthText),
+									   TOUGHNESS_TEXT     = named(new ResourceLocation(Armorpointspp.MODID, "toughness_text"), Libhud::toughnessText),
+									   DEBUG              = named(new ResourceLocation(Armorpointspp.MODID, "debug"), Libhud::debug);
 	
 	@Override
 	@SuppressWarnings("deprecation")
-	public void accept(RegisterComponentsEvent event) {
-		event.replace(HEALTH.getName(), LibhudCompat::playerHealth);
-		event.registerAbove(HEALTH.getName(), ABSORPTION);
-		event.registerAbove(ABSORPTION.getName(), ABSORPTION_OV);
+	public void onRegisterComponents(RegisterComponentsEvent event) {
+		event.replace(HEALTH);
+		event.registerAbove(HEALTH, ABSORPTION);
+		event.registerAbove(ABSORPTION, ABSORPTION_OV);
 		event.replace(ARMOR);
-		event.registerAbove(ARMOR.getName(), MAGIC_SHIELD);
-		event.registerAbove(MAGIC_SHIELD.getName(), RESISTANCE);
-		event.registerAbove(RESISTANCE.getName(), PROTECTION);
-		event.registerAbove(PROTECTION.getName(), ARMOR_TOUGHNESS_OV);
-		event.registerAbove(VanillaComponents.VEHICLE_HEALTH.getName(), ARMOR_TOUGHNESS);
-		event.registerAbove(VanillaComponents.ITEM_NAME.getName(), ARMOR_TEXT);
-		event.registerAbove(VanillaComponents.ITEM_NAME.getName(), HEALTH_TEXT);
-		event.registerAbove(VanillaComponents.ITEM_NAME.getName(), TOUGHNESS_TEXT);
+		event.registerAbove(ARMOR, MAGIC_SHIELD);
+		event.registerAbove(MAGIC_SHIELD, RESISTANCE);
+		event.registerAbove(RESISTANCE, PROTECTION);
+		event.registerAbove(PROTECTION, ARMOR_TOUGHNESS_OV);
+		event.registerAbove(VanillaComponents.VEHICLE_HEALTH, ARMOR_TOUGHNESS);
+		event.registerAbove(VanillaComponents.ITEM_NAME, ARMOR_TEXT);
+		event.registerAbove(VanillaComponents.ITEM_NAME, HEALTH_TEXT);
+		event.registerAbove(VanillaComponents.ITEM_NAME, TOUGHNESS_TEXT);
 		event.registerTop(DEBUG);
 	}
 	
