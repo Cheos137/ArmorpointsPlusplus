@@ -51,7 +51,6 @@ dependencies {
 
 	modCompileOnly 'lib:libhud:0.2.0'
 	modCompileOnly 'maven.modrinth:spectrum:1.5.7+1.19.2'
-	modCompileOnly 'maven.modrinth:raised:Fabric-1.19.3-1.1.4'
 	modCompileOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.1.0'
     modCompileOnly 'curse.maven:bewitchment-394915:4048571' // Bewitchment 1.19-6
 }

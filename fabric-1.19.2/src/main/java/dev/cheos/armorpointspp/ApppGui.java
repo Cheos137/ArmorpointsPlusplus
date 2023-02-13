@@ -2,7 +2,6 @@ package dev.cheos.armorpointspp;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.yurisuika.raised.Raised;
 
 import dev.cheos.armorpointspp.compat.*;
 import net.minecraft.Util;
@@ -27,8 +26,8 @@ public class ApppGui extends Gui {
 		super(minecraft, itemRenderer);
 		
 		if (Compat.isRaisedLoaded()) {
-			this.leftHeight += Raised.getDistance();
-			this.rightHeight += Raised.getDistance();
+			this.leftHeight += RaisedSafeAccess.getDistance();
+			this.rightHeight += RaisedSafeAccess.getDistance();
 		}
 	}
 	
@@ -38,8 +37,8 @@ public class ApppGui extends Gui {
 		this.partialTicksCur = partialTicks;
 		
 		if (Compat.isRaisedLoaded()) {
-			this.leftHeight += Raised.getDistance();
-			this.rightHeight += Raised.getDistance();
+			this.leftHeight += RaisedSafeAccess.getDistance();
+			this.rightHeight += RaisedSafeAccess.getDistance();
 		}
 		
 		super.render(poseStack, partialTicks);
