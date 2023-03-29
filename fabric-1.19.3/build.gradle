@@ -1,8 +1,9 @@
 plugins {
+	id 'eclipse'
 	id 'fabric-loom' version '1.+'
 }
 
-version = '1.19.4-' + modVersion
+version = '1.19.3-' + modVersion
 group = modGroup
 archivesBaseName = modName + '-fabric'
 
@@ -32,18 +33,18 @@ repositories {
 }
 
 dependencies {
-    minecraft 'com.mojang:minecraft:1.19.4'
+    minecraft 'com.mojang:minecraft:1.19.3'
 	mappings loom.officialMojangMappings()
     implementation project(':core')
-    modImplementation 'net.fabricmc:fabric-loader:0.14.17'
-    modCompileOnly 'net.fabricmc.fabric-api:fabric-api:0.76.0+1.19.4'
+    modImplementation 'net.fabricmc:fabric-loader:0.14.12'
+    modCompileOnly 'net.fabricmc.fabric-api:fabric-api:0.69.1+1.19.3'
     implementation 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'
     include 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'
 
-	modImplementation 'com.terraformersmc:modmenu:6.1.0-rc.4'
+	modImplementation 'com.terraformersmc:modmenu:5.0.2'
 
-	modCompileOnly('squeek.appleskin:appleskin-fabric:mc1.19.4-2.4.3') { transitive = false }
-	modRuntimeOnly('squeek.appleskin:appleskin-fabric:mc1.19.4-2.4.3') {
+	modCompileOnly('squeek.appleskin:appleskin-fabric:mc1.19.3-2.4.2') { transitive = false }
+	modRuntimeOnly('squeek.appleskin:appleskin-fabric:mc1.19.3-2.4.2') {
 		exclude module: 'fabric-api'
 		exclude module: 'modmenu'
 	}

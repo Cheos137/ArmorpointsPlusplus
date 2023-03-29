@@ -52,3 +52,6 @@ gradle-app.setting
 # MYSELF
 _built/
 !**/lib/**
+
+# IDEA
+.idea/

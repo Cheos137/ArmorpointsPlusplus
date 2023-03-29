@@ -191,7 +191,7 @@ public class Modmenu implements ModMenuApi {
 			}
 			
 			@Override
-			public void renderWidget(PoseStack poseStack, int mx, int my, float partialTicks) {
+			public void render(PoseStack poseStack, int mx, int my, float partialTicks) {
 		        AbstractWidget.drawCenteredString(poseStack, ModmenuScreen.this.font, getMessage(), getX() + this.width / 2, getY() + (this.height - 8) / 2, 0xFFFFFF | Mth.ceil(this.alpha * 255.0f) << 24);
 			}
 			

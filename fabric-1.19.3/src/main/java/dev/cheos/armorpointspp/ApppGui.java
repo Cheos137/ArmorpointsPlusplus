@@ -236,8 +236,9 @@ public class ApppGui extends Gui {
 			RenderSystem.enableDepthTest();
 		else RenderSystem.disableDepthTest();
 		if (texture != null) {
+			RenderSystem.enableTexture();
 			RenderSystem.setShaderTexture(0, texture);
-		}
+		} else RenderSystem.disableTexture();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
 	}
