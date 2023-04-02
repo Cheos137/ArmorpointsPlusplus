@@ -26,4 +26,5 @@ include 'forge-1.19'
 
 include 'fabric-1.18'
 include 'fabric-1.19.2'
+include 'fabric-1.19.3'
 include 'fabric-1.19'
