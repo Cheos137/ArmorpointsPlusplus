@@ -5,6 +5,8 @@ import dev.cheos.armorpointspp.core.texture.ITextureSheet;
 public interface IRenderer {
 	void blit(IPoseStack pStack, int x, int y, float u, float v, int width, int height, int texWidth, int texHeight);
 	void blit(IPoseStack pStack, int x, int y, float u, float v, int width, int height);
+	void blitM(IPoseStack pStack, int x, int y, float u, float v, int width, int height, int texWidth, int texHeight);
+	void blitM(IPoseStack pStack, int x, int y, float u, float v, int width, int height);
 	void setColor(float r, float g, float b, float a);
 	void setupAppp();
 	void setupTexture(ITextureSheet texSheet);

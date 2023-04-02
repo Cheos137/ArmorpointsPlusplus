@@ -19,7 +19,7 @@ public class ToughnessOverlayComponent implements IRenderComponent {
 		ITextureSheet tex = tex(ctx).bind(ctx);
 		
 		for (int i = 0; i < 10 && i < toughness; i++)
-			tex.drawToughness(ctx, ctx.x + 8 * i, ctx.y, (int) ((toughness - i - 1) * 0.1F), false, true);
+			tex.drawToughness(ctx, ctx.x + 8 * i, ctx.y, (int) ((toughness - i - 1) * 0.1F), false, true, false);
 		return popReturn(ctx, true);
 	}
 }

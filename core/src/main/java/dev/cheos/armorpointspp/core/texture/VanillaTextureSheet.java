@@ -50,7 +50,7 @@ public final class VanillaTextureSheet implements ITextureSheet {
 	}
 	
 	@Override
-	public void drawToughness(RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean icon) {
+	public void drawToughness(RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean icon, boolean mirror) {
 		throw new UnsupportedOperationException("Appp toughness not available with vanilla texture");
 	}
 

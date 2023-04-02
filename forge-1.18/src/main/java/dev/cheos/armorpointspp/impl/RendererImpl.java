@@ -1,7 +1,8 @@
 package dev.cheos.armorpointspp.impl;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Matrix4f;
 
 import dev.cheos.armorpointspp.Armorpointspp;
 import dev.cheos.armorpointspp.config.ApppConfig;
@@ -11,9 +12,8 @@ import dev.cheos.armorpointspp.core.adapter.IRenderer;
 import dev.cheos.armorpointspp.core.texture.ITextureSheet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 
@@ -31,6 +31,25 @@ public class RendererImpl implements IRenderer {
 	@Override
 	public void blit(IPoseStack pStack, int x, int y, float u, float v, int width, int height) {
 		blit(pStack, x, y, u, v, width, height, 256, 128);
+	}
+	
+	@Override
+	public void blitM(IPoseStack pStack, int x, int y, float u, float v, int width, int height, int texWidth, int texHeight) {
+		Matrix4f mat = ((PoseStack) pStack.getPoseStack()).last().pose();
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+		bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+		bufferbuilder.vertex(mat, x,         y         , 0).uv((u + width) / texWidth, (v         ) / texHeight).endVertex();
+		bufferbuilder.vertex(mat, x,         y + height, 0).uv((u + width) / texWidth, (v + height) / texHeight).endVertex();
+		bufferbuilder.vertex(mat, x + width, y + height, 0).uv((u        ) / texWidth, (v + height) / texHeight).endVertex();
+		bufferbuilder.vertex(mat, x + width, y         , 0).uv((u        ) / texWidth, (v         ) / texHeight).endVertex();
+		bufferbuilder.end();
+		BufferUploader.end(bufferbuilder);
+	}
+	
+	@Override
+	public void blitM(IPoseStack pStack, int x, int y, float u, float v, int width, int height) {
+		blitM(pStack, x, y, u, v, width, height, 256, 128);
 	}
 	
 	@Override

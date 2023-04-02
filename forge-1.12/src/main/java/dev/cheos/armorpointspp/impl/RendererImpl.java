@@ -8,13 +8,12 @@ import dev.cheos.armorpointspp.core.adapter.IRenderer;
 import dev.cheos.armorpointspp.core.texture.ITextureSheet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.GlStateManager.DestFactor;
 import net.minecraft.client.renderer.GlStateManager.SourceFactor;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.*;
 
 public class RendererImpl implements IRenderer {
 	// fallback / default texture sheet location
@@ -29,6 +28,23 @@ public class RendererImpl implements IRenderer {
 	@Override
 	public void blit(IPoseStack pStack, int x, int y, float u, float v, int width, int height) {
 		blit(pStack, x, y, u, v, width, height, 256, 128);
+	}
+	
+	@Override
+	public void blitM(IPoseStack pStack, int x, int y, float u, float v, int width, int height, int texWidth, int texHeight) {
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+		bufferbuilder.pos(x,         y         , 0).tex((u + width) / texWidth, (v         ) / texHeight).endVertex();
+		bufferbuilder.pos(x,         y + height, 0).tex((u + width) / texWidth, (v + height) / texHeight).endVertex();
+		bufferbuilder.pos(x + width, y + height, 0).tex((u        ) / texWidth, (v + height) / texHeight).endVertex();
+		bufferbuilder.pos(x + width, y         , 0).tex((u        ) / texWidth, (v         ) / texHeight).endVertex();
+		tessellator.draw();
+	}
+	
+	@Override
+	public void blitM(IPoseStack pStack, int x, int y, float u, float v, int width, int height) {
+		blitM(pStack, x, y, u, v, width, height, 256, 128);
 	}
 	
 	@Override

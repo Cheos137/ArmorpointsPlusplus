@@ -184,7 +184,7 @@ public interface IConfig { // use forges config update system... somehow
 		TABLIST_HEALTH_ALWAYS_MAX   ("alwaysShowMaxTablistHearts", true , Category.GENERAL      , Version.V1_16UP, " Always render max (configured) heart backgrounds in tablist, even if health is lower", " Available: true, false [default: %s]"),
 		TEXT_SHADOW                 ("textShadow"                , true , Category.GENERAL      , " Draw shadows for all rendered texts"                                         , " Available: true, false [default: %s]"),
 		TOUGHNESS_BAR               ("useToughnessBar"           , false, Category.GENERAL      , " Show toughness as it's own bar"                                              , " Available: true, false [default: %s]"),
-		TOUGHNESS_ENABLE            ("enableToughness"           , true , Category.GENERAL      , " Show toughness as overlay over armor or it's own bar"                        , " Available: true, false [default: %s]"),
+		TOUGHNESS_ENABLE            ("enableToughness"           , true , Category.GENERAL      , " Show toughness as overlay over armor or its own bar"                         , " Available: true, false [default: %s]"),
 		TOUGHNESS_SHOW_ON_0         ("showToughnessWhenZero"     , false, Category.GENERAL      , " Show toughness bar when toughness is zero"                                   , " Available: true, false [default: %s]"),
 		TOUGHNESS_TEXT_ENABLE       ("showToughnessValue"        , true , Category.GENERAL      , " Show toughness value text next to toughness bar"                             , " Available: true, false [default: %s]"),
 		TOUGHNESS_TEXT_CONFIG_ENABLE("enableToughnessValueConfig", false, Category.TEXT_CONFIG  , " Enables custom toughness value configuration"                                , " Available: true, false [default: %s]");
@@ -379,7 +379,7 @@ public interface IConfig { // use forges config update system... somehow
 		MAGIC_RES_VALUE ("magicResist"    , 2F   ,    20, Category.COMPAT_REP    , Version.V1_12, " Number of icons to show a magic resistance of 1", " Available: %s ~ %s [default: %s]"),
 		PROTECTION_VALUE("protection"     , 0.5F ,    10, Category.REPRESENTATIVE, " Number of icons to show a protection of 1"                     , " Available: %s ~ %s [default: %s]"),
 		RESISTANCE_VALUE("resistance"     , 2F   ,    10, Category.REPRESENTATIVE, " Number of icons to show a resistance of 1"                     , " Available: %s ~ %s [default: %s]"),
-		TOUGHNESS_VALUE ("toughness"      , 1F   ,    10, Category.REPRESENTATIVE, " Number of icons to show a armor toughness of 1"                , " Available: %s ~ %s [default: %s]", " Note: Currently this ONLY affects toughness overlays and NOT the standalone toughness bar");
+		TOUGHNESS_VALUE ("toughness"      , 1F   ,    10, Category.REPRESENTATIVE, " Number of icons to show a armor toughness of 1"                , " Available: %s ~ %s [default: %s]", " Note: This ONLY affects toughness overlays and NOT the standalone toughness bar");
 		
 		final String key;
 		final float def, min, max;
@@ -502,15 +502,17 @@ public interface IConfig { // use forges config update system... somehow
 	
 	public static class EnumOption<T extends Enum<T>> implements Option<T> {
 		public static final EnumOption<FrostbiteStyle>
-				FROSTBITE_STYLE = new EnumOption<>("frostbiteStyle"                  , FrostbiteStyle.ICON, Category.GENERAL    , " Frostbite heart display style (full = vanilla)"          , " Available: %s [default: %s]");
+				FROSTBITE_STYLE          = new EnumOption<>("frostbiteStyle"                  , FrostbiteStyle.ICON, Category.GENERAL    , " Frostbite heart display style (full = vanilla)"          , " Available: %s [default: %s]");
 		public static final EnumOption<Suffix.Type>
-				SUFFIX          = new EnumOption<>("suffix"                          , Suffix.Type.SI     , Category.GENERAL    , " Suffix type used for displaying high numeric values"     , " Available: %s [default: %s]");
+				SUFFIX                   = new EnumOption<>("suffix"                          , Suffix.Type.SI     , Category.GENERAL    , " Suffix type used for displaying high numeric values"     , " Available: %s [default: %s]");
 		public static final EnumOption<Alignment>
-				ARMOR_TEXT_ALIGNMENT     = new EnumOption<>("armorValueAlignment"    , Alignment.RIGHT    , Category.TEXT_CONFIG, " if enabled, custom alignment of the armor value text"    , " Available: %s [default: %s]"),
-				HEALTH_TEXT_ALIGNMENT    = new EnumOption<>("healthValueAlignment"   , Alignment.RIGHT    , Category.TEXT_CONFIG, " if enabled, custom alignment of the health value text"   , " Available: %s [default: %s]"),
-				TOUGHNESS_TEXT_ALIGNMENT = new EnumOption<>("toughnessValueAlignment", Alignment.RIGHT    , Category.TEXT_CONFIG, " if enabled, custom alignment of the toughness value text", " Available: %s [default: %s]");
+				ARMOR_TEXT_ALIGNMENT     = new EnumOption<>("armorValueAlignment"             , Alignment.RIGHT    , Category.TEXT_CONFIG, " if enabled, custom alignment of the armor value text"    , " Available: %s [default: %s]"),
+				HEALTH_TEXT_ALIGNMENT    = new EnumOption<>("healthValueAlignment"            , Alignment.RIGHT    , Category.TEXT_CONFIG, " if enabled, custom alignment of the health value text"   , " Available: %s [default: %s]"),
+				TOUGHNESS_TEXT_ALIGNMENT = new EnumOption<>("toughnessValueAlignment"         , Alignment.RIGHT    , Category.TEXT_CONFIG, " if enabled, custom alignment of the toughness value text", " Available: %s [default: %s]");
 		public static final EnumOption<Side>
-				TOUGHNESS_SIDE  = new EnumOption<>("toughnessSide"                   , Side.LEFT          , Category.GENERAL    , " Determines the side of the toughness bar"                , " Available: %s [default: %s]", " Only effective if useToughnessBar is set to true!");
+				TOUGHNESS_SIDE           = new EnumOption<>("toughnessSide"                   , Side.LEFT          , Category.GENERAL    , " Determines the side of the toughness bar"                , " Available: %s [default: %s]", " Only effective if useToughnessBar is set to true!");
+		public static final EnumOption<Mirroring>
+				TOUGHNESS_MIRRORING      = new EnumOption<>("toughnessMirroring"              , Mirroring.AUTO     , Category.GENERAL    , " Determines whether the thoughenss bar should be mirrored", " Available: %s [default: %s]", " Only effective if useToughnessBar is set to true!");
 		
 		private static final List<EnumOption<?>> ALL = ImmutableList.copyOf(new EnumOption<?>[] {
 			FROSTBITE_STYLE,
@@ -518,7 +520,8 @@ public interface IConfig { // use forges config update system... somehow
 			ARMOR_TEXT_ALIGNMENT,
 			HEALTH_TEXT_ALIGNMENT,
 			TOUGHNESS_TEXT_ALIGNMENT,
-			TOUGHNESS_SIDE
+			TOUGHNESS_SIDE,
+			TOUGHNESS_MIRRORING
 		});
 		
 		final String key;

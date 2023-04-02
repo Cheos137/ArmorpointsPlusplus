@@ -11,10 +11,11 @@ import dev.cheos.armorpointspp.core.adapter.IRenderer;
 import dev.cheos.armorpointspp.core.texture.ITextureSheet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.text.*;
 
 public class RendererImpl implements IRenderer {
 	// fallback / default texture sheet location
@@ -29,6 +30,26 @@ public class RendererImpl implements IRenderer {
 	@Override
 	public void blit(IPoseStack pStack, int x, int y, float u, float v, int width, int height) {
 		blit(pStack, x, y, u, v, width, height, 256, 128);
+	}
+	
+	@Override
+	@SuppressWarnings("deprecation")
+	public void blitM(IPoseStack pStack, int x, int y, float u, float v, int width, int height, int texWidth, int texHeight) {
+		Matrix4f mat = ((MatrixStack) pStack.getPoseStack()).last().pose();
+		BufferBuilder bufferbuilder = Tessellator.getInstance().getBuilder();
+		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+		bufferbuilder.vertex(mat, x,         y         , 0).uv((u + width) / texWidth, (v         ) / texHeight).endVertex();
+		bufferbuilder.vertex(mat, x,         y + height, 0).uv((u + width) / texWidth, (v + height) / texHeight).endVertex();
+		bufferbuilder.vertex(mat, x + width, y + height, 0).uv((u        ) / texWidth, (v + height) / texHeight).endVertex();
+		bufferbuilder.vertex(mat, x + width, y         , 0).uv((u        ) / texWidth, (v         ) / texHeight).endVertex();
+		bufferbuilder.end();
+		RenderSystem.enableAlphaTest();
+		WorldVertexBufferUploader.end(bufferbuilder);
+	}
+	
+	@Override
+	public void blitM(IPoseStack pStack, int x, int y, float u, float v, int width, int height) {
+		blitM(pStack, x, y, u, v, width, height, 256, 128);
 	}
 	
 	@Override

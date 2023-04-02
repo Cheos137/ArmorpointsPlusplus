@@ -84,14 +84,15 @@ public class StandardTextureSheet implements ITextureSheet {
 	}
 	
 	@Override
-	public void drawToughness(RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean icon) {
+	public void drawToughness(RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean icon, boolean mirror) {
 		if (spriteLevel >= getMaxToughnessLevel()) half = false;
 		if (icon) {
 			ctx.poseStack.pushPose();
 			ctx.poseStack.scale(0.5F, 0.5F, 1);
-			blit(ctx, 2 * (x) + 9, 2 * y + 8, 45 + 18 * ctx.math.clamp(spriteLevel, 0, 11), 9); // no empty icons -> 0 = silver icon
+			blit(ctx, 2 * x + 9, 2 * y + 8, 45 + 18 * ctx.math.clamp(spriteLevel, 0, 11), 9); // no empty icons -> 0 = silver icon
 			ctx.poseStack.popPose();
-		} else blit(ctx, x, y, (half ? 36 : 27) + 18 * ctx.math.clamp(spriteLevel, 0, getMaxToughnessLevel()), 9);
+		} else if (mirror) blitM(ctx, x, y, (half ? 36 : 27) + 18 * ctx.math.clamp(spriteLevel, 0, getMaxToughnessLevel()), 9);
+		else blit(ctx, x, y, (half ? 36 : 27) + 18 * ctx.math.clamp(spriteLevel, 0, getMaxToughnessLevel()), 9);
 	}
 
 	@Override
