@@ -13,7 +13,7 @@ public class ToughnessOverlayComponent implements IRenderComponent {
 			return false;
 		
 		ctx.profiler.push("toughness");
-		int toughness = ctx.data.toughness();
+		double toughness = (int) ctx.data.toughness();
 		toughness = ctx.math.ceil(toughness * ctx.config.dec(FloatOption.TOUGHNESS_VALUE));
 		if (toughness <= 0) return popReturn(ctx, false);
 		ITextureSheet tex = tex(ctx).bind(ctx);

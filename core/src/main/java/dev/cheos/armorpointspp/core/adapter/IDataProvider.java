@@ -3,8 +3,8 @@ package dev.cheos.armorpointspp.core.adapter;
 public interface IDataProvider {
 	int armor();
 	int maxArmor();
-	int toughness();
-	int maxToughness();
+	double toughness();
+	double maxToughness();
 	int guiTicks();
 	int invulnTime();
 	long millis();

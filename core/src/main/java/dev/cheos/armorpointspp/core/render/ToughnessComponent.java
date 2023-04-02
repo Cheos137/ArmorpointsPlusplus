@@ -13,7 +13,7 @@ public class ToughnessComponent implements IRenderComponent {
 		
 		ctx.profiler.push("toughness");
 		ITextureSheet tex = tex(ctx).bind(ctx);
-		int toughness = ctx.data.toughness();
+		long toughness = ctx.math.floor(ctx.data.toughness() * 2);
 		
 		for (int i = 0; i < 10; i++)
 			tex.drawToughness(ctx, ctx.x + 8 * i, ctx.y, (int) ((toughness - 2 * (i + 1) + 20) * 0.05F), (toughness % 20) - 2 * i == 1, false);

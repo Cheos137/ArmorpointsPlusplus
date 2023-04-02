@@ -35,13 +35,13 @@ public class DataProviderImpl implements IDataProvider {
 	}
 	
 	@Override
-	public int toughness() {
-		return MathHelper.floor(this.minecraft.player.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
+	public double toughness() {
+		return this.minecraft.player.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue();
 	}
 	
 	@Override
-	public int maxToughness() {
-		return SharedMonsterAttributes.ARMOR_TOUGHNESS instanceof RangedAttribute ? MathHelper.floor(((RangedAttribute) SharedMonsterAttributes.ARMOR_TOUGHNESS).maximumValue) : 20;
+	public double maxToughness() {
+		return SharedMonsterAttributes.ARMOR_TOUGHNESS instanceof RangedAttribute ? ((RangedAttribute) SharedMonsterAttributes.ARMOR_TOUGHNESS).maximumValue : 20;
 	}
 	
 	@Override

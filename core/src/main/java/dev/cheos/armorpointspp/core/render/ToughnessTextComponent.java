@@ -13,7 +13,7 @@ public class ToughnessTextComponent implements IRenderComponent {
 			return false;
 		
 		ctx.profiler.push("toughnessText");
-		int toughness = ctx.data.toughness();
+		double toughness = ctx.data.toughness();
 		Suffix.Type type = ctx.config.enm(EnumOption.SUFFIX);
 		int power = toughness == 0 ? 0 : (int) Math.log10(toughness);
 		if (type != Suffix.Type.SCI && power < 27) power = power / 3 * 3; // 100 YOTTA is max. if higher switch to SCI notation
