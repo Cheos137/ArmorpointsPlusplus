@@ -13,6 +13,7 @@ import dev.cheos.armorpointspp.config.ApppConfig;
 import dev.cheos.armorpointspp.config.ApppConfigValue;
 import dev.cheos.armorpointspp.config.ApppConfigValue.*;
 import dev.cheos.armorpointspp.core.adapter.IConfig;
+import dev.cheos.armorpointspp.mixin.AbstractWidgetMixin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -113,6 +114,13 @@ public class Modmenu implements ModMenuApi {
 			this.tabContents.get(this.selectedCategory).render(poseStack, mouseX, mouseY, partialTicks);
 			drawCenteredString(poseStack, this.font, this.title, this.width / 2, 5, 0xFFFFFF);
 			super.render(poseStack, mouseX, mouseY, partialTicks);
+			this.tabContents.get(this.selectedCategory)
+					.getMouseOver(mouseX, mouseY)
+					.ifPresent(w -> {
+							Tooltip tooltip = ((AbstractWidgetMixin) w).getTooltip();
+							if (tooltip != null)
+								renderTooltip(poseStack, tooltip.toCharSequence(this.minecraft), mouseX, mouseY); // TODO fix width in 1.19.3
+					});
 		}
 		
 		@Override
@@ -182,7 +190,7 @@ public class Modmenu implements ModMenuApi {
 			}
 			
 			@Override
-			public void renderWidget(PoseStack poseStack, int mx, int my, float partialTicks) {
+			public void render(PoseStack poseStack, int mx, int my, float partialTicks) {
 		        AbstractWidget.drawCenteredString(poseStack, ModmenuScreen.this.font, getMessage(), getX() + this.width / 2, getY() + (this.height - 8) / 2, 0xFFFFFF | Mth.ceil(this.alpha * 255.0f) << 24);
 			}
 			

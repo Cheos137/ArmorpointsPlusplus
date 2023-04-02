@@ -2,6 +2,7 @@ package dev.cheos.armorpointspp;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.yurisuika.raised.Raised;
 
 import dev.cheos.armorpointspp.compat.*;
 import net.minecraft.Util;
@@ -21,12 +22,13 @@ public class ApppGui extends Gui {
 	public int leftHeight = 39, rightHeight = 39;
 	private float partialTicksCur;
 	
+	
 	public ApppGui(Minecraft minecraft, ItemRenderer itemRenderer) {
 		super(minecraft, itemRenderer);
 		
 		if (Compat.isRaisedLoaded()) {
-			this.leftHeight += RaisedSafeAccess.getDistance();
-			this.rightHeight += RaisedSafeAccess.getDistance();
+			this.leftHeight += Raised.getDistance();
+			this.rightHeight += Raised.getDistance();
 		}
 	}
 	
@@ -36,8 +38,8 @@ public class ApppGui extends Gui {
 		this.partialTicksCur = partialTicks;
 		
 		if (Compat.isRaisedLoaded()) {
-			this.leftHeight += RaisedSafeAccess.getDistance();
-			this.rightHeight += RaisedSafeAccess.getDistance();
+			this.leftHeight += Raised.getDistance();
+			this.rightHeight += Raised.getDistance();
 		}
 		
 		super.render(poseStack, partialTicks);
@@ -214,11 +216,11 @@ public class ApppGui extends Gui {
             
             for (int heart = 0; heart < heartsInRow; heart++) {
                 int pos = right - heart * 8 - 9;
-                blit(poseStack, pos, top, 52, 9, 9, 9);
+                this.blit(poseStack, pos, top, 52, 9, 9, 9);
                 if (heart * 2 + 1 + healthIdx < health)
-                    blit(poseStack, pos, top, 88, 9, 9, 9);
+                    this.blit(poseStack, pos, top, 88, 9, 9, 9);
                 if (heart * 2 + 1 + healthIdx == health)
-                	blit(poseStack, pos, top, 97, 9, 9, 9);
+                	this.blit(poseStack, pos, top, 97, 9, 9, 9);
             }
     		this.rightHeight += 10;
         }
@@ -234,8 +236,9 @@ public class ApppGui extends Gui {
 			RenderSystem.enableDepthTest();
 		else RenderSystem.disableDepthTest();
 		if (texture != null) {
+			RenderSystem.enableTexture();
 			RenderSystem.setShaderTexture(0, texture);
-		}
+		} else RenderSystem.disableTexture();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
 	}
