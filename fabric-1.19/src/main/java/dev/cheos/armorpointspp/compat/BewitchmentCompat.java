@@ -25,9 +25,9 @@ public class BewitchmentCompat {
 			if (magicComponent.getMagicTimer() > 0) {
 				RenderSystem.setShaderTexture(0, BEWITCHMENT_GUI_ICONS_TEXTURE);
 				RenderSystem.setShaderColor(1, 1, 1, magicComponent.getMagicTimer() / 10f);
-				gui.blit(poseStack, 13, (scaledHeight - 74) / 2, 25, 0, 7, 74);
-				gui.blit(poseStack, 13, (scaledHeight - 74) / 2, 32, 0, 7, (int) (74 - (magicComponent.getMagic() * 74f / MagicComponent.MAX_MAGIC)));
-				gui.blit(poseStack, 4, (scaledHeight - 102) / 2, 0, 0, 25, 102);
+				ApppGui.blit(poseStack, 13, (scaledHeight - 74) / 2, 25, 0, 7, 74);
+				ApppGui.blit(poseStack, 13, (scaledHeight - 74) / 2, 32, 0, 7, (int) (74 - (magicComponent.getMagic() * 74f / MagicComponent.MAX_MAGIC)));
+				ApppGui.blit(poseStack, 4, (scaledHeight - 102) / 2, 0, 0, 25, 102);
 				RenderSystem.setShaderColor(1, 1, 1, 1);
 				RenderSystem.setShaderTexture(0, GuiComponent.GUI_ICONS_LOCATION);
 			}
@@ -48,13 +48,13 @@ public class BewitchmentCompat {
 			float blood = ((float) bloodComponent.getBlood() / BloodComponent.MAX_BLOOD * droplets);
 			int full = (int) blood;
 			for (int i = 0; i < full; i++)
-				gui.blit(poseStack, x - i * 8, y, 39, v, 9, 9);
+				ApppGui.blit(poseStack, x - i * 8, y, 39, v, 9, 9);
 			if (full < droplets) {
 				float remaining = blood - full;
-				gui.blit(poseStack, x - full * 8, y, remaining > 5 / 6f ? 48 : remaining > 4 / 6f ? 57 : remaining > 3 / 6f ? 66 : remaining > 2 / 6f ? 75 : remaining > 1 / 6f ? 84 : remaining > 0 ? 93 : 102, v, 9, 9);
+				ApppGui.blit(poseStack, x - full * 8, y, remaining > 5 / 6f ? 48 : remaining > 4 / 6f ? 57 : remaining > 3 / 6f ? 66 : remaining > 2 / 6f ? 75 : remaining > 1 / 6f ? 84 : remaining > 0 ? 93 : 102, v, 9, 9);
 			}
 			for (int i = (full + 1); i < droplets; i++)
-				gui.blit(poseStack, x - i * 8, y, 102, v, 9, 9);
+				ApppGui.blit(poseStack, x - i * 8, y, 102, v, 9, 9);
 		});
 	}
 }

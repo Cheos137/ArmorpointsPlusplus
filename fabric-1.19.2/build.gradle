@@ -34,7 +34,7 @@ dependencies {
 	mappings loom.officialMojangMappings()
     implementation project(':core')
     modImplementation 'net.fabricmc:fabric-loader:0.14.19'
-    modCompileOnly 'net.fabricmc.fabric-api:fabric-api:0.76.0+1.19.2'
+    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.76.0+1.19.2'
     implementation 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'
     include 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'
 

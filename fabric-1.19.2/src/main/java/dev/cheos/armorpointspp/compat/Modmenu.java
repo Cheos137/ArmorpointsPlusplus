@@ -118,6 +118,13 @@ public class Modmenu implements ModMenuApi {
 		}
 		
 		@Override
+		protected void clearWidgets() {
+			this.tabs.clear();
+			this.tabContents.clear();
+			super.clearWidgets();
+		}
+		
+		@Override
 		public void onClose() {
 			ApppConfig.load();
 			super.onClose();

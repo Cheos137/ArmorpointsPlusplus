@@ -20,7 +20,6 @@ public class ApppGui extends Gui {
 	public int leftHeight = 39, rightHeight = 39;
 	private float partialTicksCur;
 	
-	
 	public ApppGui(Minecraft minecraft) {
 		super(minecraft);
 		

@@ -37,7 +37,7 @@ dependencies {
 	mappings loom.officialMojangMappings()
     implementation project(':core')
     modImplementation 'net.fabricmc:fabric-loader:0.14.19'
-    modCompileOnly 'net.fabricmc.fabric-api:fabric-api:0.76.0+1.19.3'
+    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.76.0+1.19.3'
     implementation 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'
     include 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'
 
@@ -49,7 +49,7 @@ dependencies {
 		exclude module: 'modmenu'
 	}
 
-	modCompileOnly 'lib:libhud:0.2.0'
+	modCompileOnly 'lib:libhud:0.2.0-fabric-1.19.3'
 	modCompileOnly 'maven.modrinth:spectrum:1.6.9-1.19.2-leisure_time'
 	modCompileOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.1.0'
     modCompileOnly 'curse.maven:bewitchment-394915:4048571' // Bewitchment 1.19-6

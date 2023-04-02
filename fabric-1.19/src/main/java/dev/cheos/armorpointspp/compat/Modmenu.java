@@ -13,7 +13,6 @@ import dev.cheos.armorpointspp.config.ApppConfig;
 import dev.cheos.armorpointspp.config.ApppConfigValue;
 import dev.cheos.armorpointspp.config.ApppConfigValue.*;
 import dev.cheos.armorpointspp.core.adapter.IConfig;
-import dev.cheos.armorpointspp.mixin.AbstractWidgetMixin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -63,7 +62,7 @@ public class Modmenu implements ModMenuApi {
 				for (IConfig.Category cat : IConfig.Category.values()) {
 					if (!cat.hasOptions(ApppConfig.VERSION)) { continue; }
 					
-					TabButton tb = new TabButton(i, this.width / 2 + xoff + (i == 0 ? 0 : cmlWidths.get(i-1)), 20, widths.get(i), 20, names.get(i), List.of());
+					TabButton tb = new TabButton(i, this.width / 2 + xoff + (i == 0 ? 0 : cmlWidths.get(i-1)), 20, widths.get(i), 20, names.get(i), Component.literal(""));
 					this.tabs.add(tb);
 					
 					EntryList list = new EntryList(this.minecraft, this.width, this.height, 50, this.height - 50, 25);
@@ -115,13 +114,13 @@ public class Modmenu implements ModMenuApi {
 			this.tabContents.get(this.selectedCategory).render(poseStack, mouseX, mouseY, partialTicks);
 			drawCenteredString(poseStack, this.font, this.title, this.width / 2, 5, 0xFFFFFF);
 			super.render(poseStack, mouseX, mouseY, partialTicks);
-			this.tabContents.get(this.selectedCategory)
-					.getMouseOver(mouseX, mouseY)
-					.ifPresent(w -> {
-							Tooltip tooltip = ((AbstractWidgetMixin) w).getTooltip();
-							if (tooltip != null)
-								renderTooltip(poseStack, tooltip.toCharSequence(this.minecraft), mouseX, mouseY); // TODO fix width in 1.19.3
-					});
+		}
+		
+		@Override
+		protected void clearWidgets() {
+			this.tabs.clear();
+			this.tabContents.clear();
+			super.clearWidgets();
 		}
 		
 		@Override
@@ -134,18 +133,11 @@ public class Modmenu implements ModMenuApi {
 		
 		public class TabButton extends AbstractButton {
 			private final int index;
-			private final List<Component> tooltip;
 			
-			public TabButton(int index, int x, int y, int w, int h, Component component, List<Component> tooltip) {
+			public TabButton(int index, int x, int y, int w, int h, Component component, Component tooltip) {
 				super(x, y, w, h, component);
 				this.index = index;
-				this.tooltip = tooltip;
-			}
-			
-			public TabButton(int index, int x, int y, int w, int h, Component component, String[] tooltip) {
-				this(index, x, y, w, h, component, new ArrayList<>(tooltip.length));
-				for (String line : tooltip)
-					this.tooltip.add(Component.literal(line));
+				setTooltip(Tooltip.create(tooltip));
 			}
 			
 			@Override
@@ -156,13 +148,9 @@ public class Modmenu implements ModMenuApi {
 			}
 			
 			@Override
-			public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+			public void renderWidget(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
 				this.active = this.index != ModmenuScreen.this.selectedCategory;
-				super.render(poseStack, mouseX, mouseY, partialTicks);
-				
-				if (isMouseOver(mouseX, mouseY))
-					if (this.tooltip != null && this.tooltip.size() > 0)
-						ModmenuScreen.this.renderComponentTooltip(poseStack, this.tooltip, mouseX, mouseY);
+				super.renderWidget(poseStack, mouseX, mouseY, partialTicks);
 			}
 			
 			@Override
@@ -191,7 +179,7 @@ public class Modmenu implements ModMenuApi {
 			}
 			
 			@Override
-			public void render(PoseStack poseStack, int mx, int my, float partialTicks) {
+			public void renderWidget(PoseStack poseStack, int mx, int my, float partialTicks) {
 		        AbstractWidget.drawCenteredString(poseStack, ModmenuScreen.this.font, getMessage(), getX() + this.width / 2, getY() + (this.height - 8) / 2, 0xFFFFFF | Mth.ceil(this.alpha * 255.0f) << 24);
 			}
 			
