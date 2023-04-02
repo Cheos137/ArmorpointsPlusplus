@@ -52,3 +52,4 @@ gradle-app.setting
 # MYSELF
 _built/
 !**/lib/**
+*.tmp
