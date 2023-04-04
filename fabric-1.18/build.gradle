@@ -34,17 +34,13 @@ dependencies {
 	mappings loom.officialMojangMappings()
     implementation project(':core')
     modImplementation 'net.fabricmc:fabric-loader:0.14.19'
-    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.76.0+1.18.2'
+    modCompileOnly 'net.fabricmc.fabric-api:fabric-api:0.76.0+1.18.2'
     implementation 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'
     include 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'
 
 	modImplementation 'com.terraformersmc:modmenu:3.2.5'
 
 	modCompileOnly('squeek.appleskin:appleskin-fabric:mc1.18.2-2.4.0') { transitive = false }
-	modRuntimeOnly('squeek.appleskin:appleskin-fabric:mc1.18.2-2.4.0') {
-		exclude module: 'fabric-api'
-		exclude module: 'modmenu'
-	}
 
 	modCompileOnly 'maven.modrinth:spectrum:1.6.9-1.18.2-leisure_time'
 	modCompileOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-base:4.2.0'
