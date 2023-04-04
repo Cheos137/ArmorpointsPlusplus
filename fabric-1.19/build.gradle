@@ -53,6 +53,7 @@ dependencies {
 	modCompileOnly 'maven.modrinth:spectrum:1.6.9-1.19.2-leisure_time'
 	modCompileOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.1.0'
     modCompileOnly 'curse.maven:bewitchment-394915:4048571' // Bewitchment 1.19-6
+    modCompileOnly 'curse.maven:dehydration-410830:4216059' // Dehydration 1.3.3
 }
 
 processResources {

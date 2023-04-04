@@ -49,7 +49,7 @@ public class ApppGui extends Gui {
 		// LEFT SIDE
 		boolean health, absorb, absbov, armor, magics, resist, protec, toughn, bewitchmentVampire = false;
 		if (Compat.isBewitchmentLoaded()) bewitchmentVampire = BewitchmentCompat.render(this, poseStack, getCameraPlayer(), this.leftHeight, this.leftHeight); // COMPAT
-		if (bewitchmentVampire){
+		if (bewitchmentVampire) {
 			this.leftHeight += 10;
 			Overlays.updateHealthY(this, this.screenHeight);
 		} else
@@ -66,6 +66,13 @@ public class ApppGui extends Gui {
 		if (getVehicleMaxHearts(getPlayerVehicleWithHealth()) == 0)
 			renderFood(poseStack);
 		renderMountHealth(poseStack);
+		if (Compat.isDehydrationLoaded())
+			DehydrationSafeAccess.render(this,
+					poseStack,
+					getCameraPlayer(),
+					this.screenWidth,
+					this.screenHeight + 49 - this.rightHeight, // hack to trick dehydration to never render where another bar is already rendered
+					getVehicleMaxHearts(getPlayerVehicleWithHealth()));
 		
 		// OTHER
 		Overlays.armorToughness(this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);

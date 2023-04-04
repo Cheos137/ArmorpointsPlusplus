@@ -47,8 +47,8 @@ public class ApppGui extends Gui {
 	protected void renderPlayerHealth(PoseStack poseStack) {
 		// LEFT SIDE
 		boolean health, absorb, absbov, armor, magics, resist, protec, toughn, bewitchmentVampire = false;
-		if (Compat.isBewitchmentLoaded()) bewitchmentVampire = BewitchmentCompat.render(this, poseStack, getCameraPlayer(), this.leftHeight, this.leftHeight); // COMPAT
-		if (bewitchmentVampire){
+		if (Compat.isBewitchmentLoaded()) bewitchmentVampire = BewitchmentCompat.render(this, poseStack, getCameraPlayer(), this.screenWidth, this.screenHeight); // COMPAT
+		if (bewitchmentVampire) {
 			this.leftHeight += 10;
 			Overlays.updateHealthY(this, this.screenHeight);
 		} else
@@ -65,6 +65,7 @@ public class ApppGui extends Gui {
 		if (getVehicleMaxHearts(getPlayerVehicleWithHealth()) == 0)
 			renderFood(poseStack);
 		renderMountHealth(poseStack);
+		if (Compat.isDehydrationLoaded()) DehydrationCompat.render(this, poseStack, getCameraPlayer(), this.screenWidth, this.screenHeight);
 		
 		// OTHER
 		Overlays.armorToughness(this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
@@ -223,6 +224,16 @@ public class ApppGui extends Gui {
     		this.rightHeight += 10;
         }
         this.minecraft.getProfiler().pop();
+	}
+	
+	@Override
+	public LivingEntity getPlayerVehicleWithHealth() {
+		return super.getPlayerVehicleWithHealth();
+	}
+	
+	@Override
+	public int getVehicleMaxHearts(LivingEntity livingEntity) {
+		return super.getVehicleMaxHearts(livingEntity);
 	}
 	
 	public void setup(boolean blend, boolean depthTest, ResourceLocation texture) {
