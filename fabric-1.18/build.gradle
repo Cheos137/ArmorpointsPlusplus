@@ -46,6 +46,7 @@ dependencies {
 	modCompileOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-base:4.2.0'
     modCompileOnly 'curse.maven:bewitchment-394915:3860751' // Bewitchment 1.18-23
     modCompileOnly 'curse.maven:dehydration-410830:3786010' // Dehydration 1.2.8
+	modCompileOnly 'maven.modrinth:better-mount-hud:1.1.4'
 }
 
 processResources {

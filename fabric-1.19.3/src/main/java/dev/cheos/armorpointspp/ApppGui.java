@@ -63,7 +63,7 @@ public class ApppGui extends Gui {
 		toughn = Overlays.armorToughnessOv(this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
 		
 		// RIGHT SIDE
-		if (getVehicleMaxHearts(getPlayerVehicleWithHealth()) == 0)
+		if (getVehicleMaxHearts(getPlayerVehicleWithHealth()) == 0 || Compat.isBetterMountHudLoaded())
 			renderFood(poseStack);
 		renderMountHealth(poseStack);
 		if (Compat.isDehydrationLoaded())
