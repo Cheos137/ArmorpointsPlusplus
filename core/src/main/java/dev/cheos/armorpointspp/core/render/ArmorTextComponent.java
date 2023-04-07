@@ -9,7 +9,7 @@ import dev.cheos.armorpointspp.core.adapter.IConfig.*;
 public class ArmorTextComponent implements IRenderComponent {
 	@Override
 	public boolean render(RenderContext ctx) {
-		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.ARMOR_TEXT_ENABLE))
+		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.ARMOR_TEXT_ENABLE) || ctx.config.bool(BooleanOption.ARMOR_HIDDEN))
 			return false;
 		
 		ctx.profiler.push("armorText");

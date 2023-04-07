@@ -11,7 +11,7 @@ import dev.cheos.armorpointspp.core.texture.ITextureSheet.OverlaySprite;
 public class ProtectionComponent implements IRenderComponent {
 	@Override
 	public boolean render(RenderContext ctx) {
-		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.PROTECTION_ENABLE))
+		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.PROTECTION_ENABLE) || ctx.config.bool(BooleanOption.ARMOR_HIDDEN))
 			return false;
 		
 		ctx.profiler.push("protection");

@@ -10,7 +10,7 @@ import dev.cheos.armorpointspp.core.texture.ITextureSheet;
 public class ArmorComponent implements IRenderComponent {
 	@Override
 	public boolean render(RenderContext ctx) {
-		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.ARMOR_ENABLE))
+		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.ARMOR_ENABLE) || ctx.config.bool(BooleanOption.ARMOR_HIDDEN))
 			return false;
 		
 		ctx.profiler.push("armor");

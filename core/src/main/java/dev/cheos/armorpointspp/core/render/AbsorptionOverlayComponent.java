@@ -10,7 +10,11 @@ import dev.cheos.armorpointspp.core.texture.ITextureSheet.OverlaySprite;
 public class AbsorptionOverlayComponent implements IRenderComponent {
 	@Override
 	public boolean render(RenderContext ctx) {
-		if (!ctx.shouldRender() || !ctx.config.bool(BooleanOption.ABSORPTION_ENABLE) || !ctx.config.bool(BooleanOption.HEALTH_ENABLE) || !ctx.config.bool(BooleanOption.ABSORPTION_OVERLAY))
+		if (!ctx.shouldRender()
+				|| !ctx.config.bool(BooleanOption.ABSORPTION_ENABLE)
+				|| !ctx.config.bool(BooleanOption.HEALTH_ENABLE)
+				|| !ctx.config.bool(BooleanOption.ABSORPTION_OVERLAY)
+				|| ctx.config.bool(BooleanOption.HEALTH_HIDDEN))
 			return false;
 		
 		ctx.profiler.push("absorption");

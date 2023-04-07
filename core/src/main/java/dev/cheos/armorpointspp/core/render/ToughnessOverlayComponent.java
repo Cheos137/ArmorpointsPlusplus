@@ -9,7 +9,10 @@ import dev.cheos.armorpointspp.core.texture.ITextureSheet;
 public class ToughnessOverlayComponent implements IRenderComponent {
 	@Override
 	public boolean render(RenderContext ctx) {
-		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.TOUGHNESS_ENABLE) || ctx.config.bool(BooleanOption.TOUGHNESS_BAR))
+		if (!ctx.shouldRenderArmor()
+				|| !ctx.config.bool(BooleanOption.TOUGHNESS_ENABLE)
+				|| ctx.config.bool(BooleanOption.TOUGHNESS_BAR)
+				|| ctx.config.bool(BooleanOption.ARMOR_HIDDEN))
 			return false;
 		
 		ctx.profiler.push("toughness");

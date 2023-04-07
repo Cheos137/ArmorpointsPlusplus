@@ -10,7 +10,7 @@ import dev.cheos.armorpointspp.core.texture.ITextureSheet.OverlaySprite;
 public class ResistanceComponent implements IRenderComponent {
 	@Override
 	public boolean render(RenderContext ctx) {
-		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.RESISTANCE_ENABLE))
+		if (!ctx.shouldRenderArmor() || !ctx.config.bool(BooleanOption.RESISTANCE_ENABLE) || ctx.config.bool(BooleanOption.ARMOR_HIDDEN))
 			return false;
 		
 		ctx.profiler.push("resistance");

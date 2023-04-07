@@ -11,7 +11,7 @@ import dev.cheos.armorpointspp.core.*;
 import dev.cheos.armorpointspp.core.RenderableText.Alignment;
 import dev.cheos.armorpointspp.core.texture.ITextureSheet;
 
-public interface IConfig { // use forges config update system... somehow
+public interface IConfig {
 	public static final DecimalFormat FLOAT_FORMAT = new DecimalFormat("#.##", DecimalFormatSymbols.getInstance(Locale.ROOT));
 	
 	boolean               bool(Option<Boolean> key);
@@ -165,6 +165,7 @@ public interface IConfig { // use forges config update system... somehow
 		ABSORPTION_ENABLE           ("enableAbsorption"          , true , Category.GENERAL      , " Show absorption as border around health"                                     , " Available: true, false [default: %s]"),
 		ABSORPTION_OVERLAY          ("useAbsorptionOverlay"      , false, Category.GENERAL      , " Show absorption as hearts within the health bar"                             , " Available: true, false [default: %s]"),
 		ARMOR_ENABLE                ("enableArmorBar"            , true , Category.GENERAL      , " Enable custom armor bar"                                                     , " Available: true, false [default: %s]"),
+		ARMOR_HIDDEN                ("hideArmorBar"              , false, Category.GENERAL      , " Hides the armor bar + armor value text regardless of other config optoins"   , " Available: true, false [default: %s]"),
 		ARMOR_TEXT_ENABLE           ("showArmorValue"            , true , Category.GENERAL      , " Show armor value text next to armor bar"                                     , " Available: true, false [default: %s]"),
 		ARMOR_TEXT_CONFIG_ENABLE    ("enableArmorValueConfig"    , false, Category.TEXT_CONFIG  , " Enables custom armor value configuration"                                    , " Available: true, false [default: %s]"),
 		ARMOR_SHOW_ON_0             ("showArmorWhenZero"         , false, Category.GENERAL      , " Show armor bar when armor is zero"                                           , " Available: true, false [default: %s]"),
@@ -172,6 +173,7 @@ public interface IConfig { // use forges config update system... somehow
 		DISABLE_EASTEREGGS          ("disableEastereggs"         , false, Category.GENERAL      , " Disables all easter eggs, which is sad but some want it"                     , " Available: true, false [default: %s]"),
 		FROSTBITE_TEXT_ENABLE       ("showFrostbitePercentage"   , true , Category.GENERAL      , " Show frostbite percentage next to health bar"                                , " Available: true, false [default: %s]"),
 		HEALTH_ENABLE               ("enableHealthBar"           , true , Category.GENERAL      , " Enable custom health bar"                                                    , " Available: true, false [default: %s]"),
+		HEALTH_HIDDEN               ("hideHealthBar"             , false, Category.GENERAL      , " Hides the health bar + health value text regardless of other config optoins" , " Available: true, false [default: %s]"),
 		HEALTH_TEXT_ENABLE          ("showHealthValue"           , true , Category.GENERAL      , " Show health value text next to health bar"                                   , " Available: true, false [default: %s]"),
 		HEALTH_TEXT_CONFIG_ENABLE   ("enableHealthValueConfig"   , false, Category.TEXT_CONFIG  , " Enables custom health value configuration"                                   , " Available: true, false [default: %s]"),
 		HEALTH_BG_ALWAYS_SHOW_10    ("alwaysShow10HeartBGs"      , false, Category.GENERAL      , " Always render 10 heart backgrounds, even if max health is lower"             , " Available: true, false [default: %s]"),

@@ -7,7 +7,7 @@ import dev.cheos.armorpointspp.core.adapter.IConfig.*;
 public class HealthTextComponent implements IRenderComponent {
 	@Override
 	public boolean render(RenderContext ctx) {
-		if (!ctx.shouldRender() || !ctx.config.bool(BooleanOption.HEALTH_TEXT_ENABLE))
+		if (!ctx.shouldRender() || !ctx.config.bool(BooleanOption.HEALTH_TEXT_ENABLE) || ctx.config.bool(BooleanOption.HEALTH_HIDDEN))
 			return false;
 		
 		ctx.profiler.push("healthText");
