@@ -73,6 +73,8 @@ public class ApppGui extends Gui {
 					this.screenWidth,
 					this.screenHeight + 49 - this.rightHeight, // hack to trick dehydration to never render where another bar is already rendered
 					getVehicleMaxHearts(getPlayerVehicleWithHealth()));
+		if (Compat.isItsthirstLoaded())
+			ItsthirstSafeAccess.render(this, poseStack, getCameraPlayer());
 		
 		// OTHER
 		Overlays.armorToughness(this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);

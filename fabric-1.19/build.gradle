@@ -55,6 +55,7 @@ dependencies {
     modCompileOnly 'curse.maven:bewitchment-394915:4048571' // Bewitchment 1.19-6
     modCompileOnly 'curse.maven:dehydration-410830:4216059' // Dehydration 1.3.3
 	modCompileOnly 'maven.modrinth:better-mount-hud:1.2.1'
+	modCompileOnly 'maven.modrinth:its-thirst:1.1.0-ALPHA-1.19.3'
 }
 
 processResources {

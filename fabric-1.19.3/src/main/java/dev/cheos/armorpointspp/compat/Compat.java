@@ -3,7 +3,7 @@ package dev.cheos.armorpointspp.compat;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class Compat {
-	private static boolean libhud, fabricApi, appleskin, spectrum, raised, bewitchment, dehydration, betterMountHud;
+	private static boolean libhud, fabricApi, appleskin, spectrum, raised, bewitchment, dehydration, betterMountHud, itsthirst;
 	
 	public static void init() {
 		libhud = FabricLoader.getInstance().isModLoaded("libhud");
@@ -14,6 +14,7 @@ public class Compat {
 		bewitchment = FabricLoader.getInstance().isModLoaded("bewitchment");
 		dehydration = FabricLoader.getInstance().isModLoaded("dehydration");
 		betterMountHud = FabricLoader.getInstance().isModLoaded("bettermounthud");
+		itsthirst = FabricLoader.getInstance().isModLoaded("itsthirst");
 	}
 	
 	public static boolean isLibhudLoaded() {
@@ -46,5 +47,9 @@ public class Compat {
 	
 	public static boolean isBetterMountHudLoaded() {
 		return betterMountHud;
+	}
+	
+	public static boolean isItsthirstLoaded() {
+		return itsthirst;
 	}
 }
