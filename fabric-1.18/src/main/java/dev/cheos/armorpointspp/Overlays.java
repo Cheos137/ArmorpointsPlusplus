@@ -53,7 +53,7 @@ public class Overlays {
 				&& Compat.isDetailarmorbarLoaded()
 				&& (ApppConfig.instance().enm(EnumOption.DETAILAB_COMPAT) == EnableState.ALWAYS
 				|| (ApppConfig.instance().enm(EnumOption.DETAILAB_COMPAT) == EnableState.AUTO && gui.minecraft.player.getArmorValue() <= 20))) {
-			DetailarmorbarSafeAccess.render(poseStack, gui.minecraft.player);
+			DetailarmorbarSafeAccess.render(gui, poseStack, gui.minecraft.player);
 			flag = true;
 		} else if (!ApppConfig.instance().bool(BooleanOption.ARMOR_ENABLE))
 			flag = Components.VANILLA_ARMOR.render(ctx);
