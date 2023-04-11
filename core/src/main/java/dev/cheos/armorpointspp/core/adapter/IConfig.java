@@ -504,17 +504,19 @@ public interface IConfig {
 	
 	public static class EnumOption<T extends Enum<T>> implements Option<T> {
 		public static final EnumOption<FrostbiteStyle>
-				FROSTBITE_STYLE          = new EnumOption<>("frostbiteStyle"                  , FrostbiteStyle.ICON, Category.GENERAL    , " Frostbite heart display style (full = vanilla)"          , " Available: %s [default: %s]");
+				FROSTBITE_STYLE          = new EnumOption<>("frostbiteStyle"                  , FrostbiteStyle.ICON, Category.GENERAL    , " Frostbite heart display style (full = vanilla)"                           , " Available: %s [default: %s]");
 		public static final EnumOption<Suffix.Type>
-				SUFFIX                   = new EnumOption<>("suffix"                          , Suffix.Type.SI     , Category.GENERAL    , " Suffix type used for displaying high numeric values"     , " Available: %s [default: %s]");
+				SUFFIX                   = new EnumOption<>("suffix"                          , Suffix.Type.SI     , Category.GENERAL    , " Suffix type used for displaying high numeric values"                      , " Available: %s [default: %s]");
 		public static final EnumOption<Alignment>
-				ARMOR_TEXT_ALIGNMENT     = new EnumOption<>("armorValueAlignment"             , Alignment.RIGHT    , Category.TEXT_CONFIG, " if enabled, custom alignment of the armor value text"    , " Available: %s [default: %s]"),
-				HEALTH_TEXT_ALIGNMENT    = new EnumOption<>("healthValueAlignment"            , Alignment.RIGHT    , Category.TEXT_CONFIG, " if enabled, custom alignment of the health value text"   , " Available: %s [default: %s]"),
-				TOUGHNESS_TEXT_ALIGNMENT = new EnumOption<>("toughnessValueAlignment"         , Alignment.RIGHT    , Category.TEXT_CONFIG, " if enabled, custom alignment of the toughness value text", " Available: %s [default: %s]");
+				ARMOR_TEXT_ALIGNMENT     = new EnumOption<>("armorValueAlignment"             , Alignment.RIGHT    , Category.TEXT_CONFIG, " if enabled, custom alignment of the armor value text"                     , " Available: %s [default: %s]"),
+				HEALTH_TEXT_ALIGNMENT    = new EnumOption<>("healthValueAlignment"            , Alignment.RIGHT    , Category.TEXT_CONFIG, " if enabled, custom alignment of the health value text"                    , " Available: %s [default: %s]"),
+				TOUGHNESS_TEXT_ALIGNMENT = new EnumOption<>("toughnessValueAlignment"         , Alignment.RIGHT    , Category.TEXT_CONFIG, " if enabled, custom alignment of the toughness value text"                 , " Available: %s [default: %s]");
 		public static final EnumOption<Side>
-				TOUGHNESS_SIDE           = new EnumOption<>("toughnessSide"                   , Side.LEFT          , Category.GENERAL    , " Determines the side of the toughness bar"                , " Available: %s [default: %s]", " Only effective if useToughnessBar is set to true!");
-		public static final EnumOption<Mirroring>
-				TOUGHNESS_MIRRORING      = new EnumOption<>("toughnessMirroring"              , Mirroring.AUTO     , Category.GENERAL    , " Determines whether the thoughenss bar should be mirrored", " Available: %s [default: %s]", " Only effective if useToughnessBar is set to true!");
+				TOUGHNESS_SIDE           = new EnumOption<>("toughnessSide"                   , Side.LEFT          , Category.GENERAL    , " Determines the side of the toughness bar"                                 , " Available: %s [default: %s]", " Only effective if useToughnessBar is set to true!");
+		public static final EnumOption<EnableState>
+				TOUGHNESS_MIRRORING      = new EnumOption<>("toughnessMirroring"              , EnableState.AUTO   , Category.GENERAL    , " Determines whether the thoughenss bar should be mirrored"                 , " Available: %s [default: %s]", " Only effective if useToughnessBar is set to true!");
+		public static final EnumOption<EnableState>
+				DETAILAB_COMPAT          = new EnumOption<>("detailarmorbar"                  , EnableState.AUTO   , Category.COMPAT     , " Renders DetailArmorBar when below 21 armor points (AUTO), ALWAYS or NEVER", " Available: %s [default: %s]");
 		
 		private static final List<EnumOption<?>> ALL = ImmutableList.copyOf(new EnumOption<?>[] {
 			FROSTBITE_STYLE,

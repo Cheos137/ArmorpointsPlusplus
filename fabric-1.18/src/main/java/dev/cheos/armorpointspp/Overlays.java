@@ -2,9 +2,10 @@ package dev.cheos.armorpointspp;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import dev.cheos.armorpointspp.compat.Compat;
+import dev.cheos.armorpointspp.compat.DetailarmorbarSafeAccess;
 import dev.cheos.armorpointspp.config.ApppConfig;
-import dev.cheos.armorpointspp.core.RenderContext;
-import dev.cheos.armorpointspp.core.Side;
+import dev.cheos.armorpointspp.core.*;
 import dev.cheos.armorpointspp.core.adapter.*;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
@@ -48,7 +49,13 @@ public class Overlays {
 	static boolean armorLevel(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		RenderContext ctx = ctx(poseStack, baseX(screenWidth), lastArmorY = baseY(gui, screenHeight));
 		boolean flag = false;
-		if (!ApppConfig.instance().bool(BooleanOption.ARMOR_ENABLE))
+		if (!ApppConfig.instance().bool(BooleanOption.ARMOR_HIDDEN)
+				&& Compat.isDetailarmorbarLoaded()
+				&& (ApppConfig.instance().enm(EnumOption.DETAILAB_COMPAT) == EnableState.ALWAYS
+				|| (ApppConfig.instance().enm(EnumOption.DETAILAB_COMPAT) == EnableState.AUTO && gui.minecraft.player.getArmorValue() <= 20))) {
+			DetailarmorbarSafeAccess.render(poseStack, gui.minecraft.player);
+			flag = true;
+		} else if (!ApppConfig.instance().bool(BooleanOption.ARMOR_ENABLE))
 			flag = Components.VANILLA_ARMOR.render(ctx);
 		else flag = Components.ARMOR.render(ctx);
 		if (flag) gui.leftHeight += 10;

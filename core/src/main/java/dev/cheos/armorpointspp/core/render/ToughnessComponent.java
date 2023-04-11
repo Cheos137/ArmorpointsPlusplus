@@ -14,8 +14,8 @@ public class ToughnessComponent implements IRenderComponent {
 		ctx.profiler.push("toughness");
 		ITextureSheet tex = tex(ctx).bind(ctx);
 		long toughness = ctx.math.floor(ctx.data.toughness() * 2);
-		Mirroring mirroring = ctx.config.enm(EnumOption.TOUGHNESS_MIRRORING);
-		boolean mirror = mirroring == Mirroring.ALWAYS || (mirroring == Mirroring.AUTO && ctx.config.enm(EnumOption.TOUGHNESS_SIDE) == Side.RIGHT);
+		EnableState mirroring = ctx.config.enm(EnumOption.TOUGHNESS_MIRRORING);
+		boolean mirror = mirroring == EnableState.ALWAYS || (mirroring == EnableState.AUTO && ctx.config.enm(EnumOption.TOUGHNESS_SIDE) == Side.RIGHT);
 		
 		for (int i = 0; i < 10; i++)
 			tex.drawToughness(

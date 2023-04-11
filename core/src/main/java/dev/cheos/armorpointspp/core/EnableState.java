@@ -1,6 +1,6 @@
 package dev.cheos.armorpointspp.core;
 
-public enum Mirroring {
+public enum EnableState {
 	ALWAYS,
 	NEVER,
 	AUTO;
