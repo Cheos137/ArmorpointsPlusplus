@@ -2,8 +2,7 @@ package dev.cheos.armorpointspp;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import dev.cheos.armorpointspp.compat.Compat;
-import dev.cheos.armorpointspp.compat.DetailarmorbarSafeAccess;
+import dev.cheos.armorpointspp.compat.*;
 import dev.cheos.armorpointspp.config.ApppConfig;
 import dev.cheos.armorpointspp.core.*;
 import dev.cheos.armorpointspp.core.adapter.*;
@@ -44,6 +43,10 @@ public class Overlays {
 	
 	static boolean absorptionOv(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
 		return Components.ABSORPTION_OVER.render(ctx(poseStack, baseX(screenWidth), lastHealthY));
+	}
+	
+	static void compat$victus(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+		VictusCompat.render(gui, poseStack, gui.minecraft.player, baseX(screenWidth));
 	}
 	
 	static boolean armorLevel(ApppGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {

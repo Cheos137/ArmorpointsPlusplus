@@ -49,6 +49,7 @@ dependencies {
 	modCompileOnly 'maven.modrinth:better-mount-hud:1.2.0'
 	modCompileOnly 'maven.modrinth:its-thirst:1.0.0-1.19.2'
 	modCompileOnly 'maven.modrinth:detail-armor-bar:2.6.2+1.19-fabric'
+	modCompileOnly 'maven.modrinth:victus:0.1.12+1.19'
 }
 
 processResources {

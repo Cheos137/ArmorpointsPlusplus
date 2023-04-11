@@ -93,7 +93,7 @@ public class HealthComponent implements IRenderComponent {
 		return popReturn(ctx, true);
 	}
 	
-	int[] lastHeartY() {
+	public int[] lastHeartY() {
 		return this.lastHeartY;
 	}
 	

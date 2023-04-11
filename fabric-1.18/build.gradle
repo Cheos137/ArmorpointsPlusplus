@@ -48,6 +48,7 @@ dependencies {
     modCompileOnly 'curse.maven:dehydration-410830:3786010' // Dehydration 1.2.8
 	modCompileOnly 'maven.modrinth:better-mount-hud:1.1.4'
 	modCompileOnly 'maven.modrinth:detail-armor-bar:2.6.2'
+	modCompileOnly 'maven.modrinth:victus:0.1.11+1.18'
 }
 
 processResources {
