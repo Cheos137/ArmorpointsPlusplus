@@ -48,7 +48,7 @@ public class ApppGui extends Gui {
 	protected void renderPlayerHealth(PoseStack poseStack) {
 		// LEFT SIDE
 		boolean health, absorb, absbov, armor, magics, resist, protec, toughn, bewitchmentVampire = false;
-		if (Compat.isBewitchmentLoaded()) bewitchmentVampire = BewitchmentCompat.render(this, poseStack, getCameraPlayer(), this.leftHeight, this.leftHeight); // COMPAT
+		if (Compat.isBewitchmentLoaded()) bewitchmentVampire = BewitchmentCompat.render(this, poseStack, getCameraPlayer(), this.screenWidth, this.screenHeight); // COMPAT
 		if (bewitchmentVampire) {
 			this.leftHeight += 10;
 			Overlays.updateHealthY(this, this.screenHeight);
