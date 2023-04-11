@@ -9,7 +9,6 @@ public final class VanillaTextureSheet implements ITextureSheet {
 	public void drawOverlay(RenderContext ctx, int x, int y, boolean half, boolean hardcore, OverlaySprite sprite) {
 		if (sprite == OverlaySprite.FROSTBITE || sprite == OverlaySprite.FROSTBITE_FULL || sprite == OverlaySprite.FROSTBITE_ICON)
 			blit(ctx, x, y, half ? 187 : 178, hardcore ? 45 : 0);
-		else throw new UnsupportedOperationException("Appp overlays not available with vanilla texture");
 	}
 	
 	@Override
@@ -18,9 +17,7 @@ public final class VanillaTextureSheet implements ITextureSheet {
 	}
 	
 	@Override
-	public void drawAbsorb(RenderContext ctx, int x, int y, int amount, boolean bright) {
-		throw new UnsupportedOperationException("Appp absorption overlay not available with vanilla texture");
-	}
+	public void drawAbsorb(RenderContext ctx, int x, int y, int amount, boolean bright) { }
 	
 	@Override
 	public void drawArmor(RenderContext ctx, int x, int y, int spriteLevel, boolean half) {
@@ -50,14 +47,10 @@ public final class VanillaTextureSheet implements ITextureSheet {
 	}
 	
 	@Override
-	public void drawToughness(RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean icon, boolean mirror) {
-		throw new UnsupportedOperationException("Appp toughness not available with vanilla texture");
-	}
-
+	public void drawToughness(RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean icon, boolean mirror) { }
+	
 	@Override
-	public void drawMagicShield(RenderContext ctx, int x, int y, int spriteLevel) {
-		throw new UnsupportedOperationException("Appp magic resistance overlay (potioncore) not available with vanilla texture");
-	}
+	public void drawMagicShield(RenderContext ctx, int x, int y, int spriteLevel) { }
 	
 	@Override
 	public String texLocation() {
