@@ -20,7 +20,7 @@ public class BewitchmentCompat {
 	private static final ResourceLocation BEWITCHMENT_GUI_ICONS_TEXTURE = new ResourceLocation(Bewitchment.MODID, "textures/gui/icons.png");
 	private static final ResourceLocation EMPTY_TEXTURE = new ResourceLocation(Bewitchment.MODID, "textures/gui/empty.png");
 	
-	public static boolean render(ApppGui gui, PoseStack poseStack, Player player, int scaledHeight, int scaledWidth) {
+	public static boolean render(ApppGui gui, PoseStack poseStack, Player player, int scaledWidth, int scaledHeight) {
 		BWComponents.MAGIC_COMPONENT.maybeGet(player).ifPresent(magicComponent -> {
 			if (magicComponent.getMagicTimer() > 0) {
 				RenderSystem.setShaderTexture(0, BEWITCHMENT_GUI_ICONS_TEXTURE);
