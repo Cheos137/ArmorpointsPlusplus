@@ -103,6 +103,7 @@ public class ApppConfig implements IConfig { // TODO: config gui?
 			if (opt.isAvailableIn(VERSION))
 				stringConfigs.put(opt.key(), new StringValue(opt.key(), opt.category().getPathJoined(), opt.def(), opt.comments()));
 		for (EnumOption<?> opt : EnumOption.values())
-			enumConfigs.put(opt.key(), EnumValue.of(opt));
+			if (opt.isAvailableIn(VERSION))
+				enumConfigs.put(opt.key(), EnumValue.of(opt));
 	}
 }

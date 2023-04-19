@@ -95,7 +95,8 @@ public class ApppConfig implements IConfig {
 			if (opt.isAvailableIn(VERSION))
 				stringConfigs.put(opt.key(), new StringValue(opt.key(), opt.def(), opt.comments()));
 		for (EnumOption<?> opt : EnumOption.values())
-			enumConfigs.put(opt.key(), EnumValue.of(opt));
+			if (opt.isAvailableIn(VERSION))
+				enumConfigs.put(opt.key(), EnumValue.of(opt));
 	}
 	
 	public static class ConfigBuilder {

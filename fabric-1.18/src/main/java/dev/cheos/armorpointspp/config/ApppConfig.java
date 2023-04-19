@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
+import dev.cheos.armorpointspp.Armorpointspp;
 import dev.cheos.armorpointspp.config.ApppConfigValue.*;
 import dev.cheos.armorpointspp.core.adapter.IConfig;
 import io.github.fablabsmc.fablabs.api.fiber.v1.builder.ConfigTreeBuilder;
@@ -18,7 +19,7 @@ public class ApppConfig implements IConfig {
 	private static ApppConfig INSTANCE;
 	private static ConfigTree tree;
 	private static final Path configFile = FabricLoader.getInstance().getConfigDir().resolve("armorpointspp.json5");
-	public static final Version VERSION = Version.v1_19;
+	public static final Version VERSION = Version.v1_18;
 	private static final Map<String, BoolValue>    boolConfigs   = new HashMap<>();
 	private static final Map<String, IntValue>     intConfigs    = new HashMap<>();
 	private static final Map<String, HexValue>     hexConfigs    = new HashMap<>();
@@ -134,7 +135,8 @@ public class ApppConfig implements IConfig {
 			if (opt.isAvailableIn(VERSION))
 				stringConfigs.put(opt.key(), new StringValue(opt.key(), opt.def(), opt.comments()));
 		for (EnumOption<?> opt : EnumOption.values())
-			enumConfigs.put(opt.key(), EnumValue.of(opt));
+			if (opt.isAvailableIn(VERSION))
+				enumConfigs.put(opt.key(), EnumValue.of(opt));
 	}
 	
 	public static class ConfigBuilder {
@@ -163,6 +165,7 @@ public class ApppConfig implements IConfig {
 	}
 	
 	public static ApppConfigValue<?, ?, ?> findValue(Option<?> option) {
+		Armorpointspp.LOGGER.error("searching option " + option.key());
 		if (option instanceof BooleanOption)
 			return boolConfigs  .get(option.key());
 		if (option instanceof IntegerOption)

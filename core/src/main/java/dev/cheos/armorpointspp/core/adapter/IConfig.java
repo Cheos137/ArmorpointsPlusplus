@@ -76,13 +76,14 @@ public interface IConfig {
 		v1_18fabric,
 		v1_19fabric;
 		
-		public static final ImmutableList<Version> ALL   = ImmutableList.copyOf(Version.values());
-		public static final ImmutableList<Version> NONE  = ImmutableList.of();
-		public static final ImmutableList<Version> V1_12 = ImmutableList.of(v1_12);
-		public static final ImmutableList<Version> V1_16 = ImmutableList.of(v1_16);
-		public static final ImmutableList<Version> V1_17 = ImmutableList.of(v1_17);
-		public static final ImmutableList<Version> V1_18 = ImmutableList.of(v1_18, v1_18fabric);
-		public static final ImmutableList<Version> V1_19 = ImmutableList.of(v1_19, v1_19fabric);
+		public static final ImmutableList<Version> ALL     = ImmutableList.copyOf(Version.values());
+		public static final ImmutableList<Version> NONE    = ImmutableList.of();
+		public static final ImmutableList<Version> FABRIC  = ImmutableList.of(v1_18fabric, v1_19fabric);
+		public static final ImmutableList<Version> V1_12   = ImmutableList.of(v1_12);
+		public static final ImmutableList<Version> V1_16   = ImmutableList.of(v1_16);
+		public static final ImmutableList<Version> V1_17   = ImmutableList.of(v1_17);
+		public static final ImmutableList<Version> V1_18   = ImmutableList.of(v1_18, v1_18fabric);
+		public static final ImmutableList<Version> V1_19   = ImmutableList.of(v1_19, v1_19fabric);
 		public static final ImmutableList<Version> V1_18UP = ImmutableList.<Version>builder().addAll(V1_19  ).addAll(V1_18).build();
 		public static final ImmutableList<Version> V1_17UP = ImmutableList.<Version>builder().addAll(V1_18UP).addAll(V1_17).build();
 		public static final ImmutableList<Version> V1_16UP = ImmutableList.<Version>builder().addAll(V1_17UP).addAll(V1_16).build();
@@ -516,7 +517,7 @@ public interface IConfig {
 		public static final EnumOption<EnableState>
 				TOUGHNESS_MIRRORING      = new EnumOption<>("toughnessMirroring"              , EnableState.AUTO   , Category.GENERAL    , " Determines whether the thoughenss bar should be mirrored"                 , " Available: %s [default: %s]", " Only effective if useToughnessBar is set to true!");
 		public static final EnumOption<EnableState>
-				DETAILAB_COMPAT          = new EnumOption<>("detailarmorbar"                  , EnableState.AUTO   , Category.COMPAT     , " Renders DetailArmorBar when below 21 armor points (AUTO), ALWAYS or NEVER", " Available: %s [default: %s]");
+				DETAILAB_COMPAT          = new EnumOption<>("detailarmorbar"                  , EnableState.AUTO   , Category.COMPAT     , Version.FABRIC, " Renders DetailArmorBar when below 21 armor points (AUTO), ALWAYS or NEVER", " Available: %s [default: %s]");
 		
 		private static final List<EnumOption<?>> ALL = ImmutableList.copyOf(new EnumOption<?>[] {
 			FROSTBITE_STYLE,
@@ -525,7 +526,8 @@ public interface IConfig {
 			HEALTH_TEXT_ALIGNMENT,
 			TOUGHNESS_TEXT_ALIGNMENT,
 			TOUGHNESS_SIDE,
-			TOUGHNESS_MIRRORING
+			TOUGHNESS_MIRRORING,
+			DETAILAB_COMPAT
 		});
 		
 		final String key;
