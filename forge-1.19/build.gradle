@@ -38,6 +38,13 @@ sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19.4-45.0.40'
     implementation project(':core')
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+
+mixin {
+    add sourceSets.main, 'armorpointspp.refmap.json'
+    config 'armorpointspp.mixins.json'
 }
 
 jar {
