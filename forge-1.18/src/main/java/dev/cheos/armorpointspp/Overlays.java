@@ -2,7 +2,6 @@ package dev.cheos.armorpointspp;
 
 import static net.minecraftforge.client.gui.ForgeIngameGui.*;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +14,7 @@ import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
 import dev.cheos.armorpointspp.core.render.Components;
 import dev.cheos.armorpointspp.impl.*;
+import dev.cheos.armorpointspp.mixin.ForgeIngameGuiMixin;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.gui.*;
 import net.minecraftforge.client.gui.OverlayRegistry.OverlayEntry;
@@ -49,16 +49,11 @@ public class Overlays {
 		// try to unregister them
 		unregister(ForgeIngameGui.PLAYER_HEALTH_ELEMENT);
 		unregister(ForgeIngameGui.ARMOR_LEVEL_ELEMENT);
-		// try to override them
-		try { // TODO mixin for this
-			Field health = ReflectionHelper.unfinalize(ReflectionHelper.findField(ForgeIngameGui.class, "PLAYER_HEALTH_ELEMENT"));
-			health.set(null, PLAYER_HEALTH);
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) { }
-		try { // TODO mixin for this
-			Field armor = ReflectionHelper.unfinalize(ReflectionHelper.findField(ForgeIngameGui.class, "ARMOR_LEVEL_ELEMENT"));
-			armor.set(null, ARMOR_LEVEL);
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) { }
-		// hopefully, they're completely replaced now
+		// override fields
+		@SuppressWarnings("resource")
+		ForgeIngameGuiMixin accessor = (ForgeIngameGuiMixin) Minecraft.getInstance().gui;
+		accessor.setPlayerHealthComponent(PLAYER_HEALTH);
+		accessor.setArmorLevelComponent(ARMOR_LEVEL);
 	}
 	
 	private static void playerHealth(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
