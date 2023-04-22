@@ -15,7 +15,7 @@ import net.minecraft.world.entity.player.Player;
 public class DehydrationCompat { // ref: https://github.com/Globox1997/Dehydration/blob/1.18/src/main/java/net/dehydration/mixin/client/InGameHudMixin.java
 	private static final ResourceLocation THIRST_ICON = new ResourceLocation("dehydration:textures/gui/thirst.png");
 	
-	public static boolean render(ApppGui gui, PoseStack poseStack, Player player, int scaledHeight, int scaledWidth) {
+	public static boolean render(ApppGui gui, PoseStack poseStack, Player player, int scaledWidth, int scaledHeight) {
 		if (player != null && !player.isInvulnerable()) {
 			LivingEntity livingEntity = gui.getPlayerVehicleWithHealth();
 			

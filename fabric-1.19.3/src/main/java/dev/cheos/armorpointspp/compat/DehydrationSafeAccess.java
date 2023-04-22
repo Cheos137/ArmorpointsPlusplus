@@ -8,7 +8,7 @@ import net.dehydration.thirst.ThirstHudRender;
 import net.minecraft.world.entity.player.Player;
 
 public class DehydrationSafeAccess {
-	public static void render(ApppGui gui, PoseStack poseStack, Player player, int scaledHeight, int scaledWidth, int vehicleHealth) {
+	public static void render(ApppGui gui, PoseStack poseStack, Player player, int scaledWidth, int scaledHeight, int vehicleHealth) {
 		float flashAlpha = 0;
 		float otherFlashAlpha = 0;
 		try {
@@ -18,6 +18,7 @@ public class DehydrationSafeAccess {
 			e.printStackTrace();
 		}
 		ThirstHudRender.renderThirstHud(poseStack, gui.minecraft, player, scaledWidth, scaledHeight, gui.tickCount, vehicleHealth, flashAlpha, otherFlashAlpha);
-		gui.rightHeight += 10;
+		if (player != null && !player.isInvulnerable())
+			gui.rightHeight += 10;
 	}
 }

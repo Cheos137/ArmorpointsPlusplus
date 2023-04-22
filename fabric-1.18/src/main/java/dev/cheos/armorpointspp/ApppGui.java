@@ -66,8 +66,11 @@ public class ApppGui extends Gui {
 		// RIGHT SIDE
 		if (getVehicleMaxHearts(getPlayerVehicleWithHealth()) == 0 || Compat.isBetterMountHudLoaded())
 			renderFood(poseStack);
+		
 		renderMountHealth(poseStack);
-		if (Compat.isDehydrationLoaded()) DehydrationCompat.render(this, poseStack, getCameraPlayer(), this.screenWidth, this.screenHeight);
+		
+		if (Compat.isDehydrationLoaded())
+			DehydrationCompat.render(this, poseStack, getCameraPlayer(), this.screenWidth, this.screenHeight);
 		
 		// OTHER
 		Overlays.armorToughness(this, poseStack, this.partialTicksCur, this.screenWidth, this.screenHeight);
@@ -77,7 +80,7 @@ public class ApppGui extends Gui {
 		
 		// COMPAT
 		if (Compat.isSpectrumLoaded()) {
-			SpectrumSafeAccess.handleOnRender(poseStack, this.screenWidth, this.screenHeight - (this.leftHeight - (armor ? 59 : 49)), getCameraPlayer()); // little hack to get spectrum to render at the correct y
+			SpectrumSafeAccess.handleOnRender(poseStack, this.screenWidth, this.screenHeight - this.leftHeight + (armor ? 59 : 49), getCameraPlayer()); // little hack to get spectrum to render at the correct y
 			this.leftHeight += 10;
 		}
 		
