@@ -1,0 +1,32 @@
+modLoader="javafml"
+loaderVersion="[41,)"
+license="MIT"
+issueTrackerURL="https://github.com/Cheos137/ArmorpointsPlusplus/issues/new/choose"
+
+[[mods]]
+    modId="armorpointspp"
+    version="${file.jarVersion}"
+    displayName="ArmorPoints++"
+    updateJSONURL="https://api.modrinth.com/updates/xvAim1vw/forge_updates.json"
+    displayURL="https://modrinth.com/mod/armorpoints"
+    logoFile="icon.png"
+    credits="Code: Cheos, Additional Textures: Sopsy_Hallow"
+    authors="Cheos"
+    displayTest="IGNORE_ALL_VERSION"
+    description='''
+    A light-weight mod overhauling vanilla ui components
+    '''
+
+[[dependencies.armorpointspp]]
+    modId="forge"
+    mandatory=true
+    versionRange="[41,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.armorpointspp]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.19,1.20)"
+    ordering="NONE"
+    side="BOTH"
