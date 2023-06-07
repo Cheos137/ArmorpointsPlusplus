@@ -1,6 +1,6 @@
 plugins {
-    id 'net.minecraftforge.gradle' version '5.+'
     id 'eclipse'
+    id 'net.minecraftforge.gradle' version '6.+'
 }
 
 version = '1.12.2-' + modVersion
@@ -17,7 +17,7 @@ minecraft {
 
     runs {
         client {
-            workingDirectory project.file('run')
+            workingDirectory 'run'
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             taskName 'runApppClient-1.12'
@@ -30,7 +30,7 @@ minecraft {
         }
 
         server {
-            workingDirectory project.file('run')
+            workingDirectory 'run'
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             taskName 'runApppServer-1.12'

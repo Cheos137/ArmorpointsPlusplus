@@ -1,7 +1,7 @@
 plugins {
-    id 'net.minecraftforge.gradle' version '5.+'
-    id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
     id 'eclipse'
+    id 'net.minecraftforge.gradle' version '6.+'
+    id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
 }
 
 version = '1.16.5-' + modVersion
@@ -18,7 +18,7 @@ minecraft {
 
     runs {
         client {
-            workingDirectory project.file('run')
+            workingDirectory 'run'
             arg '-mixin.config=armorpointspp.mixins.json'
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
