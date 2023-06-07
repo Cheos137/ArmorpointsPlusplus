@@ -1,0 +1,21 @@
+accessWidener v1 named
+
+accessible field  net/minecraft/client/gui/Gui GUI_ICONS_LOCATION Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui random Lnet/minecraft/util/RandomSource;
+accessible field  net/minecraft/client/gui/Gui minecraft Lnet/minecraft/client/Minecraft;
+accessible field  net/minecraft/client/gui/Gui tickCount I
+accessible field  net/minecraft/client/gui/Gui lastHealth I
+accessible field  net/minecraft/client/gui/Gui displayHealth I
+accessible field  net/minecraft/client/gui/Gui lastHealthTime J
+accessible field  net/minecraft/client/gui/Gui healthBlinkTime J
+accessible field  net/minecraft/client/gui/Gui screenWidth I
+accessible field  net/minecraft/client/gui/Gui screenHeight I
+
+extendable method net/minecraft/client/gui/Gui getCameraPlayer ()Lnet/minecraft/world/entity/player/Player;
+extendable method net/minecraft/client/gui/Gui getVehicleMaxHearts (Lnet/minecraft/world/entity/LivingEntity;)I
+extendable method net/minecraft/client/gui/Gui renderPlayerHealth (Lnet/minecraft/client/gui/GuiGraphics;)V
+extendable method net/minecraft/client/gui/Gui renderHearts (Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/entity/player/Player;IIIIFIIIZ)V
+extendable method net/minecraft/client/gui/Gui renderVehicleHealth (Lnet/minecraft/client/gui/GuiGraphics;)V
+extendable method net/minecraft/client/gui/Gui getPlayerVehicleWithHealth ()Lnet/minecraft/world/entity/LivingEntity;
+
+accessible class net/minecraft/client/gui/components/PlayerTabOverlay$HealthState
