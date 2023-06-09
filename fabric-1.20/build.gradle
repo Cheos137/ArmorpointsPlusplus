@@ -41,15 +41,15 @@ dependencies {
     implementation 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'
     include 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'
 
-	modImplementation 'com.terraformersmc:modmenu:6.1.0-rc.4' // outdated
+	modImplementation 'com.terraformersmc:modmenu:7.0.0'
 
-	modCompileOnly('squeek.appleskin:appleskin-fabric:mc1.19.4-2.4.3') { transitive = false } // outdated
-	modRuntimeOnly('squeek.appleskin:appleskin-fabric:mc1.19.4-2.4.3') { // outdated
+	modCompileOnly('squeek.appleskin:appleskin-fabric:mc1.20-2.5.0') { transitive = false }
+	modRuntimeOnly('squeek.appleskin:appleskin-fabric:mc1.20-2.5.0') {
 		exclude module: 'fabric-api'
 		exclude module: 'modmenu'
 	}
 
-	modCompileOnly 'lib:libhud-fabric:1.20-1.0.0-beta2'
+	modCompileOnly 'maven.modrinth:libhud:1.0.0-beta2'
 	modCompileOnly 'maven.modrinth:spectrum:1.6.9-1.19.2-leisure_time' // outdated
 	modCompileOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.1.0' // outdated
     modCompileOnly 'curse.maven:bewitchment-394915:4048571' // Bewitchment 1.19-6 // outdated
