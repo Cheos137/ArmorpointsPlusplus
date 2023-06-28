@@ -51,13 +51,13 @@ dependencies {
 
 	modCompileOnly 'maven.modrinth:libhud:1.0.0-beta2'
 	modCompileOnly 'maven.modrinth:spectrum:1.6.9-1.19.2-leisure_time' // outdated
-	modCompileOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.1.0' // outdated
+	modCompileOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.2.1'
     modCompileOnly 'curse.maven:bewitchment-394915:4048571' // Bewitchment 1.19-6 // outdated
-    modCompileOnly 'curse.maven:dehydration-410830:4216059' // Dehydration 1.3.3 // outdated
+    modCompileOnly 'maven.modrinth:dehydration:1.3.4+1.20'
 	modCompileOnly 'maven.modrinth:better-mount-hud:1.2.2'
 	modCompileOnly 'maven.modrinth:its-thirst:1.1.0-ALPHA-1.19.3' // outdated
-	modCompileOnly 'maven.modrinth:detail-armor-bar:2.6.3+1.19.4-fabric' // outdated
-	modCompileOnly 'maven.modrinth:victus:0.1.12+1.19.4' // outdated
+	modCompileOnly 'maven.modrinth:detail-armor-bar:2.6.3+1.20.1-fabric'
+	modCompileOnly 'maven.modrinth:victus:0.1.13+1.20'
 }
 
 processResources {

@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 public class DetailarmorbarSafeAccess {
 	public static void render(ApppGui gui, GuiGraphics graphics, Player player) {
 		gui.minecraft.getProfiler().push("__dummy");
-		ArmorBarRenderer.INSTANCE.render(graphics.pose(), player); // TODO outdated
+		ArmorBarRenderer.INSTANCE.render(graphics, player);
 		gui.minecraft.getProfiler().pop();
 	}
 }

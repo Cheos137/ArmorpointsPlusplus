@@ -16,8 +16,7 @@ public class DehydrationSafeAccess {
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		// TODO outdated
-		ThirstHudRender.renderThirstHud(graphics.pose(), gui.minecraft, player, scaledWidth, scaledHeight, gui.tickCount, vehicleHealth, flashAlpha, otherFlashAlpha);
+		ThirstHudRender.renderThirstHud(graphics, gui.minecraft, player, scaledWidth, scaledHeight, gui.tickCount, vehicleHealth, flashAlpha, otherFlashAlpha);
 		if (player != null && !player.isInvulnerable())
 			gui.rightHeight += 10;
 	}
