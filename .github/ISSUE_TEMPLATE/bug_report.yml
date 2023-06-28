@@ -32,10 +32,13 @@ body:
       label: Version
       description: Which version of the mod did the bug occur on?
       options:
+        - 3.1.x for Minecraft Fabric 1.20+
         - 3.1.x for Minecraft Fabric 1.19.4
         - 3.1.x for Minecraft Fabric 1.19.3
         - 3.1.x for Minecraft Fabric 1.19.2
-        - 3.1.x for Minecraft Forge 1.19.2+
+        - 3.1.x for Minecraft Forge 1.20+
+        - 3.1.x for Minecraft Forge 1.19.3+
+        - 3.1.x for Minecraft Forge 1.19.2
         - 3.1.x for Minecraft Fabric 1.18.2
         - 3.1.x for Minecraft Forge 1.18.2
         - 3.1.x for Minecraft Forge 1.16.5
