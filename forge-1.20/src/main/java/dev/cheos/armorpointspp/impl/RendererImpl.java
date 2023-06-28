@@ -39,6 +39,7 @@ public class RendererImpl implements IRenderer {
 	@Override
 	public void blitM(IPoseStack poseStack, int x, int y, float u, float v, int width, int height, int texWidth, int texHeight) {
 		Matrix4f mat = ((PoseStack) poseStack.getPoseStack()).last().pose();
+		RenderSystem.setShaderTexture(0, this.tex);
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
 		bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
