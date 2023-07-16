@@ -38,7 +38,11 @@ public abstract class ApppConfigValue<T, U> {
 		@Override
 		public Integer get() { return fromHex(this.confValue.get()); }
 		private static String hex(int i, int minlen) { return String.format("0x%0" + minlen + "x", i); }
-		private static int fromHex(String hex) { return Integer.parseInt(hex.substring(2), 16); }
+		private static int fromHex(String hex) { return hex.startsWith("0x")
+				? Integer.parseInt(hex.substring(2), 16)
+				: hex.startsWith("#")
+						? Integer.parseInt(hex.substring(1), 16)
+						: Integer.parseInt(hex, 16); }
 	}
 	
 	
