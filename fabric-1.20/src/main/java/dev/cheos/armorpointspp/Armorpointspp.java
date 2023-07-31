@@ -21,7 +21,6 @@ public class Armorpointspp {
 	public static final Logger LOGGER = LoggerFactory.getLogger("Armorpoints++");
 	
 	public void client() {
-		Compat.init();
 		// register login listener to reload config on world load
 		if (Compat.isFabricApiLoaded())
 			FabricAPISafeAccess.registerClientLoginInitEventListener(Armorpointspp::onLogin);

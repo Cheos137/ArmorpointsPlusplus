@@ -5,7 +5,7 @@ import net.fabricmc.loader.api.FabricLoader;
 public class Compat {
 	private static boolean libhud, fabricApi, appleskin, spectrum, raised, bewitchment, dehydration, betterMountHud, itsthirst, detailarmorbar, victus;
 	
-	public static void init() {
+	static {
 		libhud = FabricLoader.getInstance().isModLoaded("libhud");
 		fabricApi = FabricLoader.getInstance().isModLoaded("fabric");
 		appleskin = FabricLoader.getInstance().isModLoaded("appleskin");
