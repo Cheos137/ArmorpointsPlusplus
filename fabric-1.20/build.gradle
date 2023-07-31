@@ -90,6 +90,7 @@ loom {
 			source = sourceSets.main
 			// When true a run configuration file will be generated for IDE's. By default only set to true for the root project.
 			ideConfigGenerated = true
+			// vmArgs '-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9009'
 
 			// Configure run config with the default client options.
 			client()
