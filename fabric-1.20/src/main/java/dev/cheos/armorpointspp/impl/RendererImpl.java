@@ -5,7 +5,6 @@ import org.joml.Matrix4f;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 
-import dev.cheos.armorpointspp.ApppGui;
 import dev.cheos.armorpointspp.Armorpointspp;
 import dev.cheos.armorpointspp.config.ApppConfig;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
@@ -22,7 +21,6 @@ public class RendererImpl implements IRenderer {
 	// fallback / default texture sheet location
 	private static final ResourceLocation ICONS = new ResourceLocation(Armorpointspp.MODID, "textures/gui/" + ITextureSheet.defaultSheet().texLocation() + ".png");
 	private final Minecraft minecraft = Minecraft.getInstance();
-	private final ApppGui gui = (ApppGui) this.minecraft.gui;
 	private ResourceLocation tex;
 	
 	@Override
@@ -61,7 +59,7 @@ public class RendererImpl implements IRenderer {
 	
 	@Override
 	public void setupAppp() {
-		this.gui.setup(true, false);
+		setup(true, false);
 		this.tex = ICONS;
 	}
 	
@@ -73,13 +71,13 @@ public class RendererImpl implements IRenderer {
 					+ texSheet.texLocation()
 					+ ".png")
 				: new ResourceLocation(texSheet.texLocation());
-		this.gui.setup(true, false);
+		setup(true, false);
 		this.tex = this.minecraft.getResourceManager().getResource(location).isPresent() ? location : ICONS;
 	}
 	
 	@Override
 	public void setupVanilla() {
-		this.gui.setup(true, false);
+		setup(true, false);
 		this.tex = Gui.GUI_ICONS_LOCATION;
 	}
 	
@@ -106,5 +104,16 @@ public class RendererImpl implements IRenderer {
 	
 	private static Component comp(TextRenderType type, String text) {
 		return type == TextRenderType.LANG ? Component.translatable(text) : Component.literal(text);
+	}
+	
+	private static void setup(boolean blend, boolean depthTest) {
+		if (blend) {
+			RenderSystem.enableBlend();
+			RenderSystem.defaultBlendFunc();
+		} else RenderSystem.disableBlend();
+		if (depthTest)
+			RenderSystem.enableDepthTest();
+		else RenderSystem.disableDepthTest();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }
