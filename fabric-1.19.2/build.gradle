@@ -17,7 +17,7 @@ repositories {
 	maven { url 'https://maven.ryanliptak.com/' } // appleskin
 	maven { url 'https://maven.shedaniel.me/' }   // cloth - needed for appleskin runtime
 	maven { url 'https://maven.terraformersmc.com/releases/' } // modmenu
-	maven { url 'https://ladysnake.jfrog.io/artifactory/mods' } // cca
+	maven { url 'https://maven.ladysnake.org/releases' } // cca
 	maven { url 'https://jitpack.io' }
 	exclusiveContent {
 		forRepository { maven { url 'https://api.modrinth.com/maven' }} // modrinth
