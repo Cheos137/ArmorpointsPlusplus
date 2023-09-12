@@ -2,6 +2,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '6.+'
     id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
     id 'eclipse'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
 version = '1.16.5-' + modVersion
@@ -12,8 +13,8 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'official', version: '1.16.5'
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    mappings channel: 'parchment', version: '2022.03.06-1.16.5'
+
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {

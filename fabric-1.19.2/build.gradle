@@ -20,6 +20,10 @@ repositories {
 	maven { url 'https://maven.ladysnake.org/releases' } // cca
 	maven { url 'https://jitpack.io' }
 	exclusiveContent {
+		forRepository { maven { url 'https://maven.parchmentmc.org' }}
+		filter { includeGroup 'org.parchmentmc.data' }
+	}
+	exclusiveContent {
 		forRepository { maven { url 'https://api.modrinth.com/maven' }} // modrinth
 		filter { includeGroup 'maven.modrinth' }
 	}
@@ -31,7 +35,12 @@ repositories {
 
 dependencies {
     minecraft 'com.mojang:minecraft:1.19.2'
-	mappings loom.officialMojangMappings()
+	
+	mappings loom.layered() {
+		officialMojangMappings()
+		parchment('org.parchmentmc.data:parchment-1.19.2:2022.11.27@zip')
+	}
+
     implementation project(':core')
     modImplementation 'net.fabricmc:fabric-loader:0.14.19'
     modCompileOnly 'net.fabricmc.fabric-api:fabric-api:0.76.0+1.19.2'
