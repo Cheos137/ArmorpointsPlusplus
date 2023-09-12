@@ -63,3 +63,7 @@ jar {
 }
 
 jar.finalizedBy('reobfJar')
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
