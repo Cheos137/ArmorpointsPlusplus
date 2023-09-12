@@ -48,6 +48,7 @@ gradle-app.setting
 
 # FORGE
 **/run/
+.factorypath
 
 # MYSELF
 _built/
