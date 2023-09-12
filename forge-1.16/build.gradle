@@ -6,7 +6,7 @@ plugins {
 
 version = '1.16.5-' + modVersion
 group = modGroup
-archivesBaseName = modName + '-forge'
+base.archivesName = modName + '-forge'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 

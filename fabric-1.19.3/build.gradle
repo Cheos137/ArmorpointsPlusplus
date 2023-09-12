@@ -5,7 +5,7 @@ plugins {
 
 version = '1.19.3-' + modVersion
 group = modGroup
-archivesBaseName = modName + '-fabric'
+base.archivesName = modName + '-fabric'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
