@@ -1,7 +1,8 @@
 plugins {
-    id 'net.minecraftforge.gradle' version '6.+'
-    id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
     id 'eclipse'
+    id 'com.diffplug.eclipse.apt' version '3.+'
+    id 'net.neoforged.gradle' version '6.+'
+    id 'org.spongepowered.mixin' version '0.7.+'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
@@ -11,9 +12,11 @@ base.archivesName = modName + '-forge'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
     mappings channel: 'parchment', version: '2022.11.06-1.18.2'
+
+    copyIdeResources = true
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
@@ -35,6 +38,10 @@ minecraft {
 
 sourceSets.main.java { srcDir project(':core').sourceSets.main.java }
 sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
+
+repositories {
+    maven { url 'https://maven.minecraftforge.net/' }
+}
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.18.2-40.2.1'
@@ -61,6 +68,8 @@ jar {
             "MixinConfigs": "armorpointspp.mixins.json"
         ])
     }
+
+    finalizedBy 'reobfJar'
 }
 
 tasks.withType(JavaCompile) {

@@ -1,6 +1,7 @@
 plugins {
     id 'eclipse'
-    id 'net.minecraftforge.gradle' version '6.+'
+    id 'com.diffplug.eclipse.apt' version '3.+'
+    id 'net.neoforged.gradle' version '6.+'
 }
 
 version = '1.12.2-' + modVersion
@@ -9,10 +10,11 @@ base.archivesName = modName + '-forge'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
     mappings channel: 'snapshot', version: '20171003-1.12'
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    
+    copyIdeResources = true
     accessTransformer = file('src/main/resources/accesstransformer.cfg')
 
     runs {
@@ -48,6 +50,7 @@ sourceSets.main.java { srcDir project(':core').sourceSets.main.java }
 sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
 repositories {
+    maven { url 'https://maven.minecraftforge.net/' }
     maven {
         url 'https://www.cursemaven.com'
         content {
@@ -85,9 +88,9 @@ jar {
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
-}
 
-jar.finalizedBy('reobfJar')
+    finalizedBy 'reobfJar'
+}
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
