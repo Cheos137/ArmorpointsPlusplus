@@ -16,15 +16,10 @@ rootProject.name = 'armorpointspp'
 
 include 'core'
 
-include 'forge-1.12'
 include 'forge-1.16'
 include 'forge-1.18'
 include 'forge-1.19.2'
-include 'forge-1.19'
 include 'forge-1.20'
 
-include 'fabric-1.18'
 include 'fabric-1.19.2'
-include 'fabric-1.19.3'
-include 'fabric-1.19'
 include 'fabric-1.20'
