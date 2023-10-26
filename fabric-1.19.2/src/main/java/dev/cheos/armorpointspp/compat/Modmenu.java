@@ -81,11 +81,15 @@ public class Modmenu implements ModMenuApi {
 								widget = new EditOption(sv::set, sv::get);
 							else if (val instanceof FloatValue fv) {
 								if (fv.min != 0 && fv.max != Float.MAX_VALUE && fv.min < fv.max)
-									widget = new SliderOption(fv.min, fv.max, 0.1f, fv::set, fv::get);
+									widget = new FloatSliderOption(fv.min, fv.max, 0.1f, fv::set, fv::get);
 								else widget = new EditOption(fv::set, () -> fv.get().toString());
 							} else if (val instanceof EnumValue<?> ev)
 								widget = new EnumCycleOption(ev::set, () -> ev.get().name(), Arrays.stream(ev.type.getEnumConstants()).map(Enum::name).toList());
-							
+							else if (val instanceof IntValue iv) {
+								if (iv.min >= -100 && iv.max <= 100 && iv.min < iv.max)
+									widget = new IntSliderOption(iv.min, iv.max, 1, iv::set, iv::get);
+								else widget = new EditOption(iv::set, () -> iv.get().toString());
+							}
 							list.addSmall(new TextOption(opt.key(), opt.comments()), widget);
 						}
 					i++;
@@ -111,9 +115,9 @@ public class Modmenu implements ModMenuApi {
 		@Override
 		public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
 			renderBackground(poseStack);
+			super.render(poseStack, mouseX, mouseY, partialTicks);
 			this.tabContents.get(this.selectedCategory).render(poseStack, mouseX, mouseY, partialTicks);
 			drawCenteredString(poseStack, this.font, this.title, this.width / 2, 5, 0xFFFFFF);
-			super.render(poseStack, mouseX, mouseY, partialTicks);
 			this.tabContents.get(this.selectedCategory).getMouseOver(mouseX, mouseY).ifPresent(w -> w.renderToolTip(poseStack, mouseX, mouseY));
 		}
 		
@@ -283,12 +287,87 @@ public class Modmenu implements ModMenuApi {
 			}
 		}
 		
-		public class SliderWidget extends AbstractOptionSliderButton {
+		public class IntSliderWidget extends AbstractOptionSliderButton {
+			private final int min, max, step;
+			private final Consumer<Integer> onChange;
+			private final Supplier<Integer> provider;
+			
+			protected IntSliderWidget(int x, int y, int w, int h, int min, int max, int step, Consumer<Integer> onChange, Supplier<Integer> provider) {
+				super(ModmenuScreen.this.minecraft.options, x, y, w, h, toPct(provider.get(), min, max, step));
+				this.min = min;
+				this.max = max;
+				this.step = step;
+				this.onChange = onChange;
+				this.provider = provider;
+				updateMessage();
+			}
+			
+			@Override
+			protected void updateMessage() {
+				setMessage(Component.literal(String.valueOf(this.provider.get())));
+			}
+			
+			@Override
+			protected void applyValue() {
+				this.onChange.accept(toValue((float) this.value));
+			}
+			
+			public float toPct(float val) {
+				return Mth.clamp((clamp(val) - this.min) / (this.max - this.min), 0, 1);
+			}
+			
+			public static float toPct(float val, int min, int max, int step) {
+				return Mth.clamp((clamp(val, min, max, step) - min) / (max - min), 0, 1);
+			}
+			
+			public int toValue(float val) {
+				return clamp(Mth.lerp(Mth.clamp(val, 0, 1), this.min, this.max));
+			}
+			
+			public static float toValue(float val, int min, int max, int step) {
+				return clamp(Mth.lerp(Mth.clamp(val, 0, 1), min, max), min, max, step);
+			}
+			
+			public int clamp(float val) {
+				int ival = Math.round(val);
+				if (this.step > 0)
+					ival = this.step * Math.round(val / this.step);
+				return Mth.clamp(ival, this.min, this.max);
+			}
+			
+			private static int clamp(float val, int min, int max, int step) {
+				int ival = Math.round(val);
+				if (step > 0)
+					ival = step * Math.round(val / step);
+				return Mth.clamp(ival, min, max);
+			}
+		}
+		
+		public class IntSliderOption implements WidgetProvider {
+			private final int min, max, step;
+			private final Consumer<Integer> onChange;
+			private final Supplier<Integer> provider;
+			
+			public IntSliderOption(int min, int max, int step, Consumer<Integer> onChange, Supplier<Integer> provider) {
+				this.min = min;
+				this.max = max;
+				this.step = step;
+				this.onChange = onChange;
+				this.provider = provider;
+			}
+			
+			@Override
+			public AbstractWidget createButton(int x, int y, int w) {
+				return new IntSliderWidget(x, y, w, 20, this.min, this.max, this.step, onChange, provider);
+			}
+		}
+		
+		public class FloatSliderWidget extends AbstractOptionSliderButton {
 			private final float min, max, step;
 			private final Consumer<Float> onChange;
 			private final Supplier<Float> provider;
 			
-			protected SliderWidget(int x, int y, int w, int h, float min, float max, float step, Consumer<Float> onChange, Supplier<Float> provider) {
+			protected FloatSliderWidget(int x, int y, int w, int h, float min, float max, float step, Consumer<Float> onChange, Supplier<Float> provider) {
 				super(ModmenuScreen.this.minecraft.options, x, y, w, h, toPct(provider.get(), min, max, step));
 				this.min = min;
 				this.max = max;
@@ -337,12 +416,12 @@ public class Modmenu implements ModMenuApi {
 			}
 		}
 		
-		public class SliderOption implements WidgetProvider {
+		public class FloatSliderOption implements WidgetProvider {
 			private final float min, max, step;
 			private final Consumer<Float> onChange;
 			private final Supplier<Float> provider;
 			
-			public SliderOption(float min, float max, float step, Consumer<Float> onChange, Supplier<Float> provider) {
+			public FloatSliderOption(float min, float max, float step, Consumer<Float> onChange, Supplier<Float> provider) {
 				this.min = min;
 				this.max = max;
 				this.step = step;
@@ -352,7 +431,7 @@ public class Modmenu implements ModMenuApi {
 			
 			@Override
 			public AbstractWidget createButton(int x, int y, int w) {
-				return new SliderWidget(x, y, w, 20, this.min, this.max, this.step, onChange, provider);
+				return new FloatSliderWidget(x, y, w, 20, this.min, this.max, this.step, onChange, provider);
 			}
 		}
 		
