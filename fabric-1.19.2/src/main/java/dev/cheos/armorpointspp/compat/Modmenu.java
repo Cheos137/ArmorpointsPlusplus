@@ -68,7 +68,9 @@ public class Modmenu implements ModMenuApi {
 					EntryList list = new EntryList(this.minecraft, this.width, this.height, 50, this.height - 50, 25);
 					this.tabContents.add(list);
 					
-					for (IConfig.Option<?> opt : cat.getOptions())
+					List<IConfig.Option<?>> options = new ArrayList<>(cat.getOptions());
+					options.sort(Comparator.comparing(opt -> opt.key().toLowerCase(Locale.ROOT)));
+					for (IConfig.Option<?> opt : options)
 						if (opt.isAvailableIn(ApppConfig.VERSION)) {
 							final ApppConfigValue<?, ?, ?> val = ApppConfig.findValue(opt);
 							WidgetProvider widget = null;
