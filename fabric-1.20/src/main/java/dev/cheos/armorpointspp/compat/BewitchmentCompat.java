@@ -16,7 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 public class BewitchmentCompat {
-	private static final ResourceLocation BEWITCHMENT_GUI_ICONS_TEXTURE = new ResourceLocation(Bewitchment.MODID, "textures/gui/icons.png");
+	private static final ResourceLocation BEWITCHMENT_GUI_ICONS_TEXTURE = new ResourceLocation(Bewitchment.MOD_ID, "textures/gui/icons.png");
 	
 	public static boolean render(ApppGui gui, GuiGraphics graphics, Player player, int scaledWidth, int scaledHeight) {
 		BWComponents.MAGIC_COMPONENT.maybeGet(player).ifPresent(magicComponent -> {

@@ -68,7 +68,7 @@ public class HealthComponent implements IRenderComponent {
 			
 			this.lastHeartY[i] = heartY;
 			
-			tex.drawHeartBG(ctx, heartX, heartY, blink); // draw background
+			tex.drawHeartBG(ctx, heartX, heartY, blink, hardcore); // draw background
 			if (heartValue >= health && heartStack > 0)    tex.drawHeart(ctx, heartX, heartY, heartStack - 1, false, blink, hardcore, style); // draw heart row below
 			if (blink && heartValue <= this.displayHealth) tex.drawHeart(ctx, heartX, heartY, heartStack, heartValue == this.displayHealth, true , hardcore, style);
 			if (         heartValue <=             health) tex.drawHeart(ctx, heartX, heartY, heartStack, heartValue ==             health, false, hardcore, style);

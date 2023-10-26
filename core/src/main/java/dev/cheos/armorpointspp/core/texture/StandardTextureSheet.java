@@ -42,7 +42,7 @@ public class StandardTextureSheet implements ITextureSheet {
 	}
 	
 	@Override
-	public void drawHeartBG(RenderContext ctx, int x, int y, boolean bright) {
+	public void drawHeartBG(RenderContext ctx, int x, int y, boolean bright, boolean hardcore) {
 		blit(ctx, x, y, bright ? 18 : 0, 18);
 	}
 	

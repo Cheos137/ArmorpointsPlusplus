@@ -32,10 +32,10 @@ public class AbsorptionOverlayComponent implements IRenderComponent {
 			int heartX = ctx.x + i * 8;
 			int heartY = Components.HEALTH.lastHeartY()[i];
 			int heartValue = i * 2 + heartStack * 20 + 1;
-			int heartValueA = heartValue + 20;
+			int heartValueAbove = heartValue + 20;
 			
 			if (absorb >= 20) tex.drawAbsorbHeart(ctx, heartX, heartY, false, false, hardcore); // small optimization
-			else if (heartValueA <= totalHealth) tex.drawAbsorbHeart(ctx, heartX, heartY, heartValueA == totalHealth, false, hardcore);
+			else if (heartValueAbove <= totalHealth) tex.drawAbsorbHeart(ctx, heartX, heartY, heartValueAbove == totalHealth, false, hardcore);
 			else if (heartValue == health) tex.drawAbsorbHeart(ctx, heartX + 5, heartY, true, true, hardcore);
 			else if (heartValue < totalHealth && heartValue > health) tex.drawAbsorbHeart(ctx, heartX, heartY, false, false, hardcore);
 			else if (heartValue == totalHealth) tex.drawAbsorbHeart(ctx, heartX, heartY, true, false, hardcore);

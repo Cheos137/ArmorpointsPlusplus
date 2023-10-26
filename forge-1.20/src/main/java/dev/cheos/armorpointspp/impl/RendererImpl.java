@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.*;
 
 import dev.cheos.armorpointspp.Armorpointspp;
 import dev.cheos.armorpointspp.config.ApppConfig;
+import dev.cheos.armorpointspp.core.SpriteInfo;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IPoseStack;
 import dev.cheos.armorpointspp.core.adapter.IRenderer;
@@ -34,6 +35,16 @@ public class RendererImpl implements IRenderer {
 	@Override
 	public void blit(IPoseStack poseStack, int x, int y, float u, float v, int width, int height) {
 		blit(poseStack, x, y, u, v, width, height, 256, 128);
+	}
+	
+	@Override
+	public void blitSprite(IPoseStack poseStack, int x, int y, int width, int height, SpriteInfo sprite) { // TODO change for mc1.20.2
+		blit(poseStack, x, y, sprite.u(), sprite.v(), width, height);
+	}
+	
+	@Override
+	public void blitSprite(IPoseStack poseStack, int x, int y, int width, int height, SpriteInfo sprite, int uOffset, int vOffset, int spriteWidth, int spriteHeight) { // TODO change for mc1.20.2
+		blit(poseStack, x, y, sprite.u() + uOffset, sprite.v() + vOffset, width, height);
 	}
 	
 	@Override

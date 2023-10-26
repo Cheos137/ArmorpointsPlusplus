@@ -1,12 +1,15 @@
 package dev.cheos.armorpointspp.core.adapter;
 
+import dev.cheos.armorpointspp.core.SpriteInfo;
 import dev.cheos.armorpointspp.core.texture.ITextureSheet;
 
 public interface IRenderer {
-	void blit(IPoseStack pStack, int x, int y, float u, float v, int width, int height, int texWidth, int texHeight);
-	void blit(IPoseStack pStack, int x, int y, float u, float v, int width, int height);
-	void blitM(IPoseStack pStack, int x, int y, float u, float v, int width, int height, int texWidth, int texHeight);
-	void blitM(IPoseStack pStack, int x, int y, float u, float v, int width, int height);
+	void blit(IPoseStack poseStack, int x, int y, float u, float v, int width, int height, int texWidth, int texHeight);
+	void blit(IPoseStack poseStack, int x, int y, float u, float v, int width, int height);
+	void blitSprite(IPoseStack poseStack, int x, int y, int width, int height, SpriteInfo sprite);
+	void blitSprite(IPoseStack poseStack, int x, int y, int width, int height, SpriteInfo sprite, int uOffset, int vOffset, int spriteWidth, int spriteHeight);
+	void blitM(IPoseStack poseStack, int x, int y, float u, float v, int width, int height, int texWidth, int texHeight);
+	void blitM(IPoseStack poseStack, int x, int y, float u, float v, int width, int height);
 	void setColor(float r, float g, float b, float a);
 	void setupAppp();
 	void setupTexture(ITextureSheet texSheet);
