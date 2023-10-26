@@ -122,7 +122,7 @@ public class ApppConfig implements IConfig {
 			if (opt.isAvailableIn(VERSION))
 				boolConfigs  .put(opt.key(), new BoolValue  (opt.key(), opt.def(), opt.comments()));
 		for (IntegerOption opt : IntegerOption.values())
-			if (opt.isAvailableIn(VERSION)) // TODO fix initialization of int value everywhere in v3.1.x
+			if (opt.isAvailableIn(VERSION))
 				intConfigs   .put(opt.key(), new IntValue   (opt.key(), opt.def(), opt.min(), opt.max(), opt.comments()));
 		for (HexOption opt : HexOption.values())
 			if (opt.isAvailableIn(VERSION))

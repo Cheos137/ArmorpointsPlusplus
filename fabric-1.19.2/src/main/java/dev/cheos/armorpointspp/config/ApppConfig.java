@@ -123,7 +123,7 @@ public class ApppConfig implements IConfig {
 				boolConfigs  .put(opt.key(), new BoolValue  (opt.key(), opt.def(), opt.comments()));
 		for (IntegerOption opt : IntegerOption.values())
 			if (opt.isAvailableIn(VERSION))
-				intConfigs   .put(opt.key(), new IntValue   (opt.key(), opt.def(), opt.comments()));
+				intConfigs   .put(opt.key(), new IntValue   (opt.key(), opt.def(), opt.min(), opt.max(), opt.comments()));
 		for (HexOption opt : HexOption.values())
 			if (opt.isAvailableIn(VERSION))
 				hexConfigs   .put(opt.key(), new HexValue   (opt.key(), opt.def(), opt.comments()));
