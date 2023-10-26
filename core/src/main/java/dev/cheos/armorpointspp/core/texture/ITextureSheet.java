@@ -5,11 +5,12 @@ import java.util.List;
 import com.google.common.collect.*;
 
 import dev.cheos.armorpointspp.core.RenderContext;
+import dev.cheos.armorpointspp.core.SpriteInfo;
 import dev.cheos.armorpointspp.core.adapter.IConfig.StringOption;
 
 public interface ITextureSheet {
 	void drawOverlay    (RenderContext ctx, int x, int y,                  boolean half,                 boolean hardcore, OverlaySprite sprite); //
-	void drawHeartBG    (RenderContext ctx, int x, int y,                                boolean bright);                                        //
+	void drawHeartBG    (RenderContext ctx, int x, int y,                                boolean bright, boolean hardcore);                      //
 	void drawAbsorb     (RenderContext ctx, int x, int y, int amount,                    boolean bright);                                       // 0 -> nothing
 	void drawArmor      (RenderContext ctx, int x, int y, int spriteLevel, boolean half);                                                      // 0 -> "empty" background
 	void drawHeart      (RenderContext ctx, int x, int y, int spriteLevel, boolean half, boolean bright, boolean hardcore, HeartStyle style); // 0 -> nothing
@@ -34,6 +35,12 @@ public interface ITextureSheet {
 	}
 	default ITextureSheet blit(RenderContext ctx, int x, int y, float u, float v) {
 		ctx.renderer.blit(ctx.poseStack, x, y, u, v, spriteWidth(), spriteHeight(), texWidth(), texHeight()); return this;
+	}
+	default ITextureSheet blitSprite(RenderContext ctx, int x, int y, SpriteInfo sprite) {
+		ctx.renderer.blitSprite(ctx.poseStack, x, y, spriteWidth(), spriteHeight(), sprite); return this;
+	}
+	default ITextureSheet blitSprite(RenderContext ctx, int x, int y, int width, int height, SpriteInfo sprite, int uOffset, int vOffset) {
+		ctx.renderer.blitSprite(ctx.poseStack, x, y, width, height, sprite, uOffset, vOffset, spriteWidth(), spriteHeight()); return this;
 	}
 	default ITextureSheet blitM(RenderContext ctx, int x, int y, float u, float v, int w, int h) {
 		ctx.renderer.blitM(ctx.poseStack, x, y, u, v, w, h, texWidth(), texHeight()); return this;

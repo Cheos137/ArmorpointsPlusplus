@@ -69,7 +69,7 @@ public class TablistScoreComponent implements IRenderComponent {
 						int heartX = ctx.x + i * 8;
 						int heartValue = i * 2 + heartStack * ctx.config.num(IntegerOption.TABLIST_MAX_HEART_COUNT) * 2 + 1;
 						
-						tex.drawHeartBG(ctx, heartX, ctx.y, blink);
+						tex.drawHeartBG(ctx, heartX, ctx.y, blink, ctx.data.isHardcore());
 						if (heartStack > 0 && heartValue >=        health) tex.drawHeart(ctx, heartX, ctx.y, heartStack - 1, false                  , blink, false, HeartStyle.NORMAL);
 						if (blink          && heartValue <= displayHealth) tex.drawHeart(ctx, heartX, ctx.y, heartStack, heartValue == displayHealth,  true, false, HeartStyle.NORMAL);
 						if (                  heartValue <=        health) tex.drawHeart(ctx, heartX, ctx.y, heartStack, heartValue ==        health, false, false, HeartStyle.NORMAL);

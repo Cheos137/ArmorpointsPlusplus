@@ -60,7 +60,7 @@ public abstract class ApppConfigValue<T, U, X> {
 	
 	
 	public static class IntValue extends ApppConfigValue<Integer, Integer, BigDecimal> {
-		private final int min, max;
+		public final int min, max;
 		
 		public IntValue(String name, int def, String... comments) { this(name, def, Integer.MAX_VALUE, comments); }
 		public IntValue(String name, int def, int max, String... comments) { this(name, def, 0, max, comments); }

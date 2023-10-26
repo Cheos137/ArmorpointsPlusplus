@@ -3,7 +3,7 @@ plugins {
     id 'fabric-loom' version '1.+'
 }
 
-version = '1.20-' + modVersion
+version = '1.20.2-' + modVersion
 group = modGroup
 base.archivesName = modName + '-fabric'
 
@@ -37,7 +37,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'com.mojang:minecraft:1.20.1'
+    minecraft 'com.mojang:minecraft:1.20.2'
 
 	mappings loom.layered() {
 		officialMojangMappings()
@@ -45,29 +45,30 @@ dependencies {
 	}
 
     implementation project(':core')
-    modImplementation 'net.fabricmc:fabric-loader:0.14.21'
-    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.83.1+1.20.1'
+    modImplementation 'net.fabricmc:fabric-loader:0.14.24'
+    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.90.4+1.20.2'
     implementation 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'
     include 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'
 
-	modImplementation 'com.terraformersmc:modmenu:7.0.0'
+	modImplementation 'com.terraformersmc:modmenu:8.0.0'
 
-	modCompileOnly('squeek.appleskin:appleskin-fabric:mc1.20-2.5.0') { transitive = false }
-	modRuntimeOnly('squeek.appleskin:appleskin-fabric:mc1.20-2.5.0') {
+	modCompileOnly('squeek.appleskin:appleskin-fabric:mc1.20.2-2.5.1') { transitive = false }
+	modRuntimeOnly('squeek.appleskin:appleskin-fabric:mc1.20.2-2.5.1') {
 		exclude module: 'fabric-api'
 		exclude module: 'modmenu'
 	}
+	modRuntimeOnly('maven.modrinth:cloth-config:12.0.109+fabric') // required by appleskin
 
-	modCompileOnly 'maven.modrinth:libhud:1.0.0-beta6'
-	modRuntimeOnly 'maven.modrinth:libhud:1.0.0-beta6'
+	modCompileOnly 'maven.modrinth:libhud:1.0.0-beta7'
+	modRuntimeOnly 'maven.modrinth:libhud:1.0.0-beta7'
 	modCompileOnly 'maven.modrinth:spectrum:1.6.9-1.19.2-leisure_time' // outdated
-	modCompileOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.2.1'
-    modCompileOnly 'curse.maven:bewitchment-394915:4048571' // Bewitchment 1.19-6 // outdated
-    modCompileOnly 'maven.modrinth:dehydration:1.3.4+1.20'
+	modCompileOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.3.0'
+    modCompileOnly 'maven.modrinth:bewitchment:1.20-6'
+    modCompileOnly 'maven.modrinth:dehydration:1.3.4+1.20.1'
 	modCompileOnly 'maven.modrinth:better-mount-hud:1.2.2'
 	modCompileOnly 'maven.modrinth:its-thirst:1.1.0-ALPHA-1.19.3' // outdated
-	modCompileOnly 'maven.modrinth:detail-armor-bar:2.6.3+1.20.1-fabric'
-	modCompileOnly 'maven.modrinth:victus:0.1.13+1.20'
+	modCompileOnly 'maven.modrinth:detail-armor-bar:2.6.3+1.20.2-fabric'
+	modCompileOnly 'maven.modrinth:victus:0.1.14+1.20.2'
 }
 
 processResources {
@@ -99,10 +100,16 @@ loom {
 			source = sourceSets.main
 			// When true a run configuration file will be generated for IDE's. By default only set to true for the root project.
 			ideConfigGenerated = true
-			// vmArgs '-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9009'
+			// vmArgs '-agentlib:jdwp=transport=dt_socket,server=n,suspend=n,address=localhost:9009'
 
 			// Configure run config with the default client options.
 			client()
+		}
+
+		debugClient {
+			inherit client
+			configName = 'runApppClientDebug-fabric-1.20'
+			vmArgs '-agentlib:jdwp=transport=dt_socket,server=n,suspend=n,address=localhost:9009' //, '-XX:+AllowEnhancedClassRedefinition'
 		}
 	}
 }
@@ -124,3 +131,10 @@ jar {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+
+// runDebugClient {
+// 	javaLauncher = javaToolchains.launcherFor {
+// 		languageVersion = JavaLanguageVersion.of(17)
+// 		vendor = JvmVendorSpec.matching 'jetbrains' // fsr JvmVendorSpec.JETBRAINS doesn't work here even though it should since gradle 6.8??
+// 	}
+// }

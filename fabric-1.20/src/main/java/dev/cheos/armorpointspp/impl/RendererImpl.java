@@ -1,5 +1,8 @@
 package dev.cheos.armorpointspp.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -7,12 +10,12 @@ import com.mojang.blaze3d.vertex.*;
 
 import dev.cheos.armorpointspp.Armorpointspp;
 import dev.cheos.armorpointspp.config.ApppConfig;
+import dev.cheos.armorpointspp.core.SpriteInfo;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
 import dev.cheos.armorpointspp.core.adapter.IPoseStack;
 import dev.cheos.armorpointspp.core.adapter.IRenderer;
 import dev.cheos.armorpointspp.core.texture.ITextureSheet;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -20,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 public class RendererImpl implements IRenderer {
 	// fallback / default texture sheet location
 	private static final ResourceLocation ICONS = new ResourceLocation(Armorpointspp.MODID, "textures/gui/" + ITextureSheet.defaultSheet().texLocation() + ".png");
+	private static final Map<String, ResourceLocation> resourceLocationCache = new HashMap<>();
 	private final Minecraft minecraft = Minecraft.getInstance();
 	private ResourceLocation tex;
 	
@@ -31,6 +35,21 @@ public class RendererImpl implements IRenderer {
 	@Override
 	public void blit(IPoseStack poseStack, int x, int y, float u, float v, int width, int height) {
 		blit(poseStack, x, y, u, v, width, height, 256, 128);
+	}
+	
+	@Override
+	public void blitSprite(IPoseStack poseStack, int x, int y, int width, int height, SpriteInfo sprite) {
+		((PoseStackImpl) poseStack).getGraphics().blitSprite(resourceLocationCache.computeIfAbsent(sprite.location(), ResourceLocation::new), x, y, width, height);
+	}
+	
+	@Override
+	public void blitSprite(IPoseStack poseStack, int x, int y, int width, int height, SpriteInfo sprite, int uOffset, int vOffset, int spriteWidth, int spriteHeight) {
+		((PoseStackImpl) poseStack).getGraphics().blitSprite(
+				resourceLocationCache.computeIfAbsent(sprite.location(), ResourceLocation::new),
+				spriteWidth, spriteHeight,
+				uOffset, vOffset,
+				x, y,
+				width, height);
 	}
 	
 	@Override
@@ -78,7 +97,6 @@ public class RendererImpl implements IRenderer {
 	@Override
 	public void setupVanilla() {
 		setup(true, false);
-		this.tex = Gui.GUI_ICONS_LOCATION;
 	}
 	
 	@Override

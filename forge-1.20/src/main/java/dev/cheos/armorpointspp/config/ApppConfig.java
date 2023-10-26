@@ -13,7 +13,7 @@ import net.minecraftforge.fml.config.ModConfig;
 
 public class ApppConfig implements IConfig {
 	private static ApppConfig INSTANCE;
-	private static final Version VERSION = Version.v1_19;
+	private static final Version VERSION = Version.v1_20;
 	private static final Map<String, BoolValue>    boolConfigs   = new HashMap<>();
 	private static final Map<String, IntValue>     intConfigs    = new HashMap<>();
 	private static final Map<String, HexValue>     hexConfigs    = new HashMap<>();

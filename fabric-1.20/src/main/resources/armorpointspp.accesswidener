@@ -1,6 +1,36 @@
 accessWidener v1 named
 
-accessible field  net/minecraft/client/gui/Gui GUI_ICONS_LOCATION Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui CROSSHAIR_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui CROSSHAIR_ATTACK_INDICATOR_FULL_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui CROSSHAIR_ATTACK_INDICATOR_BACKGROUND_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui CROSSHAIR_ATTACK_INDICATOR_PROGRESS_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui EFFECT_BACKGROUND_AMBIENT_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui EFFECT_BACKGROUND_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui HOTBAR_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui HOTBAR_SELECTION_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui HOTBAR_OFFHAND_LEFT_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui HOTBAR_OFFHAND_RIGHT_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui HOTBAR_ATTACK_INDICATOR_BACKGROUND_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui HOTBAR_ATTACK_INDICATOR_PROGRESS_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui JUMP_BAR_BACKGROUND_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui JUMP_BAR_COOLDOWN_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui JUMP_BAR_PROGRESS_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui EXPERIENCE_BAR_BACKGROUND_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui EXPERIENCE_BAR_PROGRESS_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui ARMOR_EMPTY_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui ARMOR_HALF_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui ARMOR_FULL_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui FOOD_EMPTY_HUNGER_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui FOOD_HALF_HUNGER_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui FOOD_FULL_HUNGER_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui FOOD_EMPTY_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui FOOD_HALF_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui FOOD_FULL_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui AIR_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui AIR_BURSTING_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui HEART_VEHICLE_CONTAINER_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui HEART_VEHICLE_FULL_SPRITE Lnet/minecraft/resources/ResourceLocation;
+accessible field  net/minecraft/client/gui/Gui HEART_VEHICLE_HALF_SPRITE Lnet/minecraft/resources/ResourceLocation;
 accessible field  net/minecraft/client/gui/Gui random Lnet/minecraft/util/RandomSource;
 accessible field  net/minecraft/client/gui/Gui minecraft Lnet/minecraft/client/Minecraft;
 accessible field  net/minecraft/client/gui/Gui tickCount I

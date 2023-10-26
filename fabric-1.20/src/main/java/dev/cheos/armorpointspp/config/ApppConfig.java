@@ -18,7 +18,7 @@ public class ApppConfig implements IConfig {
 	private static ApppConfig INSTANCE;
 	private static ConfigTree tree;
 	private static final Path configFile = FabricLoader.getInstance().getConfigDir().resolve("armorpointspp.json5");
-	public static final Version VERSION = Version.v1_19;
+	public static final Version VERSION = Version.v1_20;
 	private static final Map<String, BoolValue>    boolConfigs   = new HashMap<>();
 	private static final Map<String, IntValue>     intConfigs    = new HashMap<>();
 	private static final Map<String, HexValue>     hexConfigs    = new HashMap<>();
@@ -122,8 +122,8 @@ public class ApppConfig implements IConfig {
 			if (opt.isAvailableIn(VERSION))
 				boolConfigs  .put(opt.key(), new BoolValue  (opt.key(), opt.def(), opt.comments()));
 		for (IntegerOption opt : IntegerOption.values())
-			if (opt.isAvailableIn(VERSION))
-				intConfigs   .put(opt.key(), new IntValue   (opt.key(), opt.def(), opt.comments()));
+			if (opt.isAvailableIn(VERSION)) // TODO fix initialization of int value everywhere in v3.1.x
+				intConfigs   .put(opt.key(), new IntValue   (opt.key(), opt.def(), opt.min(), opt.max(), opt.comments()));
 		for (HexOption opt : HexOption.values())
 			if (opt.isAvailableIn(VERSION))
 				hexConfigs   .put(opt.key(), new HexValue   (opt.key(), opt.def(), opt.comments()));

@@ -75,7 +75,7 @@ public class VanillaHealthComponent implements IRenderComponent {
 			if (health <= 4) y += random.nextInt(2);
 			if (i == regen) y -= 2;
 			
-			tex.drawHeartBG(ctx, x, y, blink);
+			tex.drawHeartBG(ctx, x, y, blink, ctx.data.isHardcore());
 			if (blink)
 				tex.drawHeart(ctx, x, y, 0, i * 2 + 1 == this.displayHealth, blink, ctx.data.isHardcore(), style);
 			

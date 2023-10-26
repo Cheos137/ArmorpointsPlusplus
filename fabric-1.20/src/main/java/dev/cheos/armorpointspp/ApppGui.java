@@ -152,7 +152,7 @@ public class ApppGui extends Gui {
 			int partial = Mth.ceil(air * 10.0D / 300.0D) - full;
 			
 			for (int i = 0; i < full + partial; i++)
-				graphics.blit(GUI_ICONS_LOCATION, left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
+				graphics.blitSprite(i < full ? AIR_SPRITE : AIR_BURSTING_SPRITE, left - i * 8 - 9, top, 9, 9);
 			this.rightHeight += 10;
 		}
 		minecraft.getProfiler().pop();
@@ -177,27 +177,22 @@ public class ApppGui extends Gui {
 			int idx = i * 2 + 1;
 			int x = left - i * 8 - 9;
 			int y = top;
-			int icon = 16;
-			int background = 0;
 			
-			if (minecraft.player.hasEffect(MobEffects.HUNGER)) {
-				icon += 36;
-				background = 13;
-			}
+			boolean hunger = this.minecraft.player.hasEffect(MobEffects.HUNGER);
 			
-			if (player.getFoodData().getSaturationLevel() <= 0.0F && tickCount % (level * 3 + 1) == 0)
-				y = top + (random.nextInt(3) - 1);
+			if (player.getFoodData().getSaturationLevel() <= 0.0F && this.tickCount % (level * 3 + 1) == 0)
+				y = top + (this.random.nextInt(3) - 1);
 			
-			graphics.blit(GUI_ICONS_LOCATION, x, y, 16 + background * 9, 27, 9, 9);
+			graphics.blitSprite(hunger ? FOOD_EMPTY_HUNGER_SPRITE : FOOD_EMPTY_SPRITE, x, y, 9, 9);
 			if (idx < level)
-				graphics.blit(GUI_ICONS_LOCATION, x, y, icon + 36, 27, 9, 9);
+				graphics.blitSprite(hunger ? FOOD_FULL_HUNGER_SPRITE : FOOD_FULL_SPRITE, x, y, 27, 9, 9);
 			else if (idx == level)
-				graphics.blit(GUI_ICONS_LOCATION, x, y, icon + 45, 27, 9, 9);
+				graphics.blitSprite(hunger ? FOOD_HALF_HUNGER_SPRITE : FOOD_HALF_SPRITE, x, y, 27, 9, 9);
 		}
 		
 		if (Compat.isAppleskinLoaded())
 			AppleskinSafeAccess.handlerOnRender(graphics);
-		minecraft.getProfiler().pop();
+		this.minecraft.getProfiler().pop();
 	}
 	
 	// important distinction:
@@ -224,11 +219,11 @@ public class ApppGui extends Gui {
             
             for (int heart = 0; heart < heartsInRow; heart++) {
                 int pos = right - heart * 8 - 9;
-                graphics.blit(GUI_ICONS_LOCATION, pos, top, 52, 9, 9, 9);
+                graphics.blitSprite(HEART_VEHICLE_CONTAINER_SPRITE, pos, top, 9, 9);
                 if (heart * 2 + 1 + healthIdx < health)
-                	graphics.blit(GUI_ICONS_LOCATION, pos, top, 88, 9, 9, 9);
+                	graphics.blitSprite(HEART_VEHICLE_FULL_SPRITE, pos, top, 9, 9);
                 if (heart * 2 + 1 + healthIdx == health)
-                	graphics.blit(GUI_ICONS_LOCATION, pos, top, 97, 9, 9, 9);
+                	graphics.blitSprite(HEART_VEHICLE_HALF_SPRITE, pos, top, 9, 9);
             }
     		this.rightHeight += 10;
         }
