@@ -4,7 +4,10 @@ import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
+import dev.cheos.armorpointspp.config.ApppConfig;
 import dev.cheos.armorpointspp.core.ReflectionHelper;
+import dev.cheos.armorpointspp.core.Side;
+import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.*;
@@ -55,9 +58,16 @@ public class RenderGameOverlayListener {
 //				if (!(event instanceof Pre)) // extra check for this because mantle thinks it's great and stuff
 //					break;
 				event.setCanceled(true); // prevent forge from rendering vanilla stuff
+				
+				Side toughnessSide = ApppConfig.instance().enm(EnumOption.TOUGHNESS_SIDE);
+				int armorY = Overlays.computeCurrentY(gui, screenHeight);
+				int toughnessY = Overlays.computeCurrentY(gui, screenHeight, toughnessSide);
+				if (toughnessSide == Side.LEFT)
+					toughnessY += 10;
+				
 				if (pre(poseStack, event, ARMOR)) {
-					Overlays.updateArmorY(gui, screenHeight);
-					Overlays.updateToughnessY(gui, screenHeight);
+					Overlays.updateArmorY(armorY);
+					Overlays.updateToughnessY(toughnessY);
 					break;
 				}
 				Overlays.armorLevel      (gui, poseStack, partialTicks, screenWidth, screenHeight);
@@ -72,8 +82,10 @@ public class RenderGameOverlayListener {
 //				if (!(event instanceof Pre)) // extra check for this because mantle thinks it's great and stuff
 //					break;
 				event.setCanceled(true); // prevent forge from rendering vanilla stuff
+				
+				int healthY = Overlays.computeCurrentY(gui, screenHeight);
 				if (pre(poseStack, event, HEALTH)) {
-					Overlays.updateHealthY(gui, screenHeight);
+					Overlays.updateHealthY(healthY);
 					if (Armorpointspp.MANTLE) // specific fix, JUST for mantle... why are you like this, mantle?
 						post(poseStack, event, HEALTH);
 					break;
