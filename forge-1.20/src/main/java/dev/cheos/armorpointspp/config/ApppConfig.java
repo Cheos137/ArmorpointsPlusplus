@@ -7,9 +7,9 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import dev.cheos.armorpointspp.config.ApppConfigValue.*;
 import dev.cheos.armorpointspp.core.adapter.IConfig;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ApppConfig implements IConfig {
 	private static ApppConfig INSTANCE;
@@ -26,7 +26,7 @@ public class ApppConfig implements IConfig {
 			return;
 		
 		define();
-		Pair<ConfigBuilder, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(ConfigBuilder::new);
+		Pair<ConfigBuilder, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(ConfigBuilder::new);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, specPair.getRight());
 		INSTANCE = new ApppConfig();
 	}
@@ -100,7 +100,7 @@ public class ApppConfig implements IConfig {
 	}
 	
 	public static class ConfigBuilder {
-		public ConfigBuilder(ForgeConfigSpec.Builder builder) {
+		public ConfigBuilder(ModConfigSpec.Builder builder) {
 			for (Category category : Category.values()) {
 				builder.push(category.getPath());
 				for (Option<?> option : category.getOptions())

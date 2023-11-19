@@ -15,7 +15,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class DataProviderImpl implements IDataProvider {
 	private final Cache<String, Boolean> effectActiveCache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.SECONDS).build();
