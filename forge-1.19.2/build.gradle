@@ -50,14 +50,6 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
-processResources {
-    inputs.property 'version', modVersion
-
-    filesMatching('mods.toml') {
-        expand inputs.properties
-    }
-}
-
 mixin {
     add sourceSets.main, 'armorpointspp.refmap.json'
     config 'armorpointspp.mixins.json'

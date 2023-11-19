@@ -5,7 +5,7 @@ issueTrackerURL="https://github.com/Cheos137/ArmorpointsPlusplus/issues/new/choo
 
 [[mods]]
     modId="armorpointspp"
-    version="${version}"
+    version="${file.jarVersion}"
     displayName="ArmorPoints++"
     updateJSONURL="https://api.modrinth.com/updates/xvAim1vw/forge_updates.json"
     displayURL="https://modrinth.com/mod/armorpoints"
