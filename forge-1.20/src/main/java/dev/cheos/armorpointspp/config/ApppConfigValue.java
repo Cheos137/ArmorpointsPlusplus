@@ -2,8 +2,8 @@ package dev.cheos.armorpointspp.config;
 
 import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
 import net.minecraft.util.Mth;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 
 public abstract class ApppConfigValue<T, U> {
 	protected final String name;
@@ -18,7 +18,7 @@ public abstract class ApppConfigValue<T, U> {
 		this.comments = comments;
 	}
 	
-	public void define(ForgeConfigSpec.Builder builder) {
+	public void define(ModConfigSpec.Builder builder) {
 		builder.comment(this.comments);
 		this.confValue = builder.define(this.name, this.def);
 //		this.value = Lazy.of(this.confValue::get);
@@ -58,7 +58,7 @@ public abstract class ApppConfigValue<T, U> {
 		}
 		
 		@Override
-		public void define(ForgeConfigSpec.Builder builder) {
+		public void define(ModConfigSpec.Builder builder) {
 			builder.comment(this.comments);
 			this.confValue = builder.defineInRange(this.name, this.def, this.min, this.max);
 //			this.value = Lazy.of(this.confValue::get);
@@ -88,7 +88,7 @@ public abstract class ApppConfigValue<T, U> {
 		}
 		
 		@Override
-		public void define(ForgeConfigSpec.Builder builder) {
+		public void define(ModConfigSpec.Builder builder) {
 			builder.comment(this.comments);
 			this.confValue = builder.defineInRange(this.name, this.def, this.min, this.max);
 //			this.value = Lazy.of(this.confValue::get);
@@ -110,7 +110,7 @@ public abstract class ApppConfigValue<T, U> {
 		}
 		
 		@Override
-		public void define(ForgeConfigSpec.Builder builder) {
+		public void define(ModConfigSpec.Builder builder) {
 			builder.comment(this.comments);
 			this.confValue = builder.defineEnum(this.name, this.def);
 //			this.value = Lazy.of(this.confValue::get);
