@@ -2,7 +2,10 @@ package dev.cheos.armorpointspp;
 
 import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.*;
 
+import dev.cheos.armorpointspp.config.ApppConfig;
 import dev.cheos.armorpointspp.core.ReflectionHelper;
+import dev.cheos.armorpointspp.core.Side;
+import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -10,9 +13,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.*;
-import net.minecraftforge.fml.relauncher.Side;
 
-@EventBusSubscriber(modid = Armorpointspp.MODID, value = Side.CLIENT)
+@EventBusSubscriber(modid = Armorpointspp.MODID, value = net.minecraftforge.fml.relauncher.Side.CLIENT)
 public class RenderGameOverlayListener {
 	private static final Minecraft minecraft = Minecraft.getMinecraft();
 	private static boolean reposting, working, init;
@@ -60,9 +62,16 @@ public class RenderGameOverlayListener {
 				if (!(event instanceof Pre)) // extra check for this because mantle thinks it's great and stuff
 					break;
 				event.setCanceled(true); // prevent forge from rendering vanilla stuff
+				
+				Side toughnessSide = ApppConfig.instance().enm(EnumOption.TOUGHNESS_SIDE);
+				int armorY = Overlays.computeCurrentY(gui, screenHeight);
+				int toughnessY = Overlays.computeCurrentY(gui, screenHeight, toughnessSide);
+				if (toughnessSide == Side.LEFT)
+					toughnessY += 10;
+				
 				if (pre(event, ARMOR)) {
-					Overlays.updateArmorY(gui, screenHeight);
-					Overlays.updateToughnessY(gui, screenHeight);
+					Overlays.updateArmorY(armorY);
+					Overlays.updateToughnessY(toughnessY);
 					break;
 				}
 				Overlays.armorLevel      (gui, partialTicks, screenWidth, screenHeight);
@@ -77,8 +86,10 @@ public class RenderGameOverlayListener {
 				if (!(event instanceof Pre)) // extra check for this because mantle thinks it's great and stuff
 					break;
 				event.setCanceled(true); // prevent forge from rendering vanilla stuff
+				
+				int healthY = Overlays.computeCurrentY(gui, screenHeight);
 				if (pre(event, HEALTH)) {
-					Overlays.updateHealthY(gui, screenHeight);
+					Overlays.updateHealthY(healthY);
 					if (Armorpointspp.MANTLE) // specific fix, JUST for mantle... why are you like this, mantle?
 						post(event, HEALTH);
 					break;

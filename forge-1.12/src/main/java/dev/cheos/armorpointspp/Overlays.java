@@ -19,9 +19,12 @@ public class Overlays {
 	private static final Minecraft minecraft         = Minecraft.getMinecraft();
 	private static int lastArmorY = 0, lastHealthY = 0, lastToughnessY = 0;
 	
-	static void updateHealthY(GuiIngameForge gui, int screenHeight) { lastHealthY = baseY(gui, screenHeight); }
-	static void updateArmorY(GuiIngameForge gui, int screenHeight) { lastArmorY = baseY(gui, screenHeight); }
-	static void updateToughnessY(GuiIngameForge gui, int screenHeight) { lastToughnessY = baseY(gui, screenHeight, ApppConfig.instance().enm(EnumOption.TOUGHNESS_SIDE)); }
+	static int computeCurrentY(GuiIngameForge gui, int screenHeight) { return baseY(gui, screenHeight); }
+	static int computeCurrentY(GuiIngameForge gui, int screenHeight, Side side) { return baseY(gui, screenHeight, side); }
+	
+	static void updateHealthY(int y) { lastHealthY = y; }
+	static void updateArmorY(int y) { lastArmorY = y; }
+	static void updateToughnessY(int y) { lastToughnessY = y; }
 	
 	static void playerHealth(GuiIngameForge gui, float partialTicks, int screenWidth, int screenHeight) {
 		lastHealthY = baseY(gui, screenHeight);
