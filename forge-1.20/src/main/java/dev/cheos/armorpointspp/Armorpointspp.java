@@ -5,10 +5,10 @@ import org.apache.logging.log4j.Logger;
 
 import dev.cheos.armorpointspp.config.ApppConfig;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(Armorpointspp.MODID)
 //@EventBusSubscriber(Dist.CLIENT)
@@ -16,9 +16,9 @@ public class Armorpointspp {
 	public static final String MODID = "armorpointspp";
 	public static final Logger LOGGER = LogManager.getLogger("Armorpoints++");
 	
-	public Armorpointspp() {
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::client);
-//		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::reload);
+	public Armorpointspp(IEventBus modEventBus) {
+		modEventBus.addListener(this::client);
+//		modEventBus.addListener(this::reload);
 		ApppConfig.init();
 	}
 	

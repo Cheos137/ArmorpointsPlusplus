@@ -46,7 +46,7 @@ sourceSets.main.java { srcDir project(':core').sourceSets.main.java }
 sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
 dependencies {
-    implementation 'net.neoforged:neoforge:20.2.57-beta'
+    implementation 'net.neoforged:neoforge:20.2.62-beta'
     implementation project(':core')
 }
 
