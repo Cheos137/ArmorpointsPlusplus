@@ -6,7 +6,7 @@ plugins {
     id 'org.parchmentmc.librarian.neogradle' version '7.+' // requires a local build of librarian as its neogradle version is not available from the official maven yet
 }
 
-version = '1.20.2-' + modVersion
+version = '1.20.3-' + modVersion
 group = modGroup
 base.archivesName = modName + '-neoforge'
 
@@ -20,7 +20,7 @@ println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty '
 minecraft {
     mappings {
         channel = parchment()
-        version '2023.10.22'
+        version '2023.12.10-1.20.2'
     }
 
     accessTransformers.file file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -46,7 +46,7 @@ sourceSets.main.java { srcDir project(':core').sourceSets.main.java }
 sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
 dependencies {
-    implementation 'net.neoforged:neoforge:20.2.62-beta'
+    implementation 'net.neoforged:neoforge:20.3.8-beta'
     implementation project(':core')
 }
 

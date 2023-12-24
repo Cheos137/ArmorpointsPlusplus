@@ -20,13 +20,13 @@ issueTrackerURL="https://github.com/Cheos137/ArmorpointsPlusplus/issues/new/choo
 [[dependencies.armorpointspp]]
     modId="neoforge"
     mandatory=true
-    versionRange="[20.2,)"
+    versionRange="[20.3,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.armorpointspp]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.20.2,1.21)"
+    versionRange="[1.20.3,1.21)"
     ordering="NONE"
     side="BOTH"
