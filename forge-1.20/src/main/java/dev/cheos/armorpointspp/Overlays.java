@@ -55,18 +55,18 @@ public class Overlays {
 		
 		missedFunctionality.unregister(ARMOR_LEVEL);
 		missedFunctionality.registerOverriding(PLAYER_HEALTH                 , Overlays::playerHealth);
-		event.registerAbove(PLAYER_HEALTH, ABSORPTION              .getPath(), Overlays::absorption);
-		event.registerAbove(ABSORPTION   , ABSORPTION_OV           .getPath(), Overlays::absorptionOv);
+		event.registerAbove(PLAYER_HEALTH, ABSORPTION              , Overlays::absorption);
+		event.registerAbove(ABSORPTION   , ABSORPTION_OV           , Overlays::absorptionOv);
 		missedFunctionality.registerArbitraryAbove(ABSORPTION_OV, ARMOR_LEVEL, Overlays::armorLevel);
-		event.registerAbove(ARMOR_LEVEL  , MAGIC_SHIELD            .getPath(), Overlays::magicShield);
-		event.registerAbove(MAGIC_SHIELD , RESISTANCE              .getPath(), Overlays::resistance);
-		event.registerAbove(RESISTANCE   , PROTECTION              .getPath(), Overlays::protection);
-		event.registerAbove(MOUNT_HEALTH , ARMOR_TOUGHNESS         .getPath(), Overlays::armorToughness);
-		event.registerAbove(PROTECTION   , ARMOR_TOUGHNESS_OV      .getPath(), Overlays::armorToughnessOv);
-		event.registerAbove(ITEM_NAME    , ARMOR_TEXT              .getPath(), Overlays::armorText);
-		event.registerAbove(ITEM_NAME    , HEALTH_TEXT             .getPath(), Overlays::healthText);
-		event.registerAbove(ITEM_NAME    , TOUGHNESS_TEXT          .getPath(), Overlays::toughnessText);
-		event.registerAboveAll("debug"                                       , Overlays::debug);
+		event.registerAbove(ARMOR_LEVEL  , MAGIC_SHIELD            , Overlays::magicShield);
+		event.registerAbove(MAGIC_SHIELD , RESISTANCE              , Overlays::resistance);
+		event.registerAbove(RESISTANCE   , PROTECTION              , Overlays::protection);
+		event.registerAbove(MOUNT_HEALTH , ARMOR_TOUGHNESS         , Overlays::armorToughness);
+		event.registerAbove(PROTECTION   , ARMOR_TOUGHNESS_OV      , Overlays::armorToughnessOv);
+		event.registerAbove(ITEM_NAME    , ARMOR_TEXT              , Overlays::armorText);
+		event.registerAbove(ITEM_NAME    , HEALTH_TEXT             , Overlays::healthText);
+		event.registerAbove(ITEM_NAME    , TOUGHNESS_TEXT          , Overlays::toughnessText);
+		event.registerAboveAll(new ResourceLocation(Armorpointspp.MODID, "debug"), Overlays::debug);
 	}
 	
 	private static void playerHealth(ExtendedGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {

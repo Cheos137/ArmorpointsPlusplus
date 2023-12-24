@@ -49,3 +49,4 @@ extendable method net/minecraft/client/gui/Gui renderVehicleHealth (Lnet/minecra
 extendable method net/minecraft/client/gui/Gui getPlayerVehicleWithHealth ()Lnet/minecraft/world/entity/LivingEntity;
 
 accessible class net/minecraft/client/gui/components/PlayerTabOverlay$HealthState
+accessible class net/minecraft/client/gui/components/PlayerTabOverlay$ScoreDisplayEntry

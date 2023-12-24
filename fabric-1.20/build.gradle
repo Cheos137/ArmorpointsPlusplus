@@ -3,7 +3,7 @@ plugins {
     id 'fabric-loom' version '1.+'
 }
 
-version = '1.20.2-' + modVersion
+version = '1.20.3-' + modVersion
 group = modGroup
 base.archivesName = modName + '-fabric'
 
@@ -37,15 +37,15 @@ repositories {
 }
 
 dependencies {
-    minecraft 'com.mojang:minecraft:1.20.2'
+    minecraft 'com.mojang:minecraft:1.20.3'
 
 	mappings loom.layered() {
 		officialMojangMappings()
-		parchment('org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip')
+		parchment('org.parchmentmc.data:parchment-1.20.2:2023.12.10@zip')
 	}
 
     implementation project(':core')
-    modImplementation 'net.fabricmc:fabric-loader:0.14.24'
+    modImplementation 'net.fabricmc:fabric-loader:0.15.3'
     modImplementation 'net.fabricmc.fabric-api:fabric-api:0.90.4+1.20.2'
     implementation 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'
     include 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'

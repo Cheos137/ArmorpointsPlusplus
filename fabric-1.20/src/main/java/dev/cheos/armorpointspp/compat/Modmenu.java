@@ -65,7 +65,7 @@ public class Modmenu implements ModMenuApi {
 					TabButton tb = new TabButton(i, this.width / 2 + xoff + (i == 0 ? 0 : cmlWidths.get(i-1)), 20, widths.get(i), 20, names.get(i), Component.literal(""));
 					this.tabs.add(tb);
 					
-					EntryList list = new EntryList(this.minecraft, this.width, this.height, 50, this.height - 50, 25);
+					EntryList list = new EntryList(this.minecraft, this.width, this.height - 100, 50, 25);
 					this.tabContents.add(list);
 					
 					List<IConfig.Option<?>> options = new ArrayList<>(cat.getOptions());
@@ -425,8 +425,8 @@ public class Modmenu implements ModMenuApi {
 		
 		
 		public static class EntryList extends ContainerObjectSelectionList<EntryList.Entry> {
-			public EntryList(Minecraft minecraft, int i, int j, int k, int l, int m) {
-				super(minecraft, i, j, k, l, m);
+			public EntryList(Minecraft minecraft, int i, int j, int k, int l) {
+				super(minecraft, i, j, k, l);
 				this.centerListVertically = false;
 			}
 			
