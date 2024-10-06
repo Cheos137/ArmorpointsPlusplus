@@ -1,7 +1,7 @@
 plugins {
     id 'eclipse'
     id 'com.diffplug.eclipse.apt' version '3.+'
-    id 'net.neoforged.gradle' version '6.+'
+    id 'net.minecraftforge.gradle' version '6.+'
 }
 
 version = '1.12.2-' + modVersion
@@ -12,36 +12,25 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
+    // mappings channel: 'official', version: '1.12.2' // FG disallows use of non-'official' mappings, though falls back to them cuz there are no official mappings for 1.12
     mappings channel: 'snapshot', version: '20171003-1.12'
     
-    copyIdeResources = true
+    // copyIdeResources = true
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
-            workingDirectory 'run'
+            workingDirectory file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             taskName 'runApppClient-1.12'
-
-            mods {
-                armorpointspp {
-                    source sourceSets.main
-                }
-            }
         }
 
         server {
-            workingDirectory 'run'
+            workingDirectory file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             taskName 'runApppServer-1.12'
-
-            mods {
-                armorpointspp {
-                    source sourceSets.main
-                }
-            }
         }
     }
 }
