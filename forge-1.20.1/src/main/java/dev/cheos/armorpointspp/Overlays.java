@@ -17,16 +17,15 @@ import dev.cheos.armorpointspp.mixin.IRegisterGuiOverlaysEventMixin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.EventPriority;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod.EventBusSubscriber;
-import net.neoforged.fml.common.Mod.EventBusSubscriber.Bus;
-import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
-import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
-import net.neoforged.neoforge.client.gui.overlay.IGuiOverlay;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
-@EventBusSubscriber(modid = Armorpointspp.MODID, value = Dist.CLIENT, bus = Bus.MOD)
+@Mod.EventBusSubscriber(modid = Armorpointspp.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Overlays {
 	private static final IDataProvider DATA_PROVIDER = new DataProviderImpl();
 	private static final IRenderer RENDERER          = new RendererImpl();
@@ -55,21 +54,21 @@ public class Overlays {
 		
 		missedFunctionality.unregister(ARMOR_LEVEL);
 		missedFunctionality.registerOverriding(PLAYER_HEALTH                 , Overlays::playerHealth);
-		event.registerAbove(PLAYER_HEALTH, ABSORPTION              , Overlays::absorption);
-		event.registerAbove(ABSORPTION   , ABSORPTION_OV           , Overlays::absorptionOv);
+		event.registerAbove(PLAYER_HEALTH, ABSORPTION              .getPath(), Overlays::absorption);
+		event.registerAbove(ABSORPTION   , ABSORPTION_OV           .getPath(), Overlays::absorptionOv);
 		missedFunctionality.registerArbitraryAbove(ABSORPTION_OV, ARMOR_LEVEL, Overlays::armorLevel);
-		event.registerAbove(ARMOR_LEVEL  , MAGIC_SHIELD            , Overlays::magicShield);
-		event.registerAbove(MAGIC_SHIELD , RESISTANCE              , Overlays::resistance);
-		event.registerAbove(RESISTANCE   , PROTECTION              , Overlays::protection);
-		event.registerAbove(MOUNT_HEALTH , ARMOR_TOUGHNESS         , Overlays::armorToughness);
-		event.registerAbove(PROTECTION   , ARMOR_TOUGHNESS_OV      , Overlays::armorToughnessOv);
-		event.registerAbove(ITEM_NAME    , ARMOR_TEXT              , Overlays::armorText);
-		event.registerAbove(ITEM_NAME    , HEALTH_TEXT             , Overlays::healthText);
-		event.registerAbove(ITEM_NAME    , TOUGHNESS_TEXT          , Overlays::toughnessText);
-		event.registerAboveAll(new ResourceLocation(Armorpointspp.MODID, "debug"), Overlays::debug);
+		event.registerAbove(ARMOR_LEVEL  , MAGIC_SHIELD            .getPath(), Overlays::magicShield);
+		event.registerAbove(MAGIC_SHIELD , RESISTANCE              .getPath(), Overlays::resistance);
+		event.registerAbove(RESISTANCE   , PROTECTION              .getPath(), Overlays::protection);
+		event.registerAbove(MOUNT_HEALTH , ARMOR_TOUGHNESS         .getPath(), Overlays::armorToughness);
+		event.registerAbove(PROTECTION   , ARMOR_TOUGHNESS_OV      .getPath(), Overlays::armorToughnessOv);
+		event.registerAbove(ITEM_NAME    , ARMOR_TEXT              .getPath(), Overlays::armorText);
+		event.registerAbove(ITEM_NAME    , HEALTH_TEXT             .getPath(), Overlays::healthText);
+		event.registerAbove(ITEM_NAME    , TOUGHNESS_TEXT          .getPath(), Overlays::toughnessText);
+		event.registerAboveAll("debug", Overlays::debug);
 	}
 	
-	private static void playerHealth(ExtendedGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
+	private static void playerHealth(ForgeGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
 		lastHealthY = baseY(gui, screenHeight);
 		if (!ApppConfig.instance().bool(BooleanOption.HEALTH_ENABLE)) {
 			if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
@@ -78,15 +77,15 @@ public class Overlays {
 			gui.leftHeight += 10;
 	}
 	
-	private static void absorption(ExtendedGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
+	private static void absorption(ForgeGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
 		Components.ABSORPTION.render(ctx(graphics, baseX(screenWidth), lastHealthY));
 	}
 	
-	private static void absorptionOv(ExtendedGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
+	private static void absorptionOv(ForgeGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
 		Components.ABSORPTION_OVER.render(ctx(graphics, baseX(screenWidth), lastHealthY));
 	}
 	
-	private static void armorLevel(ExtendedGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
+	private static void armorLevel(ForgeGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
 		RenderContext ctx = ctx(graphics, baseX(screenWidth), lastArmorY = baseY(gui, screenHeight));
 		boolean flag = false;
 		if (!ApppConfig.instance().bool(BooleanOption.ARMOR_ENABLE))
@@ -95,7 +94,7 @@ public class Overlays {
 		if (flag) gui.leftHeight += 10;
 	}
 	
-	private static void armorToughness(ExtendedGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
+	private static void armorToughness(ForgeGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
 		Side side = ApppConfig.instance().enm(EnumOption.TOUGHNESS_SIDE);
 		if (Components.TOUGHNESS.render(ctx(graphics, baseX(screenWidth, side), lastToughnessY = baseY(gui, screenHeight, side))))
 			switch (side) {
@@ -108,35 +107,35 @@ public class Overlays {
 			}
 	}
 	
-	private static void resistance(ExtendedGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
+	private static void resistance(ForgeGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
 		Components.RESISTANCE.render(ctx(graphics, baseX(screenWidth), lastArmorY));
 	}
 	
-	private static void protection(ExtendedGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
+	private static void protection(ForgeGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
 		Components.PROTECTION.render(ctx(graphics, baseX(screenWidth), lastArmorY));
 	}
 	
-	private static void armorToughnessOv(ExtendedGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
+	private static void armorToughnessOv(ForgeGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
 		Components.TOUGHNESS_OVER.render(ctx(graphics, baseX(screenWidth), lastArmorY));
 	}
 	
-	private static void magicShield(ExtendedGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
+	private static void magicShield(ForgeGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
 		Components.MAGIC_SHIELD.render(ctx(graphics, baseX(screenWidth), lastArmorY));
 	}
 	
-	private static void armorText(ExtendedGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
+	private static void armorText(ForgeGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
 		Components.ARMOR_TEXT.render(ctx(graphics, baseX(screenWidth), lastArmorY));
 	}
 	
-	private static void healthText(ExtendedGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
+	private static void healthText(ForgeGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
 		Components.HEALTH_TEXT.render(ctx(graphics, baseX(screenWidth), lastHealthY));
 	}
 	
-	private static void toughnessText(ExtendedGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
+	private static void toughnessText(ForgeGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
 		Components.TOUGHNESS_TEXT.render(ctx(graphics, baseX(screenWidth, ApppConfig.instance().enm(EnumOption.TOUGHNESS_SIDE)), lastToughnessY));
 	}
 	
-	private static void debug(ExtendedGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
+	private static void debug(ForgeGui gui, GuiGraphics graphics, float partialTicks, int screenWidth, int screenHeight) {
 		RenderContext ctx = ctx(graphics, baseX(screenWidth), lastArmorY);
 		Components.DEBUG.render(ctx);
 		Components.DEBUG_TEXT.render(ctx);
@@ -163,11 +162,11 @@ public class Overlays {
 		return width / 2 + switch (side) { case LEFT -> -91; case RIGHT -> 10; };
 	}
 	
-	private static int baseY(ExtendedGui gui, int height) {
+	private static int baseY(ForgeGui gui, int height) {
 		return baseY(gui, height, Side.LEFT);
 	}
 	
-	private static int baseY(ExtendedGui gui, int height, Side side) {
+	private static int baseY(ForgeGui gui, int height, Side side) {
 		return height - switch (side) { case LEFT -> gui.leftHeight; case RIGHT -> gui.rightHeight; };
 	}
 	

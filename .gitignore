@@ -46,6 +46,12 @@ gradle-app.setting
 **/*.launch
 
 
+# INTELLIJ
+
+.idea
+**/*.iml
+
+
 # FORGE
 **/run/
 .factorypath

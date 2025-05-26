@@ -2,14 +2,13 @@ package dev.cheos.armorpointspp.config;
 
 import dev.cheos.armorpointspp.core.adapter.IConfig.EnumOption;
 import net.minecraft.util.Mth;
-import net.neoforged.neoforge.common.ModConfigSpec;
-import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 public abstract class ApppConfigValue<T, U> {
 	protected final String name;
 	protected final String[] comments;
 	protected final T def;
-	protected ConfigValue<T> confValue;
+	protected ForgeConfigSpec.ConfigValue<T> confValue;
 //	protected Lazy<T> value;
 	
 	protected ApppConfigValue(String name, T def, String... comments) {
@@ -18,7 +17,7 @@ public abstract class ApppConfigValue<T, U> {
 		this.comments = comments;
 	}
 	
-	public void define(ModConfigSpec.Builder builder) {
+	public void define(ForgeConfigSpec.Builder builder) {
 		builder.comment(this.comments);
 		this.confValue = builder.define(this.name, this.def);
 //		this.value = Lazy.of(this.confValue::get);
@@ -58,7 +57,7 @@ public abstract class ApppConfigValue<T, U> {
 		}
 		
 		@Override
-		public void define(ModConfigSpec.Builder builder) {
+		public void define(ForgeConfigSpec.Builder builder) {
 			builder.comment(this.comments);
 			this.confValue = builder.defineInRange(this.name, this.def, this.min, this.max);
 //			this.value = Lazy.of(this.confValue::get);
@@ -88,7 +87,7 @@ public abstract class ApppConfigValue<T, U> {
 		}
 		
 		@Override
-		public void define(ModConfigSpec.Builder builder) {
+		public void define(ForgeConfigSpec.Builder builder) {
 			builder.comment(this.comments);
 			this.confValue = builder.defineInRange(this.name, this.def, this.min, this.max);
 //			this.value = Lazy.of(this.confValue::get);
@@ -110,7 +109,7 @@ public abstract class ApppConfigValue<T, U> {
 		}
 		
 		@Override
-		public void define(ModConfigSpec.Builder builder) {
+		public void define(ForgeConfigSpec.Builder builder) {
 			builder.comment(this.comments);
 			this.confValue = builder.defineEnum(this.name, this.def);
 //			this.value = Lazy.of(this.confValue::get);

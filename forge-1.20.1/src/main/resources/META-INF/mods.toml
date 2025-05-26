@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[1,)"
+loaderVersion="[47,)"
 license="MIT"
 issueTrackerURL="https://github.com/Cheos137/ArmorpointsPlusplus/issues/new/choose"
 
@@ -18,15 +18,15 @@ issueTrackerURL="https://github.com/Cheos137/ArmorpointsPlusplus/issues/new/choo
     '''
 
 [[dependencies.armorpointspp]]
-    modId="neoforge"
+    modId="forge"
     mandatory=true
-    versionRange="[20.3,)"
+    versionRange="[47,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.armorpointspp]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.20.3,1.21)"
+    versionRange="[1.20.1,1.20.2)"
     ordering="NONE"
     side="BOTH"

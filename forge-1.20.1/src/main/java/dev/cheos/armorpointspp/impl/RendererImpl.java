@@ -3,6 +3,8 @@ package dev.cheos.armorpointspp.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraftforge.common.util.Lazy;
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -19,15 +21,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
-import net.neoforged.neoforge.common.util.Lazy;
 
 public class RendererImpl implements IRenderer {
 	// fallback / default texture sheet location
 	private static final ResourceLocation ICONS = new ResourceLocation(Armorpointspp.MODID, "textures/gui/" + ITextureSheet.defaultSheet().texLocation() + ".png");
 	private static final Map<String, ResourceLocation> resourceLocationCache = new HashMap<>();
 	private final Minecraft minecraft = Minecraft.getInstance();
-	private final Lazy<ExtendedGui> gui = Lazy.of(() -> (ExtendedGui) this.minecraft.gui);
+	private final Lazy<ForgeGui> gui = Lazy.of(() -> (ForgeGui) this.minecraft.gui);
 	private ResourceLocation tex;
 	
 	@Override
@@ -42,17 +42,12 @@ public class RendererImpl implements IRenderer {
 	
 	@Override
 	public void blitSprite(IPoseStack poseStack, int x, int y, int width, int height, SpriteInfo sprite) {
-		((PoseStackImpl) poseStack).getGraphics().blitSprite(resourceLocationCache.computeIfAbsent(sprite.location(), ResourceLocation::new), x, y, width, height);
+		blit(poseStack, x, y, sprite.u(), sprite.v(), width, height);
 	}
 	
 	@Override
 	public void blitSprite(IPoseStack poseStack, int x, int y, int width, int height, SpriteInfo sprite, int uOffset, int vOffset, int spriteWidth, int spriteHeight) {
-		((PoseStackImpl) poseStack).getGraphics().blitSprite(
-				resourceLocationCache.computeIfAbsent(sprite.location(), ResourceLocation::new),
-				spriteWidth, spriteHeight,
-				uOffset, vOffset,
-				x, y,
-				width, height);
+		blit(poseStack, x, y, sprite.u() + uOffset, sprite.v() + vOffset, width, height);
 	}
 	
 	@Override

@@ -1,11 +1,10 @@
 plugins {
     id 'eclipse'
-    // id 'com.diffplug.eclipse.apt' version '3.+'
     id 'net.neoforged.gradle.userdev' version '7.+'
     id 'net.neoforged.gradle.mixin' version '7.+'
 }
 
-version = '1.20.3-' + modVersion
+version = '1.20.1-' + modVersion
 group = modGroup
 base.archivesName = modName + '-neoforge'
 
@@ -13,18 +12,13 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    // mappings {
-    //     channel = parchment()
-    //     version '2023.12.10-1.20.2'
-    // }
-
     // copyIdeResources = true
     accessTransformers.file file('src/main/resources/META-INF/accesstransformer.cfg')
 }
 
 subsystems.parchment {
-    minecraftVersion = "1.20.2"
-    mappingsVersion = "2023.12.10"
+    minecraftVersion = "1.20.1"
+    mappingsVersion = "2023.09.03"
 }
 
 mixin {
@@ -35,6 +29,7 @@ mixin {
 runs {
     client {
         workingDirectory 'run'
+        programArgument '-mixin.config=armorpointspp.mixins.json'
         systemProperty 'forge.logging.markers', 'REGISTRIES'
         systemProperty 'forge.logging.console.level', 'debug'
         // taskName 'runApppClient-1.20'
@@ -47,7 +42,7 @@ sourceSets.main.java { srcDir project(':core').sourceSets.main.java }
 sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
 dependencies {
-    implementation 'net.neoforged:neoforge:20.3.8-beta'
+    implementation 'net.neoforged:forge:1.20.1-47.1.76'
     implementation project(':core')
 }
 

@@ -28,8 +28,8 @@ public class PlayerTabOverlayMixin {
 	private Gui gui;
 	
 	@Inject(method = "renderTablistScore", at = @At("HEAD"), cancellable = true)
-	private void renderTablistScore(Objective obj, int y, PlayerTabOverlay.ScoreDisplayEntry entry, int x, int maxX, UUID player, GuiGraphics graphics, CallbackInfo ci) {
-		int score = entry.score();
+	private void renderTablistScore(Objective obj, int y, String name, int x, int maxX, UUID player, GuiGraphics graphics, CallbackInfo ci) {
+		int score = obj.getScoreboard().getOrCreatePlayerScore(name, obj).getScore();
 		PlayerTabOverlay.HealthState state = this.healthStates.computeIfAbsent(player, k -> new PlayerTabOverlay.HealthState(score));
 		HealthStateMixin extState = (HealthStateMixin) state;
 		state.update(score, this.gui.getGuiTicks());

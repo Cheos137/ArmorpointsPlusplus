@@ -39,17 +39,12 @@ public class RendererImpl implements IRenderer {
 	
 	@Override
 	public void blitSprite(IPoseStack poseStack, int x, int y, int width, int height, SpriteInfo sprite) {
-		((PoseStackImpl) poseStack).getGraphics().blitSprite(resourceLocationCache.computeIfAbsent(sprite.location(), ResourceLocation::new), x, y, width, height);
+		blit(poseStack, x, y, sprite.u(), sprite.v(), width, height);
 	}
 	
 	@Override
 	public void blitSprite(IPoseStack poseStack, int x, int y, int width, int height, SpriteInfo sprite, int uOffset, int vOffset, int spriteWidth, int spriteHeight) {
-		((PoseStackImpl) poseStack).getGraphics().blitSprite(
-				resourceLocationCache.computeIfAbsent(sprite.location(), ResourceLocation::new),
-				spriteWidth, spriteHeight,
-				uOffset, vOffset,
-				x, y,
-				width, height);
+		blit(poseStack, x, y, sprite.u() + uOffset, sprite.v() + vOffset, width, height);
 	}
 	
 	@Override

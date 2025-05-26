@@ -3,12 +3,12 @@ package dev.cheos.armorpointspp.mixin;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
-import net.neoforged.neoforge.client.gui.overlay.IGuiOverlay;
 
 @Mixin(RegisterGuiOverlaysEvent.class)
 public interface IRegisterGuiOverlaysEventMixin {

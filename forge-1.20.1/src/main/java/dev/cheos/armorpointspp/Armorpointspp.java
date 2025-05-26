@@ -1,14 +1,15 @@
 package dev.cheos.armorpointspp;
 
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dev.cheos.armorpointspp.config.ApppConfig;
 import dev.cheos.armorpointspp.core.adapter.IConfig.BooleanOption;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModList;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod(Armorpointspp.MODID)
 //@EventBusSubscriber(Dist.CLIENT)
@@ -16,9 +17,9 @@ public class Armorpointspp {
 	public static final String MODID = "armorpointspp";
 	public static final Logger LOGGER = LogManager.getLogger("Armorpoints++");
 	
-	public Armorpointspp(IEventBus modEventBus) {
-		modEventBus.addListener(this::client);
-//		modEventBus.addListener(this::reload);
+	public Armorpointspp() {
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::client);
+//		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::reload);
 		ApppConfig.init();
 	}
 	

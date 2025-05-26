@@ -3,7 +3,7 @@ plugins {
     id 'fabric-loom' version '1.+'
 }
 
-version = '1.20.3-' + modVersion
+version = '1.20.1-' + modVersion
 group = modGroup
 base.archivesName = modName + '-fabric'
 
@@ -27,48 +27,43 @@ repositories {
 		forRepository { maven { url = 'https://api.modrinth.com/maven' }} // modrinth
 		filter { includeGroup 'maven.modrinth' }
 	}
-	exclusiveContent {
-		forRepository { maven { url = 'https://cursemaven.com' }} // curseforge
-		filter { includeGroup 'curse.maven' }
-	}
 	flatDir {
 		dir 'lib'
 	}
 }
 
 dependencies {
-    minecraft 'com.mojang:minecraft:1.20.3'
+    minecraft 'com.mojang:minecraft:1.20.1'
 
 	mappings loom.layered() {
 		officialMojangMappings()
-		parchment('org.parchmentmc.data:parchment-1.20.3:2023.12.31@zip')
+		parchment('org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip')
 	}
 
     implementation project(':core')
-    modImplementation 'net.fabricmc:fabric-loader:0.15.3'
-    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.90.4+1.20.2'
+    modImplementation 'net.fabricmc:fabric-loader:0.16.14'
+    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.92.5+1.20.1'
     implementation 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'
-    include 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT'
+    include 'me.zeroeightsix:fiber:0.23.0-SNAPSHOT' // gonna need a new config lib at some point
 
-	modImplementation 'com.terraformersmc:modmenu:8.0.0'
+	modImplementation 'com.terraformersmc:modmenu:7.2.2'
 
-	modCompileOnly('squeek.appleskin:appleskin-fabric:mc1.20.2-2.5.1') { transitive = false }
-	modRuntimeOnly('squeek.appleskin:appleskin-fabric:mc1.20.2-2.5.1') {
+	modCompileOnly('squeek.appleskin:appleskin-fabric:mc1.20-2.5.1') { transitive = false }
+	modRuntimeOnly('squeek.appleskin:appleskin-fabric:mc1.20-2.5.1') {
 		exclude module: 'fabric-api'
 		exclude module: 'modmenu'
 	}
-	modRuntimeOnly('maven.modrinth:cloth-config:12.0.109+fabric') // required by appleskin
+	modRuntimeOnly('maven.modrinth:cloth-config:11.1.136+fabric') // required by appleskin
 
-	modCompileOnly 'maven.modrinth:libhud:1.0.0-beta7'
-	modRuntimeOnly 'maven.modrinth:libhud:1.0.0-beta7'
-	modCompileOnly 'maven.modrinth:spectrum:1.6.9-1.19.2-leisure_time' // outdated
-	modCompileOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.3.0'
-    modCompileOnly 'maven.modrinth:bewitchment:1.20-6'
-    modCompileOnly 'maven.modrinth:dehydration:1.3.4+1.20.1'
+	modCompileOnly 'maven.modrinth:libhud:1.0.0-beta6'
+	modRuntimeOnly 'maven.modrinth:libhud:1.0.0-beta6'
+	modCompileOnly 'maven.modrinth:spectrum:1.8.5'
+	modCompileOnly 'dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.2.3'
+    modCompileOnly 'maven.modrinth:bewitchment:1.20-10'
+    modCompileOnly 'maven.modrinth:dehydration:1.3.6+1.20.1'
 	modCompileOnly 'maven.modrinth:better-mount-hud:1.2.2'
-	modCompileOnly 'maven.modrinth:its-thirst:1.1.0-ALPHA-1.19.3' // outdated
-	modCompileOnly 'maven.modrinth:detail-armor-bar:2.6.3+1.20.2-fabric'
-	modCompileOnly 'maven.modrinth:victus:0.1.14+1.20.2'
+	modCompileOnly 'maven.modrinth:detail-armor-bar:2.6.3+1.20.1-fabric'
+	modCompileOnly 'maven.modrinth:victus:0.1.15+1.20'
 }
 
 processResources {
@@ -91,7 +86,7 @@ loom {
 			// The environment (or side) to run, usually client or server.
 			environment = 'client'
 			// The full name of the run configuration, i.e. 'Minecraft Client'. By default this is determined from the base name.
-			configName = 'runApppClient-fabric-1.20'
+			configName = 'runApppClient-fabric-1.20.1'
 			// The default main class of the run configuration. This will be overridden if using a mod loader with a fabric_installer.json file.
 			defaultMainClass = ''
 			// The run directory for this configuration, relative to the root project directory.
@@ -108,7 +103,7 @@ loom {
 
 		debugClient {
 			inherit client
-			configName = 'runApppClientDebug-fabric-1.20'
+			configName = 'runApppClientDebug-fabric-1.20.1'
 			vmArgs '-agentlib:jdwp=transport=dt_socket,server=n,suspend=n,address=localhost:9009' //, '-XX:+AllowEnhancedClassRedefinition'
 		}
 	}
@@ -131,10 +126,3 @@ jar {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
-
-// runDebugClient {
-// 	javaLauncher = javaToolchains.launcherFor {
-// 		languageVersion = JavaLanguageVersion.of(17)
-// 		vendor = JvmVendorSpec.matching 'jetbrains' // fsr JvmVendorSpec.JETBRAINS doesn't work here even though it should since gradle 6.8??
-// 	}
-// }
