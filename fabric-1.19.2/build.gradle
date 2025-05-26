@@ -13,22 +13,22 @@ sourceSets.main.java { srcDir project(':core').sourceSets.main.java }
 sourceSets.main.resources { srcDir project(':core').sourceSets.main.resources }
 
 repositories {
-	maven { url 'https://maven.modmuss50.me/' }   // config lib
-	maven { url 'https://maven.ryanliptak.com/' } // appleskin
-	maven { url 'https://maven.shedaniel.me/' }   // cloth - needed for appleskin runtime
-	maven { url 'https://maven.terraformersmc.com/releases/' } // modmenu
-	maven { url 'https://maven.ladysnake.org/releases' } // cca
-	maven { url 'https://jitpack.io' }
+	maven { url = 'https://maven.modmuss50.me/' }   // config lib
+	maven { url = 'https://maven.ryanliptak.com/' } // appleskin
+	maven { url = 'https://maven.shedaniel.me/' }   // cloth - needed for appleskin runtime
+	maven { url = 'https://maven.terraformersmc.com/releases/' } // modmenu
+	maven { url = 'https://maven.ladysnake.org/releases' } // cca
+	maven { url = 'https://jitpack.io' }
 	exclusiveContent {
-		forRepository { maven { url 'https://maven.parchmentmc.org' }}
+		forRepository { maven { url = 'https://maven.parchmentmc.org' }}
 		filter { includeGroup 'org.parchmentmc.data' }
 	}
 	exclusiveContent {
-		forRepository { maven { url 'https://api.modrinth.com/maven' }} // modrinth
+		forRepository { maven { url = 'https://api.modrinth.com/maven' }} // modrinth
 		filter { includeGroup 'maven.modrinth' }
 	}
 	exclusiveContent {
-		forRepository { maven { url 'https://cursemaven.com' }} // curseforge
+		forRepository { maven { url = 'https://cursemaven.com' }} // curseforge
 		filter { includeGroup 'curse.maven' }
 	}
 }
