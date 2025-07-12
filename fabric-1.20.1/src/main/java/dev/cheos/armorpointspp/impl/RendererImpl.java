@@ -1,8 +1,5 @@
 package dev.cheos.armorpointspp.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -23,7 +20,6 @@ import net.minecraft.resources.ResourceLocation;
 public class RendererImpl implements IRenderer {
 	// fallback / default texture sheet location
 	private static final ResourceLocation ICONS = new ResourceLocation(Armorpointspp.MODID, "textures/gui/" + ITextureSheet.defaultSheet().texLocation() + ".png");
-	private static final Map<String, ResourceLocation> resourceLocationCache = new HashMap<>();
 	private final Minecraft minecraft = Minecraft.getInstance();
 	private ResourceLocation tex;
 	

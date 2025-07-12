@@ -9,13 +9,13 @@ import com.google.common.cache.CacheBuilder;
 import dev.cheos.armorpointspp.core.adapter.*;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class DataProviderImpl implements IDataProvider {
 	private final Cache<String, Boolean> effectActiveCache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.SECONDS).build();
@@ -111,7 +111,7 @@ public class DataProviderImpl implements IDataProvider {
 		try {
 			return this.effectActiveCache.get(id, () -> {
 				ResourceLocation loc = new ResourceLocation(id);
-				return BuiltInRegistries.MOB_EFFECT.containsKey(loc) && this.minecraft.player.hasEffect(BuiltInRegistries.MOB_EFFECT.get(loc));
+				return ForgeRegistries.MOB_EFFECTS.containsKey(loc) && this.minecraft.player.hasEffect(ForgeRegistries.MOB_EFFECTS.getValue(loc));
 			});
 		} catch (ExecutionException e) { return false; }
 	}
