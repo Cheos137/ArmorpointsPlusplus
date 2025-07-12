@@ -1,9 +1,9 @@
 pluginManagement {
     repositories {
+        mavenLocal()
         gradlePluginPortal()
         maven { url = 'https://maven.neoforged.net/releases' }
         maven { url = 'https://maven.fabricmc.net/' }
-        mavenLocal()
     }
 }
 
@@ -20,9 +20,11 @@ include 'forge-1.20.1'
 include 'forge-1.21.1'
 include 'forge-1.21.4'
 include 'forge-1.21.5'
+include 'forge-1.21.7'
 
 include 'fabric-1.19.2'
 include 'fabric-1.20.1'
 include 'fabric-1.21.1'
 include 'fabric-1.21.4'
 include 'fabric-1.21.5'
+include 'fabric-1.21.7'
