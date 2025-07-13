@@ -32,7 +32,6 @@ runs {
         argument '-mixin.config=armorpointspp.mixins.json'
         systemProperty 'forge.logging.markers', 'REGISTRIES'
         systemProperty 'forge.logging.console.level', 'debug'
-        // taskName 'runApppClient-1.19'
 
         modSource sourceSets.main
     }

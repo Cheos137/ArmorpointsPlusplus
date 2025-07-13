@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"package": "dev.cheos.armorpointspp.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"refmap": "armorpointspp.refmap.json",
+	"client": [
+		"GuiMixin",
+		"PlayerTabOverlayMixin",
+		"HealthStateMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"minVersion": "0.8.7"
+}

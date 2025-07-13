@@ -10,6 +10,12 @@ public interface IRenderer {
 	void blitSprite(IPoseStack poseStack, int x, int y, int width, int height, SpriteInfo sprite, int uOffset, int vOffset, int spriteWidth, int spriteHeight);
 	void blitM(IPoseStack poseStack, int x, int y, float u, float v, int width, int height, int texWidth, int texHeight);
 	void blitM(IPoseStack poseStack, int x, int y, float u, float v, int width, int height);
+	default void setColor(int color) {
+		setColor(((color >> 16) & 0xFF) / 255F, ((color >> 8) & 0xFF) / 255F, (color & 0xFF) / 255F, ((color >> 24) & 0xFF) / 255F);
+	}
+	default void setColorRGB(int color) {
+		setColor(((color >> 16) & 0xFF) / 255F, ((color >> 8) & 0xFF) / 255F, (color & 0xFF) / 255F, 1);
+	}
 	void setColor(float r, float g, float b, float a);
 	void setupAppp();
 	void setupTexture(ITextureSheet texSheet);

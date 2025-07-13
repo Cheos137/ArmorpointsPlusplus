@@ -54,6 +54,7 @@ gradle-app.setting
 
 # FORGE
 **/run/
+**/runs/
 .factorypath
 
 # MYSELF

@@ -74,20 +74,24 @@ public interface IConfig {
 		v1_18,
 		v1_19,
 		v1_20,
+		v1_21,
 		v1_18fabric,
 		v1_19fabric,
-		v1_20fabric;
+		v1_20fabric,
+		v1_21fabric;
 		
 		public static final ImmutableList<Version> ALL     = ImmutableList.copyOf(Version.values());
 		public static final ImmutableList<Version> NONE    = ImmutableList.of();
-		public static final ImmutableList<Version> FABRIC  = ImmutableList.of(v1_18fabric, v1_19fabric);
+		public static final ImmutableList<Version> FABRIC  = ImmutableList.of(v1_18fabric, v1_19fabric, v1_20fabric, v1_21fabric);
 		public static final ImmutableList<Version> V1_12   = ImmutableList.of(v1_12);
 		public static final ImmutableList<Version> V1_16   = ImmutableList.of(v1_16);
 		public static final ImmutableList<Version> V1_17   = ImmutableList.of(v1_17);
 		public static final ImmutableList<Version> V1_18   = ImmutableList.of(v1_18, v1_18fabric);
 		public static final ImmutableList<Version> V1_19   = ImmutableList.of(v1_19, v1_19fabric);
 		public static final ImmutableList<Version> V1_20   = ImmutableList.of(v1_20, v1_20fabric);
-		public static final ImmutableList<Version> V1_19UP = ImmutableList.<Version>builder().addAll(V1_20  ).addAll(V1_19).build();
+		public static final ImmutableList<Version> V1_21   = ImmutableList.of(v1_21, v1_21fabric);
+		public static final ImmutableList<Version> V1_20UP = ImmutableList.<Version>builder().addAll(V1_21  ).addAll(V1_20).build();
+		public static final ImmutableList<Version> V1_19UP = ImmutableList.<Version>builder().addAll(V1_20UP).addAll(V1_19).build();
 		public static final ImmutableList<Version> V1_18UP = ImmutableList.<Version>builder().addAll(V1_19UP).addAll(V1_18).build();
 		public static final ImmutableList<Version> V1_17UP = ImmutableList.<Version>builder().addAll(V1_18UP).addAll(V1_17).build();
 		public static final ImmutableList<Version> V1_16UP = ImmutableList.<Version>builder().addAll(V1_17UP).addAll(V1_16).build();

@@ -37,7 +37,7 @@ public class ArmorComponent implements IRenderComponent {
 		for (int i = 0; i < 10; i++) {
 			millis += 5;
 			color = Color.HSBtoRGB((millis % 360) / 360F, 1, 1);
-			ctx.renderer.setColor(((color >> 16) & 0xFF) / 255F, ((color >> 8) & 0xFF) / 255F, (color & 0xFF) / 255F, 1);
+			ctx.renderer.setColorRGB(color);
 			tex.drawArmor(ctx, x + 8 * i, y, 1, false);
 		}
 		ctx.poseStack.popPose();
